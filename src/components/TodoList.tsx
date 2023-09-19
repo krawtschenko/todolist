@@ -2,6 +2,15 @@ import React, {FC} from "react";
 import {FilterType, TaskType} from "../App";
 
 export const TodoList: FC<TodoListProps> = ({title, tasks, removeTask, filters}) => {
+	const allTasks = tasks.length ? tasks.map(el => {
+		return (
+			<li key={el.id}>
+				<input type="checkbox" checked={el.isDone}/><span>{el.title}</span>
+				<button onClick={() => removeTask(el.id)}>Delete</button>
+			</li>
+		)
+	}) : <span>Have no tasks</span>
+
 	return (
 		<div className="todoList">
 			<h3>{title}</h3>
@@ -10,23 +19,12 @@ export const TodoList: FC<TodoListProps> = ({title, tasks, removeTask, filters})
 				<button>+</button>
 			</div>
 			<ul>
-				{
-					tasks.length
-						? tasks.map(el => {
-							return (
-								<li key={el.id}>
-									<input type="checkbox" checked={el.isDone}/><span>{el.title}</span>
-									<button onClick={() => removeTask(el.id)}>Delete</button>
-								</li>
-							)
-						})
-						: <span>Have no tasks</span>
-				}
+				{allTasks}
 			</ul>
 			<div>
-				<button onClick={() => filters(FilterType.All)}>All</button>
-				<button onClick={() => filters(FilterType.Active)}>Active</button>
-				<button onClick={() => filters(FilterType.Completed)}>Completed</button>
+				<button onClick={() => filters(FilterType.All)}>{FilterType.All}</button>
+				<button onClick={() => filters(FilterType.Active)}>{FilterType.Active}</button>
+				<button onClick={() => filters(FilterType.Completed)}>{FilterType.Completed}</button>
 			</div>
 		</div>
 	)
