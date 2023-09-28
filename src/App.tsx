@@ -1,70 +1,55 @@
 import React, {useState} from 'react';
 import './App.css';
-import TodoList from "./components/TodoList";
-import styled from "styled-components";
+import {Todolist} from './Todolist';
 
-const ContainerEl = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 285px));
-`
+export type FilterValuesType = "all" | "active" | "completed";
 
-export const App = () => {
-	const todoListTitle1: string = "Heroes of Warcraft"
+function App() {
 
-	const [tasks, setTasks] = useState<ITasks[]>([
-		{id: crypto.randomUUID(), isDone: true, title: "Zul'jin"},
-		{id: crypto.randomUUID(), isDone: true, title: "Jaina"},
-		{id: crypto.randomUUID(), isDone: false, title: "Thrall"},
-		{id: crypto.randomUUID(), isDone: true, title: "Uther"},
-		{id: crypto.randomUUID(), isDone: false, title: "Arthas"}
-	])
+	let [tasks, setTasks] = useState([
+		{id: crypto.randomUUID(), title: "HTML&CSS", isDone: true},
+		{id: crypto.randomUUID(), title: "JS", isDone: true},
+		{id: crypto.randomUUID(), title: "ReactJS", isDone: false},
+		{id: crypto.randomUUID(), title: "Rest API", isDone: false},
+		{id: crypto.randomUUID(), title: "GraphQL", isDone: false},
+	]);
 
-	const [filter, setFilter] = useState<EFilter>(EFilter.All)
-
-	function removeTask(taskId: string) {
-		setTasks(tasks.filter(el => el.id !== taskId))
-	}
-
-	function changeFilter(filter: EFilter) {
-		setFilter(filter)
+	function removeTask(id: string) {
+		let filteredTasks = tasks.filter(t => t.id !== id);
+		setTasks(filteredTasks);
 	}
 
 	function addTask(title: string) {
-		const newTask = {id: crypto.randomUUID(), isDone: false, title}
-		setTasks([newTask, ...tasks])
+		let task = {id: crypto.randomUUID(), title: title, isDone: false};
+		let newTasks = [task, ...tasks];
+		setTasks(newTasks);
 	}
 
-	function filterTasks() {
-		switch (filter) {
-			case EFilter.Active:
-				return tasks.filter(el => !el.isDone)
-			case EFilter.Completed:
-				return tasks.filter(el => el.isDone)
-			default:
-				return tasks
-		}
+	let [filter, setFilter] = useState<FilterValuesType>("all");
+
+	let tasksForTodolist = tasks;
+
+	if (filter === "active") {
+		tasksForTodolist = tasks.filter(t => t.isDone === false);
+	}
+	if (filter === "completed") {
+		tasksForTodolist = tasks.filter(t => t.isDone === true);
 	}
 
-	const filteredTasks = filterTasks()
+	function changeFilter(value: FilterValuesType) {
+		setFilter(value);
+	}
+
 
 	return (
 		<div className="App">
-			<ContainerEl>
-				<TodoList title={todoListTitle1} tasks={filteredTasks} removeTask={removeTask} changeFilter={changeFilter}
-				          addTask={addTask}/>
-			</ContainerEl>
+			<Todolist title="What to learn"
+			          tasks={tasksForTodolist}
+			          removeTask={removeTask}
+			          changeFilter={changeFilter}
+			          addTask={addTask}/>
 		</div>
 	);
 }
 
-export interface ITasks {
-	id: string
-	isDone: boolean
-	title: string
-}
-
-export enum EFilter {
-	All = 'All',
-	Active = 'Active',
-	Completed = 'Completed'
-}
+export default App;
