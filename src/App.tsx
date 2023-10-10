@@ -42,6 +42,11 @@ function App() {
 		setTasks(filteredTasks);
 	}
 
+	function removeTodoList(todoListID: string) {
+		setTodoLists(todoLists.filter(t => t.id !== todoListID))
+		delete tasks[todoListID]
+	}
+
 	function addTask(todoListID: string, title: string) {
 		let task = {id: crypto.randomUUID(), title: title, isDone: false};
 		let newTasks = {...tasks, [todoListID]: [task, ...tasks[todoListID]]};
@@ -78,6 +83,7 @@ function App() {
 					          addTask={addTask}
 					          changeTaskStatus={changeStatus}
 					          filter={item.filter}
+					          removeTodoList={removeTodoList}
 					/>
 				)
 			})}
