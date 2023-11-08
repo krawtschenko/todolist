@@ -1,12 +1,12 @@
 import {FilterType, TodoListType} from "../components/app/App";
 import {v1} from "uuid";
 
-export const todoListsReducer = (state: TodoListType[], action: TodoListAT): TodoListType[] => {
+export const todoListsReducer = (state: TodoListType[], action: ActionTypes): TodoListType[] => {
 	switch (action.type) {
 		case 'REMOVE-TODOLIST':
 			return state.filter(item => item.id !== action.payload.id)
 		case 'ADD-TODOLIST':
-			return [{id: v1(), title: action.payload.title, filter: 'all'}, ...state]
+			return [{id: action.payload.todoListId, title: action.payload.title, filter: 'all'}, ...state]
 		case 'CHANGE-TODOLIST-TITLE':
 			return state.map(item => item.id === action.payload.id ? {...item, title: action.payload.title} : item)
 		case 'CHANGE-TODOLIST-FILTER':
@@ -16,14 +16,14 @@ export const todoListsReducer = (state: TodoListType[], action: TodoListAT): Tod
 	}
 }
 
-type TodoListAT = RemoveTodolistAT | AddTodolistAT | changeTodoListTitleAT | changeTodoListFilterAT
+type ActionTypes = RemoveTodolistType | AddTodolistType | changeTodoListTitleType | changeTodoListFilterType
 
-type RemoveTodolistAT = ReturnType<typeof removeTodolist>
-type AddTodolistAT = ReturnType<typeof addTodolist>
-type changeTodoListTitleAT = ReturnType<typeof changeTodoListTitle>
-type changeTodoListFilterAT = ReturnType<typeof changeTodoListFilter>
+export type RemoveTodolistType = ReturnType<typeof removeTodoList>
+export type AddTodolistType = ReturnType<typeof addTodoList>
+type changeTodoListTitleType = ReturnType<typeof changeTodoListTitle>
+type changeTodoListFilterType = ReturnType<typeof changeTodoListFilter>
 
-export const removeTodolist = (id: string) => {
+export const removeTodoList = (id: string) => {
 	return {
 		type: 'REMOVE-TODOLIST' as const,
 		payload: {
@@ -32,11 +32,12 @@ export const removeTodolist = (id: string) => {
 	}
 }
 
-export const addTodolist = (title: string) => {
+export const addTodoList = (title: string) => {
 	return {
 		type: 'ADD-TODOLIST' as const,
 		payload: {
-			title
+			title,
+			todoListId: v1()
 		}
 	}
 }

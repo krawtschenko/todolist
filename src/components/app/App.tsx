@@ -13,7 +13,7 @@ export type TodoListType = {
 	title: string
 	filter: FilterType
 }
-type TasksStateType = {
+export type TasksStateType = {
 	[key: string]: Array<TaskType>
 }
 
@@ -49,7 +49,7 @@ function App() {
 	}
 
 	function addTask(title: string, todoListId: string) {
-		let task = {id: crypto.randomUUID(), title: title, isDone: false};
+		let task = {id: v1(), title: title, isDone: false};
 		//достанем нужный массив по todoListId:
 		let todoListTasks = tasks[todoListId];
 		// перезапишем в этом объекте массив для нужного тудулиста копией, добавив в начало новую таску:
