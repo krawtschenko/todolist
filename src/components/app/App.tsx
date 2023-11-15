@@ -99,7 +99,7 @@ function App() {
 				<Grid container spacing={3}>
 					{
 						todoLists.map(tl => {
-							let allTodoListTasks: Array<TaskType> = tasks[tl.id];
+							let allTodoListTasks = tasks[tl.id];
 							let tasksForTodoList = allTodoListTasks;
 
 							if (tl.filter === "active") {
