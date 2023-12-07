@@ -17,9 +17,6 @@ export interface IResponse<D> {
 const instance = axios.create({
   baseURL: "https://social-network.samuraijs.com/api/1.1/",
   withCredentials: true,
-  headers: {
-    "API-KEY": "32d7180f-21f4-47ca-912d-cbdd2de48bc5",
-  },
 });
 
 export const todoListAPI = {
