@@ -66,7 +66,13 @@ export const UpdateTaskTitle = () => {
     const todoListId = "c6626cb8-6088-4458-85bc-ca92fe9b8005";
     const taskId = "b04cc91c-d5ad-499f-8b59-5b188243d3ae";
     const taskData = {
-      title: "Rexxar",
+      title: "Relax",
+      description: "test",
+      completed: true,
+      status: 2,
+      priority: 2,
+      startDate: new Date(),
+      deadline: new Date(),
     };
     async function fetchData() {
       const response = await taskAPI.updateTask(todoListId, taskId, taskData);

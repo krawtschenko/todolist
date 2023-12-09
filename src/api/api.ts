@@ -2,16 +2,46 @@ import axios from "axios";
 
 interface ITodoList {
   id: string;
-  addedDate: string;
+  addedDate: Date;
   order: number;
   title: string;
 }
 
-export interface IResponse<D> {
+interface IResponse<D = {}> {
   resultCode: number;
   messages: string[];
   fieldsErrors: string[];
   data: D;
+}
+
+interface IGetTasks {
+  error: string;
+  totalCount: number;
+  items: ITask[];
+}
+
+interface ITask {
+  description: string;
+  title: string;
+  completed: boolean;
+  status: number;
+  priority: number;
+  startDate: Date;
+  deadline: Date;
+  id: string;
+  todoListId: string;
+  order: number;
+  addedDate: Date;
+}
+
+interface IUpdateModelTask {
+  title: string;
+  description: string;
+  completed: boolean;
+  status: number;
+  priority: number;
+  startDate: Date;
+  deadline: Date;
 }
 
 const instance = axios.create({
@@ -29,28 +59,34 @@ export const todoListAPI = {
     });
   },
   updateTodoList(todoListId: string, title: string) {
-    return instance.put<IResponse<{}>>(`todo-lists/${todoListId}`, {
+    return instance.put<IResponse>(`todo-lists/${todoListId}`, {
       title: title,
     });
   },
   deleteTodoList(todoListId: string) {
-    return instance.delete<IResponse<{}>>(`todo-lists/${todoListId}`);
+    return instance.delete<IResponse>(`todo-lists/${todoListId}`);
   },
 };
 
 export const taskAPI = {
   getTasks: (todoListId: string) => {
-    return instance.get(`todo-lists/${todoListId}/tasks`);
+    return instance.get<IGetTasks>(`todo-lists/${todoListId}/tasks`);
   },
   createTask: (todoListId: string, title: string) => {
-    return instance.post(`todo-lists/${todoListId}/tasks`, { title });
-  },
-  updateTask: (todoListId: string, taskId: string, taskData: any) => {
-    return instance.put(`todo-lists/${todoListId}/tasks/${taskId}`, {
-      taskData,
+    return instance.post<IResponse<ITask>>(`todo-lists/${todoListId}/tasks`, {
+      title,
     });
   },
+  updateTask: (
+    todoListId: string,
+    taskId: string,
+    taskData: IUpdateModelTask
+  ) => {
+    return instance.put(`todo-lists/${todoListId}/tasks/${taskId}`, taskData);
+  },
   deleteTask: (todoListId: string, taskId: string) => {
-    return instance.delete(`todo-lists/${todoListId}/tasks/${taskId}`);
+    return instance.delete<IResponse>(
+      `todo-lists/${todoListId}/tasks/${taskId}`
+    );
   },
 };
