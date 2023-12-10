@@ -1,24 +1,25 @@
-import React, {memo, useCallback} from 'react';
+import {memo, useCallback} from 'react';
 import {AddItemForm} from '../superForm/AddItemForm';
 import {EditableSpan} from '../superSpan/EditableSpan';
 import IconButton from '@mui/material/IconButton/IconButton';
 import {Delete} from "@mui/icons-material";
 import Button from "@mui/material/Button";
-import {FilterType, TaskType} from "../app/App";
 import {Task} from "../task/Task";
+import { ITask } from '../../api/api';
+import { FilterType } from '../../state/todoListsReducer/todoListsReducer';
 
 type PropsType = {
 	id: string
 	title: string
-	tasks: Array<TaskType>
-	removeTask: (taskId: string, todolistId: string) => void
-	changeFilter: (value: FilterType, todolistId: string) => void
-	addTask: (title: string, todolistId: string) => void
-	changeTaskStatus: (id: string, isDone: boolean, todolistId: string) => void
+	tasks: ITask[]
+	removeTask: (taskId: string, todoListId: string) => void
+	changeFilter: (value: FilterType, todoListId: string) => void
+	addTask: (title: string, todoListId: string) => void
+	changeTaskStatus: (id: string, isDone: boolean, todoListId: string) => void
 	removeTodoList: (id: string) => void
 	changeTodoListTitle: (id: string, newTitle: string) => void
 	filter: FilterType
-	changeTaskTitle: (taskId: string, newTitle: string, todolistId: string) => void
+	changeTaskTitle: (taskId: string, newTitle: string, todoListId: string) => void
 }
 
 export const TodoList = memo((props: PropsType) => {
@@ -36,10 +37,10 @@ export const TodoList = memo((props: PropsType) => {
 	}, [props.id])
 
 // TodoList Actions -------------------------------------------------------------------------------------------
-	const removeTodolist = () => {
+	const removeTodoList = () => {
 		props.removeTodoList(props.id);
 	}
-	const changeTodolistTitle = useCallback((title: string) => {
+	const changeTodoListTitle = useCallback((title: string) => {
 		props.changeTodoListTitle(props.id, title);
 	}, [props.changeTodoListTitle, props.id])
 
@@ -54,15 +55,15 @@ export const TodoList = memo((props: PropsType) => {
 	let todoListTasks = props.tasks;
 
 	if (props.filter === "active") {
-		todoListTasks = todoListTasks.filter(t => !t.isDone);
+		todoListTasks = todoListTasks.filter(t => !t.completed);
 	}
 	if (props.filter === "completed") {
-		todoListTasks = todoListTasks.filter(t => t.isDone);
+		todoListTasks = todoListTasks.filter(t => t.completed);
 	}
 
 	return <div>
-		<h3><EditableSpan value={props.title} onChange={changeTodolistTitle}/>
-			<IconButton onClick={removeTodolist}>
+		<h3><EditableSpan value={props.title} onChange={changeTodoListTitle}/>
+			<IconButton onClick={removeTodoList}>
 				<Delete/>
 			</IconButton>
 		</h3>

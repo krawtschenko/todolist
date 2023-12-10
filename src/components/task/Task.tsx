@@ -3,22 +3,22 @@ import Checkbox from "@mui/material/Checkbox";
 import {EditableSpan} from "../superSpan/EditableSpan";
 import IconButton from "@mui/material/IconButton/IconButton";
 import {Delete} from "@mui/icons-material";
-import {TaskType} from "../app/App";
+import { ITask } from '../../api/api';
 
-interface ITask {
-	task: TaskType
+interface ITaskProps {
+	task: ITask
 	removeTask: (taskId: string) => void
 	changeTaskStatus: (id: string, isDone: boolean) => void
 	changeTaskTitle: (taskId: string, newTitle: string) => void
 }
 
-export const Task: FC<ITask> = memo(({task, ...props}) => {
+export const Task: FC<ITaskProps> = memo(({task, ...props}) => {
 	console.log('Task')
 
 	return (
-		<div className={task.isDone ? "is-done" : ""}>
+		<div className={task.completed ? "is-done" : ""}>
 			<Checkbox
-				checked={task.isDone}
+				checked={task.completed}
 				color="primary"
 				onChange={(e) => props.changeTaskStatus(task.id, e.currentTarget.checked)}
 			/>

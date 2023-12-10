@@ -1,6 +1,6 @@
 import axios from "axios";
 
-interface ITodoList {
+export interface ITodoList {
   id: string;
   addedDate: Date;
   order: number;
@@ -20,18 +20,33 @@ interface IGetTasks {
   items: ITask[];
 }
 
-interface ITask {
+export interface ITask {
   description: string;
   title: string;
   completed: boolean;
-  status: number;
-  priority: number;
+  status: TaskStatuses;
+  priority: TaskPriorities;
   startDate: Date;
   deadline: Date;
   id: string;
   todoListId: string;
   order: number;
   addedDate: Date;
+}
+
+export enum TaskStatuses {
+  New = 0,
+  InProgress = 1,
+  Completed = 3,
+  Draft = 4,
+}
+
+export enum TaskPriorities {
+  Low = 0,
+  Middle = 1,
+  Hight = 3,
+  Urgently = 4,
+  Later = 5,
 }
 
 interface IUpdateModelTask {
