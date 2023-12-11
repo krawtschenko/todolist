@@ -15,14 +15,14 @@ const rootReducer = combineReducers({
 const initialGlobalState: AppRootStateType = {
   todoLists: [
     {
-      id: "todolistId1",
+      id: "todoListId1",
       title: "What to learn",
       addedDate: new Date(),
       order: 1,
       filter: "all",
     },
     {
-      id: "todolistId2",
+      id: "todoListId2",
       title: "What to buy",
       addedDate: new Date(),
       order: 1,
@@ -30,7 +30,7 @@ const initialGlobalState: AppRootStateType = {
     },
   ],
   tasks: {
-    ["todolistId1"]: [
+    ["todoListId1"]: [
       {
         description: "",
         title: "HTML",
@@ -40,7 +40,7 @@ const initialGlobalState: AppRootStateType = {
         startDate: new Date(),
         deadline: new Date(),
         id: v1(),
-        todoListId: "todolistId1",
+        todoListId: "todoListId1",
         order: 0,
         addedDate: new Date(),
       },
@@ -53,12 +53,12 @@ const initialGlobalState: AppRootStateType = {
         startDate: new Date(),
         deadline: new Date(),
         id: v1(),
-        todoListId: "todolistId1",
+        todoListId: "todoListId1",
         order: 0,
         addedDate: new Date(),
       },
     ],
-    ["todolistId2"]: [
+    ["todoListId2"]: [
       {
         description: "",
         title: "bread",
@@ -68,7 +68,7 @@ const initialGlobalState: AppRootStateType = {
         startDate: new Date(),
         deadline: new Date(),
         id: v1(),
-        todoListId: "todolistId2",
+        todoListId: "todoListId2",
         order: 0,
         addedDate: new Date(),
       },
@@ -81,7 +81,7 @@ const initialGlobalState: AppRootStateType = {
         startDate: new Date(),
         deadline: new Date(),
         id: v1(),
-        todoListId: "todolistId2",
+        todoListId: "todoListId2",
         order: 0,
         addedDate: new Date(),
       },
