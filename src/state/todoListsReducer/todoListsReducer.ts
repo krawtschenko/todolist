@@ -1,4 +1,4 @@
-import { ITodoList } from "../../api/todoList_API";
+import { ITodoList } from "../../api/api";
 import { v1 } from "uuid";
 
 export type FilterType = "all" | "active" | "completed";

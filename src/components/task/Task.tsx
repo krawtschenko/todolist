@@ -3,7 +3,7 @@ import Checkbox from "@mui/material/Checkbox";
 import {EditableSpan} from "../superSpan/EditableSpan";
 import IconButton from "@mui/material/IconButton/IconButton";
 import {Delete} from "@mui/icons-material";
-import { ITask } from '../../api/todoList_API';
+import { ITask } from '../../api/api';
 
 interface ITaskProps {
 	task: ITask

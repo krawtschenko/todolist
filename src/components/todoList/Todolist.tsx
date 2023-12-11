@@ -5,7 +5,7 @@ import IconButton from '@mui/material/IconButton/IconButton';
 import {Delete} from "@mui/icons-material";
 import Button from "@mui/material/Button";
 import {Task} from "../task/Task";
-import { ITask } from '../../api/todoList_API';
+import { ITask } from '../../api/api';
 import { FilterType } from '../../state/todoListsReducer/todoListsReducer';
 
 type PropsType = {
