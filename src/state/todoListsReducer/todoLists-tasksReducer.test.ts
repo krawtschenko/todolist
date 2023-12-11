@@ -9,7 +9,7 @@ test("ids should be equals", () => {
   const startTasksState: ITasksStateType = {};
   const startTodoListsState: ITodoListDomain[] = [];
 
-  const action = addTodoListAC("new todolist");
+  const action = addTodoListAC("new todoList");
 
   const endTasksState = tasksReducer(startTasksState, action);
   const endTodoListsState = todoListsReducer(startTodoListsState, action);

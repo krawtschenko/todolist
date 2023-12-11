@@ -12,20 +12,8 @@ let todolistId1 = v1();
 let todolistId2 = v1();
 let newTodolistTitle = "New Test";
 let startState: ITodoListDomain[] = [
-  {
-    id: todolistId1,
-    title: "What to learn",
-    addedDate: new Date(),
-    order: 1,
-    filter: "all",
-  },
-  {
-    id: todolistId2,
-    title: "What to buy",
-    addedDate: new Date(),
-    order: 2,
-    filter: "all",
-  },
+  { id: todolistId1, title: "What to learn", filter: "all" },
+  { id: todolistId2, title: "What to buy", filter: "all" },
 ];
 
 beforeEach(() => {
@@ -33,20 +21,8 @@ beforeEach(() => {
   todolistId2 = v1();
   newTodolistTitle = "New Test";
   startState = [
-    {
-      id: todolistId1,
-      title: "What to learn",
-      addedDate: new Date(),
-      order: 1,
-      filter: "all",
-    },
-    {
-      id: todolistId2,
-      title: "What to buy",
-      addedDate: new Date(),
-      order: 1,
-      filter: "all",
-    },
+    { id: todolistId1, title: "What to learn", filter: "all" },
+    { id: todolistId2, title: "What to buy", filter: "all" },
   ];
 });
 
