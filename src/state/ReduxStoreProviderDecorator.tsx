@@ -5,14 +5,14 @@ import { combineReducers, legacy_createStore } from "redux";
 import { tasksReducer } from "./tasksReducer/tasksReducer";
 import { todoListsReducer } from "./todoListsReducer/todoListsReducer";
 import { v1 } from "uuid";
-import { TaskPriorities, TaskStatuses } from "../api/api";
+import { TaskPriorities, TaskStatuses } from "../api/todoList_API";
 
 const rootReducer = combineReducers({
   tasks: tasksReducer,
   todoLists: todoListsReducer,
 });
 
-const initialGlobalState = {
+const initialGlobalState: AppRootStateType = {
   todoLists: [
     {
       id: "todolistId1",

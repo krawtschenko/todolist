@@ -11,9 +11,10 @@ import { v1 } from "uuid";
 let todolistId1 = v1();
 let todolistId2 = v1();
 let newTodolistTitle = "New Test";
+const date = new Date();
 let startState: ITodoListDomain[] = [
-  { id: todolistId1, title: "What to learn", filter: "all" },
-  { id: todolistId2, title: "What to buy", filter: "all" },
+  { id: todolistId1, title: "What to learn", filter: "all", addedDate: date, order: 1 },
+  { id: todolistId2, title: "What to buy", filter: "all", addedDate: date, order: 1 },
 ];
 
 beforeEach(() => {
@@ -21,8 +22,8 @@ beforeEach(() => {
   todolistId2 = v1();
   newTodolistTitle = "New Test";
   startState = [
-    { id: todolistId1, title: "What to learn", filter: "all" },
-    { id: todolistId2, title: "What to buy", filter: "all" },
+    { id: todolistId1, title: "What to learn", filter: "all", addedDate: date, order: 1 },
+    { id: todolistId2, title: "What to buy", filter: "all", addedDate: date, order: 1 },
   ];
 });
 

@@ -3,7 +3,7 @@ import {
   AddTodoListType,
   RemoveTodoListType,
 } from "../todoListsReducer/todoListsReducer";
-import { ITask, TaskPriorities, TaskStatuses } from "../../api/api";
+import { ITask, TaskPriorities, TaskStatuses } from "../../api/todoList_API";
 
 export interface ITasksStateType {
   [key: string]: ITask[];
