@@ -49,7 +49,7 @@ export enum TaskPriorities {
   Later = 5,
 }
 
-interface IUpdateModelTask {
+export interface IUpdateModelTask {
   title: string;
   description: string;
   completed: boolean;
@@ -88,9 +88,12 @@ export const taskAPI = {
     return instance.get<IGetTasks>(`todo-lists/${todoListId}/tasks`);
   },
   createTask: (todoListId: string, title: string) => {
-    return instance.post<IResponse<ITask>>(`todo-lists/${todoListId}/tasks`, {
-      title,
-    });
+    return instance.post<IResponse<{ item: ITask }>>(
+      `todo-lists/${todoListId}/tasks`,
+      {
+        title,
+      }
+    );
   },
   updateTask: (
     todoListId: string,

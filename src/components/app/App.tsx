@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import "./App.css";
 import { AddItemForm } from "../superForm/AddItemForm";
 import AppBar from "@mui/material/AppBar/AppBar";
@@ -16,17 +16,20 @@ import {
   addTodoListAC,
   changeTodoListFilterAC,
   changeTodoListTitleAC,
+  fetchTodoListsTC,
   removeTodoListAC,
 } from "../../state/todoListsReducer/todoListsReducer";
 import {
-	ITasksStateType,
+  ITasksStateType,
   addTaskAC,
+  addTaskTC,
   changeTaskStatusAC,
   changeTaskTitleAC,
+  deleteTaskTC,
   removeTaskAC,
 } from "../../state/tasksReducer/tasksReducer";
-import { useDispatch, useSelector } from "react-redux";
-import { AppRootStateType } from "../../state/store";
+import { useSelector } from "react-redux";
+import { AppRootStateType, useAppDispatch } from "../../state/store";
 
 function App() {
   // State ----------------------------------------------------------------------------------------------------
@@ -37,19 +40,25 @@ function App() {
     (state) => state.tasks
   );
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fetchTodoListsTC());
+  }, []);
 
   // Tasks ------------------------------------------------------------------------------------------------------
   const removeTask = useCallback(
     (id: string, todoListId: string) => {
-      dispatch(removeTaskAC(id, todoListId));
+      // dispatch(removeTaskAC(id, todoListId));
+      dispatch(deleteTaskTC(todoListId, id));
     },
     [dispatch]
   );
 
   const addTask = useCallback(
     (title: string, todoListId: string) => {
-      dispatch(addTaskAC(todoListId, title));
+      // dispatch(addTaskAC(todoListId, title));
+      dispatch(addTaskTC(todoListId, title));
     },
     [dispatch]
   );

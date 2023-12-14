@@ -1,9 +1,17 @@
 import { v1 } from "uuid";
+import { Dispatch } from "redux";
 import {
   AddTodoListType,
   RemoveTodoListType,
+  setTodoListsType,
 } from "../todoListsReducer/todoListsReducer";
-import { ITask, TaskPriorities, TaskStatuses } from "../../api/api";
+import {
+  ITask,
+  IUpdateModelTask,
+  TaskPriorities,
+  TaskStatuses,
+  taskAPI,
+} from "../../api/api";
 
 export interface ITasksStateType {
   [key: string]: ITask[];
@@ -73,6 +81,15 @@ export const tasksReducer = (
       const newState = { ...state };
       delete newState[action.payload.id];
       return newState;
+    case "SET-TODOLISTS":
+      const stateCopy = { ...state };
+      action.payload.todoLists.forEach((tl) => {
+        stateCopy[tl.id] = [];
+      });
+      return stateCopy;
+    case "SET-TASKS": {
+      return { ...state, [action.payload.todoListId]: action.payload.tasks };
+    }
     default:
       return state;
   }
@@ -84,11 +101,14 @@ type ActionTypes =
   | ChangeTaskStatusType
   | ChangeTaskTitleType
   | AddTodoListType
-  | RemoveTodoListType;
+  | RemoveTodoListType
+  | setTodoListsType
+  | setTasksType;
 type RemoveTaskType = ReturnType<typeof removeTaskAC>;
 type AddTaskType = ReturnType<typeof addTaskAC>;
 type ChangeTaskStatusType = ReturnType<typeof changeTaskStatusAC>;
 type ChangeTaskTitleType = ReturnType<typeof changeTaskTitleAC>;
+type setTasksType = ReturnType<typeof setTasksAC>;
 
 export const removeTaskAC = (taskId: string, todoListId: string) => {
   return {
@@ -139,3 +159,40 @@ export const changeTaskTitleAC = (
     },
   };
 };
+
+export const setTasksAC = (tasks: ITask[], todoListId: string) => {
+  return {
+    type: "SET-TASKS" as const,
+    payload: {
+      tasks,
+      todoListId,
+    },
+  };
+};
+
+// ---------------------------------------------------------------------------------------------------
+export const fetchTasksTC =
+  (todoListId: string) => async (dispatch: Dispatch) => {
+    const res = await taskAPI.getTasks(todoListId);
+    dispatch(setTasksAC(res.data.items, todoListId));
+  };
+
+export const deleteTaskTC =
+  (todoListId: string, taskId: string) => async (dispatch: Dispatch) => {
+    const res = await taskAPI.deleteTask(todoListId, taskId);
+    dispatch(removeTaskAC(taskId, todoListId));
+  };
+
+export const addTaskTC =
+  (todoListId: string, title: string) => async (dispatch: Dispatch) => {
+    const res = await taskAPI.createTask(todoListId, title);
+    dispatch(addTaskAC(todoListId, title));
+  };
+
+// export const updateTaskTC =
+//   (todoListId: string, taskId: string, taskData: IUpdateModelTask) =>
+//   async (dispatch: Dispatch) => {
+//     const res = await taskAPI.updateTask(todoListId, taskId, taskData);
+//     dispatch(changeTaskStatusAC(taskId, todoListId, taskData.completed));
+//     dispatch(changeTaskTitleAC(taskId, todoListId, taskData.title));
+//   };
