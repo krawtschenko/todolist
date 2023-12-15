@@ -12,6 +12,7 @@ import {
   TaskStatuses,
   taskAPI,
 } from "../../api/api";
+import { AppRootStateType } from "../store";
 
 export interface ITasksStateType {
   [key: string]: ITask[];
@@ -189,10 +190,23 @@ export const addTaskTC =
     dispatch(addTaskAC(todoListId, title));
   };
 
-// export const updateTaskTC =
-//   (todoListId: string, taskId: string, taskData: IUpdateModelTask) =>
-//   async (dispatch: Dispatch) => {
-//     const res = await taskAPI.updateTask(todoListId, taskId, taskData);
-//     dispatch(changeTaskStatusAC(taskId, todoListId, taskData.completed));
-//     dispatch(changeTaskTitleAC(taskId, todoListId, taskData.title));
-//   };
+export const updateTaskTC =
+  (todoListId: string, taskId: string, taskData: string | boolean) =>
+  async (dispatch: Dispatch, getState: () => AppRootStateType) => {
+    const state = getState();
+    const task = state.tasks[todoListId].find((t) => t.id === taskId);
+
+    if (task) {
+      const taskModel: IUpdateModelTask = {
+        title: typeof taskData === "string" ? taskData : task.title,
+        description: task.description,
+        completed: typeof taskData === "boolean" ? taskData : task.completed,
+        status: task.status,
+        priority: task.priority,
+        startDate: task.startDate,
+        deadline: task.deadline,
+      };
+
+      const res = await taskAPI.updateTask(todoListId, taskId, taskModel);
+    }
+  };
