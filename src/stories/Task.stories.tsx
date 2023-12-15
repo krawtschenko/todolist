@@ -23,7 +23,6 @@ const meta: Meta<typeof Task> = {
     task: {
       description: "",
       title: "JS",
-      completed: false,
       status: TaskStatuses.InProgress,
       priority: TaskPriorities.Middle,
       startDate: new Date(),
@@ -49,8 +48,7 @@ export const TaskIsDoneStory: Story = {
     task: {
       description: "",
       title: "JS",
-      completed: true,
-      status: TaskStatuses.InProgress,
+      status: TaskStatuses.Completed,
       priority: TaskPriorities.Middle,
       startDate: new Date(),
       deadline: new Date(),

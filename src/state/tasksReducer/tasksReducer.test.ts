@@ -1,10 +1,9 @@
 import {
   ITasksStateType,
   addTaskAC,
-  changeTaskStatusAC,
-  changeTaskTitleAC,
   removeTaskAC,
   tasksReducer,
+  updateTaskAC,
 } from "./tasksReducer";
 import { removeTodoListAC } from "../todoListsReducer/todoListsReducer";
 import { TaskPriorities, TaskStatuses } from "../../api/api";
@@ -18,7 +17,6 @@ beforeEach(() => {
       {
         description: "",
         title: "CSS",
-        completed: false,
         status: TaskStatuses.InProgress,
         priority: TaskPriorities.Middle,
         startDate: date,
@@ -31,7 +29,6 @@ beforeEach(() => {
       {
         description: "",
         title: "JS",
-        completed: true,
         status: TaskStatuses.InProgress,
         priority: TaskPriorities.Middle,
         startDate: date,
@@ -44,7 +41,6 @@ beforeEach(() => {
       {
         description: "",
         title: "React",
-        completed: false,
         status: TaskStatuses.InProgress,
         priority: TaskPriorities.Middle,
         startDate: date,
@@ -59,7 +55,6 @@ beforeEach(() => {
       {
         description: "",
         title: "bread",
-        completed: false,
         status: TaskStatuses.InProgress,
         priority: TaskPriorities.Middle,
         startDate: date,
@@ -72,7 +67,6 @@ beforeEach(() => {
       {
         description: "",
         title: "milk",
-        completed: true,
         status: TaskStatuses.InProgress,
         priority: TaskPriorities.Middle,
         startDate: date,
@@ -85,7 +79,6 @@ beforeEach(() => {
       {
         description: "",
         title: "tea",
-        completed: false,
         status: TaskStatuses.InProgress,
         priority: TaskPriorities.Middle,
         startDate: date,
@@ -108,7 +101,6 @@ test("correct task should be deleted from correct array", () => {
       {
         description: "",
         title: "CSS",
-        completed: false,
         status: TaskStatuses.InProgress,
         priority: TaskPriorities.Middle,
         startDate: date,
@@ -121,7 +113,6 @@ test("correct task should be deleted from correct array", () => {
       {
         description: "",
         title: "JS",
-        completed: true,
         status: TaskStatuses.InProgress,
         priority: TaskPriorities.Middle,
         startDate: date,
@@ -134,7 +125,6 @@ test("correct task should be deleted from correct array", () => {
       {
         description: "",
         title: "React",
-        completed: false,
         status: TaskStatuses.InProgress,
         priority: TaskPriorities.Middle,
         startDate: date,
@@ -149,7 +139,6 @@ test("correct task should be deleted from correct array", () => {
       {
         description: "",
         title: "bread",
-        completed: false,
         status: TaskStatuses.InProgress,
         priority: TaskPriorities.Middle,
         startDate: date,
@@ -162,7 +151,6 @@ test("correct task should be deleted from correct array", () => {
       {
         description: "",
         title: "tea",
-        completed: false,
         status: TaskStatuses.InProgress,
         priority: TaskPriorities.Middle,
         startDate: date,
@@ -185,20 +173,20 @@ test("correct task should be added to correct array", () => {
   expect(endState["todoListId2"].length).toBe(4);
   expect(endState["todoListId2"][0].id).toBeDefined();
   expect(endState["todoListId2"][0].title).toBe("juice");
-  expect(endState["todoListId2"][0].completed).toBe(false);
+  expect(endState["todoListId2"][0].status).toBe(TaskStatuses.New);
 });
 
 test("status of specified task should be changed", () => {
-  const action = changeTaskStatusAC("2", "todoListId2", true);
+  const action = updateTaskAC("todoListId2", "2", TaskStatuses.Completed);
 
   const endState = tasksReducer(startState, action);
 
-  expect(endState["todoListId1"][0].completed).toBe(false);
-  expect(endState["todoListId2"][1].completed).toBe(true);
+  expect(endState["todoListId1"][0].status).toBe(TaskStatuses.InProgress);
+  expect(endState["todoListId2"][1].status).toBe(TaskStatuses.Completed);
 });
 
 test("title of specified task should be changed", () => {
-  const action = changeTaskTitleAC("2", "todoListId2", "test");
+  const action = updateTaskAC("todoListId2", "2", "test");
 
   const endState = tasksReducer(startState, action);
 

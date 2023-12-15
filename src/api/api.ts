@@ -21,16 +21,15 @@ interface IGetTasks {
 }
 
 export interface ITask {
-  description: string;
+  id: string;
   title: string;
-  completed: boolean;
+  description: string;
+  todoListId: string;
+  order: number;
   status: TaskStatuses;
   priority: TaskPriorities;
   startDate: Date;
   deadline: Date;
-  id: string;
-  todoListId: string;
-  order: number;
   addedDate: Date;
 }
 
@@ -52,7 +51,6 @@ export enum TaskPriorities {
 export interface IUpdateModelTask {
   title: string;
   description: string;
-  completed: boolean;
   status: number;
   priority: number;
   startDate: Date;

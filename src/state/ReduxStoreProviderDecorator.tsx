@@ -34,8 +34,7 @@ const initialGlobalState: AppRootStateType = {
       {
         description: "",
         title: "HTML",
-        completed: true,
-        status: TaskStatuses.InProgress,
+        status: TaskStatuses.Completed,
         priority: TaskPriorities.Middle,
         startDate: new Date(),
         deadline: new Date(),
@@ -47,7 +46,6 @@ const initialGlobalState: AppRootStateType = {
       {
         description: "",
         title: "JS",
-        completed: false,
         status: TaskStatuses.InProgress,
         priority: TaskPriorities.Middle,
         startDate: new Date(),
@@ -62,7 +60,6 @@ const initialGlobalState: AppRootStateType = {
       {
         description: "",
         title: "bread",
-        completed: false,
         status: TaskStatuses.InProgress,
         priority: TaskPriorities.Middle,
         startDate: new Date(),
@@ -75,7 +72,6 @@ const initialGlobalState: AppRootStateType = {
       {
         description: "",
         title: "milk",
-        completed: true,
         status: TaskStatuses.InProgress,
         priority: TaskPriorities.Middle,
         startDate: new Date(),
