@@ -9,7 +9,6 @@ import IconButton from "@mui/material/IconButton";
 import Paper from "@mui/material/Paper";
 import Toolbar from "@mui/material/Toolbar";
 import { Menu } from "@mui/icons-material";
-import { TodoList } from "../todoList/Todolist";
 import {
   FilterType,
   ITodoListDomain,
@@ -27,6 +26,7 @@ import {
 } from "../../state/tasksReducer/tasksReducer";
 import { useSelector } from "react-redux";
 import { AppRootStateType, useAppDispatch } from "../../state/store";
+import { TodoList } from "../todoList/TodoList";
 
 function App() {
   // State ----------------------------------------------------------------------------------------------------
