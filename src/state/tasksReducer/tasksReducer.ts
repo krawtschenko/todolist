@@ -57,9 +57,7 @@ export const tasksReducer = (
         ...state,
         [action.payload.todoListId]: state[action.payload.todoListId].map((t) =>
           t.id === action.payload.taskId
-            ? typeof action.payload.taskData === "string"
-              ? { ...t, title: action.payload.taskData }
-              : { ...t, status: action.payload.taskData }
+            ? { ...t, ...action.payload.taskData }
             : t
         ),
       };
@@ -115,10 +113,19 @@ export const addTaskAC = (todoListId: string, title: string) => {
   };
 };
 
+interface IUpdateTask {
+  title?: string;
+  description?: string;
+  status?: TaskStatuses;
+  priority?: TaskPriorities;
+  startDate?: Date;
+  deadline?: Date;
+}
+
 export const updateTaskAC = (
   todoListId: string,
   taskId: string,
-  taskData: string | TaskStatuses
+  taskData: IUpdateTask
 ) => {
   return {
     type: "UPDATE-TASK" as const,
@@ -160,19 +167,20 @@ export const addTaskTC =
   };
 
 export const updateTaskTC =
-  (todoListId: string, taskId: string, taskData: string | TaskStatuses) =>
+  (todoListId: string, taskId: string, taskData: IUpdateTask) =>
   async (dispatch: Dispatch, getState: () => AppRootStateType) => {
     const state = getState();
     const task = state.tasks[todoListId].find((t) => t.id === taskId);
 
     if (task) {
       const taskModel: IUpdateModelTask = {
-        title: typeof taskData === "string" ? taskData : task.title,
+        title: task.title,
         description: task.description,
-        status: typeof taskData === "number" ? taskData : task.status,
+        status: task.status,
         priority: task.priority,
         startDate: task.startDate,
         deadline: task.deadline,
+        ...taskData,
       };
 
       const res = await taskAPI.updateTask(todoListId, taskId, taskModel);

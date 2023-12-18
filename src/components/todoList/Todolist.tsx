@@ -10,14 +10,14 @@ import { FilterType } from "../../state/todoListsReducer/todoListsReducer";
 import { useAppDispatch } from "../../state/store";
 import { fetchTasksTC } from "../../state/tasksReducer/tasksReducer";
 
-type PropsType = {
+interface PropsType {
   id: string;
   title: string;
   tasks: ITask[];
   removeTask: (taskId: string, todoListId: string) => void;
   changeFilter: (value: FilterType, todoListId: string) => void;
   addTask: (title: string, todoListId: string) => void;
-  changeTaskStatus: (id: string, status: number, todoListId: string) => void;
+  changeTaskStatus: (id: string, status: TaskStatuses, todoListId: string) => void;
   removeTodoList: (id: string) => void;
   changeTodoListTitle: (id: string, newTitle: string) => void;
   filter: FilterType;

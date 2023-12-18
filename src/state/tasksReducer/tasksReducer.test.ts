@@ -177,7 +177,9 @@ test("correct task should be added to correct array", () => {
 });
 
 test("status of specified task should be changed", () => {
-  const action = updateTaskAC("todoListId2", "2", TaskStatuses.Completed);
+  const action = updateTaskAC("todoListId2", "2", {
+    status: TaskStatuses.Completed,
+  });
 
   const endState = tasksReducer(startState, action);
 
@@ -186,7 +188,7 @@ test("status of specified task should be changed", () => {
 });
 
 test("title of specified task should be changed", () => {
-  const action = updateTaskAC("todoListId2", "2", "test");
+  const action = updateTaskAC("todoListId2", "2", { title: "test" });
 
   const endState = tasksReducer(startState, action);
 

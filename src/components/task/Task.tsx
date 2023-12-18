@@ -1,4 +1,4 @@
-import React, { FC, memo } from "react";
+import { FC, memo } from "react";
 import Checkbox from "@mui/material/Checkbox";
 import { EditableSpan } from "../superSpan/EditableSpan";
 import IconButton from "@mui/material/IconButton/IconButton";
@@ -8,8 +8,8 @@ import { ITask, TaskStatuses } from "../../api/api";
 interface ITaskProps {
   task: ITask;
   removeTask: (taskId: string) => void;
-  changeTaskStatus: (id: string, status: number) => void;
-  changeTaskTitle: (taskId: string, newTitle: string) => void;
+  changeTaskStatus: (id: string, status: TaskStatuses) => void;
+  changeTaskTitle: (taskId: string, title: string) => void;
 }
 
 export const Task: FC<ITaskProps> = memo(({ task, ...props }) => {

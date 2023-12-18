@@ -51,8 +51,8 @@ export enum TaskPriorities {
 export interface IUpdateModelTask {
   title: string;
   description: string;
-  status: number;
-  priority: number;
+  status: TaskStatuses;
+  priority: TaskPriorities;
   startDate: Date;
   deadline: Date;
 }
