@@ -21,9 +21,7 @@ export const Task: FC<ITaskProps> = memo(({ task, ...props }) => {
         onChange={(e) =>
           props.changeTaskStatus(
             task.id,
-            e.currentTarget.checked
-              ? TaskStatuses.Completed
-              : TaskStatuses.InProgress
+            e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.InProgress
           )
         }
       />

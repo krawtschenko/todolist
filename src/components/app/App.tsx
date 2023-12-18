@@ -31,12 +31,8 @@ import { TodoList } from "../todoList/TodoList";
 
 function App() {
   // State ----------------------------------------------------------------------------------------------------
-  const todoLists = useSelector<AppRootStateType, ITodoListDomain[]>(
-    (state) => state.todoLists
-  );
-  const tasks = useSelector<AppRootStateType, ITasksStateType>(
-    (state) => state.tasks
-  );
+  const todoLists = useSelector<AppRootStateType, ITodoListDomain[]>((state) => state.todoLists);
+  const tasks = useSelector<AppRootStateType, ITasksStateType>((state) => state.tasks);
 
   const dispatch = useAppDispatch();
 
@@ -44,7 +40,7 @@ function App() {
     dispatch(fetchTodoListsTC());
   }, []);
 
-  // Tasks ------------------------------------------------------------------------------------------------------
+  // Tasks ----------------------------------------------------------------------------------------------------
   const removeTask = useCallback(
     (id: string, todoListId: string) => {
       dispatch(deleteTaskTC(todoListId, id));
@@ -73,7 +69,7 @@ function App() {
     [dispatch]
   );
 
-  // TodoList ---------------------------------------------------------------------------------------------------
+  // TodoList -------------------------------------------------------------------------------------------------
   const changeFilter = useCallback(
     (value: FilterType, todoListId: string) => {
       dispatch(changeTodoListFilterAC(todoListId, value));

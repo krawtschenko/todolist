@@ -86,23 +86,14 @@ export const taskAPI = {
     return instance.get<IGetTasks>(`todo-lists/${todoListId}/tasks`);
   },
   createTask: (todoListId: string, title: string) => {
-    return instance.post<IResponse<{ item: ITask }>>(
-      `todo-lists/${todoListId}/tasks`,
-      {
-        title,
-      }
-    );
+    return instance.post<IResponse<{ item: ITask }>>(`todo-lists/${todoListId}/tasks`, {
+      title,
+    });
   },
-  updateTask: (
-    todoListId: string,
-    taskId: string,
-    taskData: IUpdateModelTask
-  ) => {
+  updateTask: (todoListId: string, taskId: string, taskData: IUpdateModelTask) => {
     return instance.put(`todo-lists/${todoListId}/tasks/${taskId}`, taskData);
   },
   deleteTask: (todoListId: string, taskId: string) => {
-    return instance.delete<IResponse>(
-      `todo-lists/${todoListId}/tasks/${taskId}`
-    );
+    return instance.delete<IResponse>(`todo-lists/${todoListId}/tasks/${taskId}`);
   },
 };

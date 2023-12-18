@@ -21,12 +21,8 @@ interface PropsType {
   removeTodoList: (id: string) => void;
   changeTodoListTitle: (id: string, newTitle: string) => void;
   filter: FilterType;
-  changeTaskTitle: (
-    taskId: string,
-    newTitle: string,
-    todoListId: string
-  ) => void;
-};
+  changeTaskTitle: (taskId: string, newTitle: string, todoListId: string) => void;
+}
 
 export const TodoList = memo((props: PropsType) => {
   const dispatch = useAppDispatch();
@@ -87,14 +83,10 @@ export const TodoList = memo((props: PropsType) => {
   let todoListTasks = props.tasks;
 
   if (props.filter === "active") {
-    todoListTasks = todoListTasks.filter(
-      (t) => t.status !== TaskStatuses.Completed
-    );
+    todoListTasks = todoListTasks.filter((t) => t.status !== TaskStatuses.Completed);
   }
   if (props.filter === "completed") {
-    todoListTasks = todoListTasks.filter(
-      (t) => t.status === TaskStatuses.Completed
-    );
+    todoListTasks = todoListTasks.filter((t) => t.status === TaskStatuses.Completed);
   }
 
   return (
