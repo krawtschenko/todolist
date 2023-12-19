@@ -15,8 +15,11 @@ import {
   addTodoListAC,
   changeTodoListFilterAC,
   changeTodoListTitleAC,
+  removeTodoListTC,
   fetchTodoListsTC,
   removeTodoListAC,
+  addTodoListTC,
+  changeTodoListTitleTC,
 } from "../../state/todoListsReducer/todoListsReducer";
 import {
   ITasksStateType,
@@ -78,22 +81,22 @@ function App() {
   );
 
   const removeTodoList = useCallback(
-    (id: string) => {
-      dispatch(removeTodoListAC(id));
+    (todoListId: string) => {
+      dispatch(removeTodoListTC(todoListId));
     },
     [dispatch]
   );
 
   const changeTodoListTitle = useCallback(
     (id: string, title: string) => {
-      dispatch(changeTodoListTitleAC(id, title));
+      dispatch(changeTodoListTitleTC(id, title));
     },
     [dispatch]
   );
 
   const addTodoList = useCallback(
     (title: string) => {
-      dispatch(addTodoListAC(title));
+      dispatch(addTodoListTC(title));
     },
     [dispatch]
   );
