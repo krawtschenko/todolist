@@ -165,7 +165,19 @@ test("correct task should be deleted from correct array", () => {
 });
 
 test("correct task should be added to correct array", () => {
-  const action = addTaskAC("todoListId2", "juice");
+  const newTask = {
+    description: "",
+    title: "juice",
+    status: TaskStatuses.New,
+    priority: TaskPriorities.Middle,
+    startDate: date,
+    deadline: date,
+    id: "3",
+    todoListId: "todoListId2",
+    order: 0,
+    addedDate: date,
+  };
+  const action = addTaskAC(newTask);
 
   const endState = tasksReducer(startState, action);
 

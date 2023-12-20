@@ -1,4 +1,3 @@
-import { v1 } from "uuid";
 import { Dispatch } from "redux";
 import { ITodoList, todoListAPI } from "../../api/api";
 
@@ -13,17 +12,19 @@ export const todoListsReducer = (state = initialState, action: ActionTypes): ITo
   switch (action.type) {
     case "REMOVE-TODO-LIST":
       return state.filter((item) => item.id !== action.payload.id);
+    // case "ADD-TODO-LIST":
+    //   return [
+    //     {
+    //       id: action.payload.todoListId,
+    //       title: action.payload.title,
+    //       addedDate: new Date(),
+    //       order: 1,
+    //       filter: "all",
+    //     },
+    //     ...state,
+    //   ];
     case "ADD-TODO-LIST":
-      return [
-        {
-          id: action.payload.todoListId,
-          title: action.payload.title,
-          addedDate: new Date(),
-          order: 1,
-          filter: "all",
-        },
-        ...state,
-      ];
+      return [{ ...action.payload.todoList, filter: "all" }, ...state];
     case "CHANGE-TODO-LIST-TITLE":
       return state.map((item) =>
         item.id === action.payload.id ? { ...item, title: action.payload.title } : item
@@ -62,15 +63,17 @@ export const removeTodoListAC = (id: string) => {
   };
 };
 
-export const addTodoListAC = (title: string) => {
-  return {
-    type: "ADD-TODO-LIST" as const,
-    payload: {
-      title,
-      todoListId: v1(),
-    },
-  };
-};
+// export const addTodoListAC = (title: string) => {
+//   return {
+//     type: "ADD-TODO-LIST" as const,
+//     payload: {
+//       title,
+//       todoListId: v1(),
+//     },
+//   };
+// };
+export const addTodoListAC = (todoList: ITodoList) =>
+  ({ type: "ADD-TODO-LIST", payload: { todoList } } as const);
 
 export const changeTodoListTitleAC = (id: string, title: string) => {
   return {
@@ -114,7 +117,7 @@ export const removeTodoListTC = (todoListId: string) => async (dispatch: Dispatc
 
 export const addTodoListTC = (title: string) => async (dispatch: Dispatch) => {
   const res = await todoListAPI.createTodoList(title);
-  dispatch(addTodoListAC(title));
+  dispatch(addTodoListAC(res.data.data.item));
 };
 
 export const changeTodoListTitleTC =

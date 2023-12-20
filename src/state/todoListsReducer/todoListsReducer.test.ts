@@ -10,8 +10,10 @@ import { v1 } from "uuid";
 
 let todoListId1 = v1();
 let todoListId2 = v1();
+let todoListId3 = v1();
 let newTodoListTitle = "New Test";
 const date = new Date();
+const newTodoList = { id: todoListId3, addedDate: date, order: 1, title: newTodoListTitle };
 let startState: ITodoListDomain[] = [
   { id: todoListId1, title: "What to learn", filter: "all", addedDate: date, order: 1 },
   { id: todoListId2, title: "What to buy", filter: "all", addedDate: date, order: 1 },
@@ -35,10 +37,7 @@ test("correct todoList should be removed", () => {
 });
 
 test("correct todoList should be added", () => {
-  const endState = todoListsReducer(
-    startState,
-    addTodoListAC(newTodoListTitle)
-  );
+  const endState = todoListsReducer(startState, addTodoListAC(newTodoList));
 
   expect(endState.length).toBe(3);
   expect(endState[0].title).toBe(newTodoListTitle);
@@ -55,10 +54,7 @@ test("correct todoList should change its name", () => {
 });
 
 test("correct filter of todoList should be changed", () => {
-  const endState = todoListsReducer(
-    startState,
-    changeTodoListFilterAC(todoListId2, "completed")
-  );
+  const endState = todoListsReducer(startState, changeTodoListFilterAC(todoListId2, "completed"));
 
   expect(endState[0].filter).toBe("all");
   expect(endState[1].filter).toBe("completed");
