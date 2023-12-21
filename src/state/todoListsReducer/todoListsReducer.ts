@@ -1,5 +1,6 @@
 import { Dispatch } from "redux";
 import { ITodoList, todoListAPI } from "../../api/api";
+import { setAppStatusAC } from "../appReducer/app-reducer";
 
 export type FilterType = "all" | "active" | "completed";
 export interface ITodoListDomain extends ITodoList {
@@ -12,17 +13,6 @@ export const todoListsReducer = (state = initialState, action: ActionTypes): ITo
   switch (action.type) {
     case "REMOVE-TODO-LIST":
       return state.filter((item) => item.id !== action.payload.id);
-    // case "ADD-TODO-LIST":
-    //   return [
-    //     {
-    //       id: action.payload.todoListId,
-    //       title: action.payload.title,
-    //       addedDate: new Date(),
-    //       order: 1,
-    //       filter: "all",
-    //     },
-    //     ...state,
-    //   ];
     case "ADD-TODO-LIST":
       return [{ ...action.payload.todoList, filter: "all" }, ...state];
     case "CHANGE-TODO-LIST-TITLE":
@@ -34,10 +24,7 @@ export const todoListsReducer = (state = initialState, action: ActionTypes): ITo
         item.id === action.payload.id ? { ...item, filter: action.payload.filter } : item
       );
     case "SET-TODO-LISTS":
-      return action.payload.todoLists.map((item) => ({
-        ...item,
-        filter: "all",
-      }));
+      return action.payload.todoLists.map((item) => ({ ...item, filter: "all" }));
     default:
       return state;
   }
@@ -62,18 +49,9 @@ export const removeTodoListAC = (id: string) => {
     },
   };
 };
-
-// export const addTodoListAC = (title: string) => {
-//   return {
-//     type: "ADD-TODO-LIST" as const,
-//     payload: {
-//       title,
-//       todoListId: v1(),
-//     },
-//   };
-// };
-export const addTodoListAC = (todoList: ITodoList) =>
-  ({ type: "ADD-TODO-LIST", payload: { todoList } } as const);
+export const addTodoListAC = (todoList: ITodoList) => {
+  return { type: "ADD-TODO-LIST", payload: { todoList } } as const;
+};
 
 export const changeTodoListTitleAC = (id: string, title: string) => {
   return {
@@ -106,22 +84,49 @@ export const SetTodoListsAC = (todoLists: ITodoList[]) => {
 
 // ---------------------------------------------------------------------------------------------------
 export const fetchTodoListsTC = () => async (dispatch: Dispatch) => {
-  const res = await todoListAPI.getTodoLists();
-  dispatch(SetTodoListsAC(res.data));
+  dispatch(setAppStatusAC("loading"));
+  try {
+    const res = await todoListAPI.getTodoLists();
+    dispatch(SetTodoListsAC(res.data));
+  } catch (error) {
+    throw new Error("error");
+  } finally {
+    dispatch(setAppStatusAC("succeeded"));
+  }
 };
 
 export const removeTodoListTC = (todoListId: string) => async (dispatch: Dispatch) => {
-  const res = await todoListAPI.deleteTodoList(todoListId);
-  dispatch(removeTodoListAC(todoListId));
+  dispatch(setAppStatusAC("loading"));
+  try {
+    const res = await todoListAPI.deleteTodoList(todoListId);
+    dispatch(removeTodoListAC(todoListId));
+  } catch (error) {
+    throw new Error("error");
+  } finally {
+    dispatch(setAppStatusAC("succeeded"));
+  }
 };
 
 export const addTodoListTC = (title: string) => async (dispatch: Dispatch) => {
-  const res = await todoListAPI.createTodoList(title);
-  dispatch(addTodoListAC(res.data.data.item));
+  dispatch(setAppStatusAC("loading"));
+  try {
+    const res = await todoListAPI.createTodoList(title);
+    dispatch(addTodoListAC(res.data.data.item));
+  } catch (error) {
+    throw new Error("error");
+  } finally {
+    dispatch(setAppStatusAC("succeeded"));
+  }
 };
 
-export const changeTodoListTitleTC =
-  (todoListId: string, title: string) => async (dispatch: Dispatch) => {
+export const changeTodoListTitleTC = (todoListId: string, title: string) => async (dispatch: Dispatch) => {
+  dispatch(setAppStatusAC("loading"));
+  try {
     const res = await todoListAPI.updateTodoList(todoListId, title);
     dispatch(changeTodoListTitleAC(todoListId, title));
-  };
+  } catch (error) {
+    throw new Error("error");
+  } finally {
+    dispatch(setAppStatusAC("succeeded"));
+  }
+};

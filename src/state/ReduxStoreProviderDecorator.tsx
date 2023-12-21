@@ -83,12 +83,10 @@ const initialGlobalState: AppRootStateType = {
       },
     ],
   },
+  app: { status: "idle" },
 };
 
-const storyBookStore = legacy_createStore(
-  rootReducer,
-  initialGlobalState as AppRootStateType
-);
+const storyBookStore = legacy_createStore(rootReducer, initialGlobalState as AppRootStateType);
 
 export const ReduxStoreProviderDecorator = (storyFn: () => React.ReactNode) => {
   return <Provider store={storyBookStore}>{storyFn()}</Provider>;
