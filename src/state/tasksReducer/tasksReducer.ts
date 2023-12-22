@@ -3,7 +3,7 @@ import { Dispatch } from "redux";
 import { AddTodoListType, RemoveTodoListType, setTodoListsType } from "../todoListsReducer/todoListsReducer";
 import { ITask, IUpdateModelTask, TaskPriorities, TaskStatuses, taskAPI } from "../../api/api";
 import { AppRootStateType } from "../store";
-import { setAppStatusAC } from "../appReducer/app-reducer";
+import { setAppErrorAC, setAppStatusAC } from "../appReducer/app-reducer";
 
 export interface ITasksStateType {
   [key: string]: ITask[];
@@ -141,7 +141,15 @@ export const addTaskTC = (todoListId: string, title: string) => async (dispatch:
   dispatch(setAppStatusAC("loading"));
   try {
     const res = await taskAPI.createTask(todoListId, title);
-    dispatch(addTaskAC(res.data.data.item));
+    if (res.data.resultCode === 0) {
+      dispatch(addTaskAC(res.data.data.item));
+    } else {
+      if (res.data.messages.length) {
+        dispatch(setAppErrorAC(res.data.messages[0]));
+      } else {
+        dispatch(setAppErrorAC("Some error occurred"));
+      }
+    }
   } catch (error) {
     throw new Error("error");
   } finally {

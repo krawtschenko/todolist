@@ -8,12 +8,14 @@ import { Menu } from "@mui/icons-material";
 import LinearProgress from "@mui/material/LinearProgress";
 import { TodoListsList } from "../todoList/TodoListsList";
 import { useAppSelector } from "../../state/store";
+import { ErrorSnackbar } from "../errorSnackbar/ErrorSnackbar";
 
 function App() {
   const status = useAppSelector((state) => state.app.status);
 
   return (
     <div className="App">
+      <ErrorSnackbar />
       <AppBar position="static">
         <Toolbar>
           <IconButton edge="start" color="inherit" aria-label="menu">

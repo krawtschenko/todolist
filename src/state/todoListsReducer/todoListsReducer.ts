@@ -1,6 +1,6 @@
 import { Dispatch } from "redux";
 import { ITodoList, todoListAPI } from "../../api/api";
-import { setAppStatusAC } from "../appReducer/app-reducer";
+import { setAppErrorAC, setAppStatusAC } from "../appReducer/app-reducer";
 
 export type FilterType = "all" | "active" | "completed";
 export interface ITodoListDomain extends ITodoList {
@@ -111,7 +111,15 @@ export const addTodoListTC = (title: string) => async (dispatch: Dispatch) => {
   dispatch(setAppStatusAC("loading"));
   try {
     const res = await todoListAPI.createTodoList(title);
-    dispatch(addTodoListAC(res.data.data.item));
+    if (res.data.resultCode === 0) {
+      dispatch(addTodoListAC(res.data.data.item));
+    } else {
+      if (res.data.messages.length) {
+        dispatch(setAppErrorAC(res.data.messages[0]));
+      } else {
+        dispatch(setAppErrorAC("Some error occurred"));
+      }
+    }
   } catch (error) {
     throw new Error("error");
   } finally {
