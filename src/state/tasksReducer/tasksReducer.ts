@@ -1,9 +1,13 @@
-import { v1 } from "uuid";
 import { Dispatch } from "redux";
-import { AddTodoListType, RemoveTodoListType, setTodoListsType } from "../todoListsReducer/todoListsReducer";
-import { ITask, IUpdateModelTask, TaskPriorities, TaskStatuses, taskAPI } from "../../api/api";
+
 import { AppRootStateType } from "../store";
 import { setAppErrorAC, setAppStatusAC } from "../appReducer/app-reducer";
+import { ITask, IUpdateModelTask, taskAPI, TaskPriorities, TaskStatuses } from "../../api/api";
+import {
+  AddTodoListType,
+  RemoveTodoListType,
+  setTodoListsType,
+} from "../todoListsReducer/todoListsReducer";
 
 export interface ITasksStateType {
   [key: string]: ITask[];
@@ -23,7 +27,10 @@ export const tasksReducer = (state = initialState, action: ActionTypes): ITasksS
     case "ADD-TASK":
       return {
         ...state,
-        [action.payload.task.todoListId]: [action.payload.task, ...state[action.payload.task.todoListId]],
+        [action.payload.task.todoListId]: [
+          action.payload.task,
+          ...state[action.payload.task.todoListId],
+        ],
       };
     case "UPDATE-TASK":
       return {
@@ -116,8 +123,8 @@ export const fetchTasksTC = (todoListId: string) => async (dispatch: Dispatch) =
   try {
     const res = await taskAPI.getTasks(todoListId);
     dispatch(setTasksAC(res.data.items, todoListId));
-  } catch (error) {
-    throw new Error("error");
+  } catch (error: any) {
+    dispatch(setAppErrorAC(error.message));
   } finally {
     dispatch(setAppStatusAC("succeeded"));
   }
@@ -128,8 +135,8 @@ export const deleteTaskTC = (todoListId: string, taskId: string) => async (dispa
   try {
     const res = await taskAPI.getTasks(todoListId);
     dispatch(setTasksAC(res.data.items, todoListId));
-  } catch (error) {
-    throw new Error("error");
+  } catch (error: any) {
+    dispatch(setAppErrorAC(error.message));
   } finally {
     dispatch(setAppStatusAC("succeeded"));
   }
@@ -143,15 +150,9 @@ export const addTaskTC = (todoListId: string, title: string) => async (dispatch:
     const res = await taskAPI.createTask(todoListId, title);
     if (res.data.resultCode === 0) {
       dispatch(addTaskAC(res.data.data.item));
-    } else {
-      if (res.data.messages.length) {
-        dispatch(setAppErrorAC(res.data.messages[0]));
-      } else {
-        dispatch(setAppErrorAC("Some error occurred"));
-      }
     }
-  } catch (error) {
-    throw new Error("error");
+  } catch (error: any) {
+    dispatch(setAppErrorAC(error.message));
   } finally {
     dispatch(setAppStatusAC("succeeded"));
   }
@@ -177,9 +178,13 @@ export const updateTaskTC =
 
       try {
         const res = await taskAPI.updateTask(todoListId, taskId, taskModel);
-        dispatch(updateTaskAC(todoListId, taskId, taskData));
-      } catch (error) {
-        throw new Error("error");
+        if (res.data.resultCode === 0) {
+          dispatch(updateTaskAC(todoListId, taskId, taskData));
+        } else {
+          dispatch(setAppErrorAC("Some error"));
+        }
+      } catch (error: any) {
+        dispatch(setAppErrorAC(error.message));
       } finally {
         dispatch(setAppStatusAC("succeeded"));
       }

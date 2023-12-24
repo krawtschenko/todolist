@@ -7,7 +7,7 @@ export interface ITodoList {
   title: string;
 }
 
-interface IResponse<D = {}> {
+export interface IResponse<D = {}> {
   resultCode: number;
   messages: string[];
   fieldsErrors: string[];

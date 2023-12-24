@@ -9,6 +9,7 @@ import { ITask, TaskStatuses } from "../../api/api";
 import { FilterType } from "../../state/todoListsReducer/todoListsReducer";
 import { useAppDispatch } from "../../state/store";
 import { fetchTasksTC } from "../../state/tasksReducer/tasksReducer";
+import { RequestStatusType } from "../../state/appReducer/app-reducer";
 
 interface PropsType {
   id: string;
@@ -17,6 +18,7 @@ interface PropsType {
   removeTask: (taskId: string, todoListId: string) => void;
   changeFilter: (value: FilterType, todoListId: string) => void;
   addTask: (title: string, todoListId: string) => void;
+  entityStatus: RequestStatusType;
   changeTaskStatus: (id: string, status: TaskStatuses, todoListId: string) => void;
   removeTodoList: (id: string) => void;
   changeTodoListTitle: (id: string, newTitle: string) => void;
@@ -93,11 +95,11 @@ export const TodoList = memo((props: PropsType) => {
     <div>
       <h3>
         <EditableSpan value={props.title} onChange={changeTodoListTitle} />
-        <IconButton onClick={removeTodoList}>
+        <IconButton onClick={removeTodoList} disabled={props.entityStatus === "loading"}>
           <Delete />
         </IconButton>
       </h3>
-      <AddItemForm addItem={addTask} />
+      <AddItemForm addItem={addTask} disabled={props.entityStatus === "loading"} />
       <div>
         {todoListTasks.map((t) => {
           return (

@@ -1,26 +1,29 @@
 import { useCallback, useEffect } from "react";
+
 import { useSelector } from "react-redux";
+
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import {
-  FilterType,
-  ITodoListDomain,
-  changeTodoListFilterAC,
-  removeTodoListTC,
-  fetchTodoListsTC,
-  addTodoListTC,
-  changeTodoListTitleTC,
-} from "../../state/todoListsReducer/todoListsReducer";
-import {
-  ITasksStateType,
-  addTaskTC,
-  deleteTaskTC,
-  updateTaskTC,
-} from "../../state/tasksReducer/tasksReducer";
-import { AppRootStateType, useAppDispatch } from "../../state/store";
+
 import { TaskStatuses } from "../../api/api";
 import { TodoList } from "../todoList/TodoList";
 import { AddItemForm } from "../superForm/AddItemForm";
+import { AppRootStateType, useAppDispatch } from "../../state/store";
+import {
+  addTaskTC,
+  deleteTaskTC,
+  ITasksStateType,
+  updateTaskTC,
+} from "../../state/tasksReducer/tasksReducer";
+import {
+  addTodoListTC,
+  changeTodoListFilterAC,
+  changeTodoListTitleTC,
+  fetchTodoListsTC,
+  FilterType,
+  ITodoListDomain,
+  removeTodoListTC,
+} from "../../state/todoListsReducer/todoListsReducer";
 
 export const TodoListsList = () => {
   // State ----------------------------------------------------------------------------------------------------
@@ -109,6 +112,7 @@ export const TodoListsList = () => {
                   removeTask={removeTask}
                   changeFilter={changeFilter}
                   addTask={addTask}
+                  entityStatus={tl.entityStatus}
                   changeTaskStatus={changeStatus}
                   filter={tl.filter}
                   removeTodoList={removeTodoList}
