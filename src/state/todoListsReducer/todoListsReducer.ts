@@ -1,6 +1,7 @@
 import { Dispatch } from "redux";
 import { ITodoList, todoListAPI } from "../../api/api";
 import { RequestStatusType, setAppErrorAC, setAppStatusAC } from "../appReducer/app-reducer";
+import { handleServerNetworkError } from "../../utils/error-utils";
 
 export type FilterType = "all" | "active" | "completed";
 export interface ITodoListDomain extends ITodoList {
@@ -109,7 +110,7 @@ export const fetchTodoListsTC = () => async (dispatch: Dispatch) => {
     const res = await todoListAPI.getTodoLists();
     dispatch(SetTodoListsAC(res.data));
   } catch (error: any) {
-    dispatch(setAppErrorAC(error.message));
+    handleServerNetworkError(error, dispatch);
   } finally {
     dispatch(setAppStatusAC("succeeded"));
   }
@@ -122,7 +123,7 @@ export const removeTodoListTC = (todoListId: string) => async (dispatch: Dispatc
     const res = await todoListAPI.deleteTodoList(todoListId);
     dispatch(removeTodoListAC(todoListId));
   } catch (error: any) {
-    dispatch(setAppErrorAC(error.message));
+    handleServerNetworkError(error, dispatch);
   } finally {
     dispatch(setAppStatusAC("succeeded"));
   }
@@ -142,7 +143,7 @@ export const addTodoListTC = (title: string) => async (dispatch: Dispatch) => {
       }
     }
   } catch (error: any) {
-    dispatch(setAppErrorAC(error.message));
+    handleServerNetworkError(error, dispatch);
   } finally {
     dispatch(setAppStatusAC("succeeded"));
   }
@@ -155,7 +156,7 @@ export const changeTodoListTitleTC =
       const res = await todoListAPI.updateTodoList(todoListId, title);
       dispatch(changeTodoListTitleAC(todoListId, title));
     } catch (error: any) {
-      dispatch(setAppErrorAC(error.message));
+      handleServerNetworkError(error, dispatch);
     } finally {
       dispatch(setAppStatusAC("succeeded"));
     }

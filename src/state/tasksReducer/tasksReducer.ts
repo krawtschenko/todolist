@@ -8,6 +8,7 @@ import {
   RemoveTodoListType,
   setTodoListsType,
 } from "../todoListsReducer/todoListsReducer";
+import { handleServerAppError, handleServerNetworkError } from "../../utils/error-utils";
 
 export interface ITasksStateType {
   [key: string]: ITask[];
@@ -124,7 +125,7 @@ export const fetchTasksTC = (todoListId: string) => async (dispatch: Dispatch) =
     const res = await taskAPI.getTasks(todoListId);
     dispatch(setTasksAC(res.data.items, todoListId));
   } catch (error: any) {
-    dispatch(setAppErrorAC(error.message));
+    handleServerNetworkError(error, dispatch);
   } finally {
     dispatch(setAppStatusAC("succeeded"));
   }
@@ -136,7 +137,7 @@ export const deleteTaskTC = (todoListId: string, taskId: string) => async (dispa
     const res = await taskAPI.getTasks(todoListId);
     dispatch(setTasksAC(res.data.items, todoListId));
   } catch (error: any) {
-    dispatch(setAppErrorAC(error.message));
+    handleServerNetworkError(error, dispatch);
   } finally {
     dispatch(setAppStatusAC("succeeded"));
   }
@@ -150,9 +151,11 @@ export const addTaskTC = (todoListId: string, title: string) => async (dispatch:
     const res = await taskAPI.createTask(todoListId, title);
     if (res.data.resultCode === 0) {
       dispatch(addTaskAC(res.data.data.item));
+    } else {
+      handleServerAppError(res.data, dispatch);
     }
   } catch (error: any) {
-    dispatch(setAppErrorAC(error.message));
+    handleServerNetworkError(error, dispatch);
   } finally {
     dispatch(setAppStatusAC("succeeded"));
   }
@@ -181,10 +184,10 @@ export const updateTaskTC =
         if (res.data.resultCode === 0) {
           dispatch(updateTaskAC(todoListId, taskId, taskData));
         } else {
-          dispatch(setAppErrorAC("Some error"));
+          handleServerAppError(res.data, dispatch);
         }
       } catch (error: any) {
-        dispatch(setAppErrorAC(error.message));
+        handleServerNetworkError(error, dispatch);
       } finally {
         dispatch(setAppStatusAC("succeeded"));
       }
