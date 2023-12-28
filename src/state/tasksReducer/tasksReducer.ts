@@ -88,16 +88,11 @@ export const addTaskAC = (task: ITask) => {
   };
 };
 
-interface IUpdateTask {
-  title?: string;
-  description?: string;
-  status?: TaskStatuses;
-  priority?: TaskPriorities;
-  startDate?: Date;
-  deadline?: Date;
-}
-
-export const updateTaskAC = (todoListId: string, taskId: string, taskData: IUpdateTask) => {
+export const updateTaskAC = (
+  todoListId: string,
+  taskId: string,
+  taskData: Partial<IUpdateModelTask>
+) => {
   return {
     type: "UPDATE-TASK" as const,
     payload: {
@@ -162,7 +157,7 @@ export const addTaskTC = (todoListId: string, title: string) => async (dispatch:
 };
 
 export const updateTaskTC =
-  (todoListId: string, taskId: string, taskData: IUpdateTask) =>
+  (todoListId: string, taskId: string, taskData: Partial<IUpdateModelTask>) =>
   async (dispatch: Dispatch, getState: () => AppRootStateType) => {
     dispatch(setAppStatusAC("loading"));
     const state = getState();
