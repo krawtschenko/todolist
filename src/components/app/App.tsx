@@ -6,18 +6,11 @@ import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import { Menu } from "@mui/icons-material";
 import LinearProgress from "@mui/material/LinearProgress";
-import { TodoListsList } from "../todoList/TodoListsList";
 import { useAppSelector } from "../../state/store";
 import { ErrorSnackbar } from "../errorSnackbar/ErrorSnackbar";
 import { Login } from "../auth/login/Login";
-import {
-  Navigate,
-  Route,
-  Router,
-  RouterProvider,
-  Routes,
-  createBrowserRouter,
-} from "react-router-dom";
+import { Navigate, RouterProvider, createBrowserRouter } from "react-router-dom";
+import { TodoListsList } from "../todoList/TodoListsList";
 
 function App() {
   const status = useAppSelector((state) => state.app.status);

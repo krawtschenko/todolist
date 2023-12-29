@@ -6,7 +6,7 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 
 import { TaskStatuses } from "../../api/api";
-import { TodoList } from "../todoList/TodoList";
+import { TodoList } from "./TodoList";
 import { AddItemForm } from "../superForm/AddItemForm";
 import { AppRootStateType, useAppDispatch } from "../../state/store";
 import {
