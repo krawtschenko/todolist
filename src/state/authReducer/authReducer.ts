@@ -1,6 +1,7 @@
 import { Dispatch } from "redux";
 import { AppActionsType, setAppStatusAC } from "../appReducer/app-reducer";
-import { authAPI } from "../../api/api";
+import { ILoginParams, authAPI } from "../../api/api";
+import { handleServerAppError, handleServerNetworkError } from "../../utils/error-utils";
 
 const initialState = {
   isLoggedIn: false,
@@ -21,11 +22,19 @@ export const setIsLoggedInAC = (value: boolean) =>
   ({ type: "login/SET-IS-LOGGED-IN", value } as const);
 
 // thunks
-export const loginTC = (data: any) => async (dispatch: Dispatch) => {
+export const loginTC = (data: ILoginParams) => async (dispatch: Dispatch) => {
   dispatch(setAppStatusAC("loading"));
   try {
-  } catch (error) {
-    
+    const res = await authAPI.login(data);
+    if (res.data.resultCode === 0) {
+      dispatch(setIsLoggedInAC(true));
+    } else {
+      handleServerAppError(res.data, dispatch);
+    }
+  } catch (error: any) {
+    handleServerNetworkError(error, dispatch);
+  } finally {
+    dispatch(setAppStatusAC("succeeded"));
   }
 };
 

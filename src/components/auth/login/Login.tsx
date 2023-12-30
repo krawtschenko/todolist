@@ -9,6 +9,8 @@ import Button from "@mui/material/Button";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useAppDispatch } from "../../../state/store";
+import { loginTC } from "../../../state/authReducer/authReducer";
 
 interface IFormInput {
   email: string;
@@ -23,6 +25,8 @@ const schema = yup.object({
 });
 
 export const Login = () => {
+  const dispatch = useAppDispatch();
+
   const {
     register,
     formState: { errors },
@@ -31,13 +35,14 @@ export const Login = () => {
   } = useForm<IFormInput>({
     mode: "onBlur",
     resolver: yupResolver(schema),
-    defaultValues: {
-      email: "eugenykravchenko@gmail.com",
-    },
+    // defaultValues: {
+    //   email: "Eugenykravchenko@gmail.com",
+    //   password: "010982_JKjk",
+    // },
   });
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
-    console.log(data);
+    dispatch(loginTC(data));
     reset();
   };
 

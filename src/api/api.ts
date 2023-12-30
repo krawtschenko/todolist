@@ -14,14 +14,6 @@ export interface IResponse<D = {}> {
   data: D;
 }
 
-interface IAuthResponse {
-  resultCode: number;
-  messages: [];
-  data: {
-    userId: number;
-  };
-}
-
 interface IGetTasks {
   error: string;
   totalCount: number;
@@ -63,6 +55,12 @@ export interface IUpdateModelTask {
   priority: TaskPriorities;
   startDate: Date;
   deadline: Date;
+}
+
+export interface ILoginParams {
+  email: string;
+  password: string;
+  rememberMe?: boolean;
 }
 
 const instance = axios.create({
@@ -107,8 +105,7 @@ export const taskAPI = {
 };
 
 export const authAPI = {
-  login: (login: string, password: string, rememberMe?: boolean) => {
-    const authData = { login, password, rememberMe };
-    return instance.post<IAuthResponse>(`auth/login/${authData}`);
+  login: (data: ILoginParams) => {
+    return instance.post<IResponse<{ userId: number }>>(`auth/login`, data);
   },
 };
