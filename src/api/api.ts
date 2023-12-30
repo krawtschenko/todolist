@@ -14,6 +14,14 @@ export interface IResponse<D = {}> {
   data: D;
 }
 
+interface IAuthResponse {
+  resultCode: number;
+  messages: [];
+  data: {
+    userId: number;
+  };
+}
+
 interface IGetTasks {
   error: string;
   totalCount: number;
@@ -95,5 +103,12 @@ export const taskAPI = {
   },
   deleteTask: (todoListId: string, taskId: string) => {
     return instance.delete<IResponse>(`todo-lists/${todoListId}/tasks/${taskId}`);
+  },
+};
+
+export const authAPI = {
+  login: (login: string, password: string, rememberMe?: boolean) => {
+    const authData = { login, password, rememberMe };
+    return instance.post<IAuthResponse>(`auth/login/${authData}`);
   },
 };

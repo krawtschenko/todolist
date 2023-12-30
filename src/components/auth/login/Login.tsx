@@ -29,8 +29,11 @@ export const Login = () => {
     handleSubmit,
     reset,
   } = useForm<IFormInput>({
-    mode: "onBlur" || "onSubmit" || "onTouched",
+    mode: "onBlur",
     resolver: yupResolver(schema),
+    defaultValues: {
+      email: "eugenykravchenko@gmail.com",
+    },
   });
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
@@ -57,7 +60,7 @@ export const Login = () => {
             </FormLabel>
             <FormGroup>
               <TextField label="Email" margin="normal" {...register("email")} />
-              {errors.email && <span>{errors.email.message}</span>}
+              {errors.email && <span style={{ color: "red" }}>{errors.email.message}</span>}
 
               <TextField
                 type="password"
@@ -65,8 +68,8 @@ export const Login = () => {
                 margin="normal"
                 {...register("password")}
               />
-              {errors.password && <span>{errors.password.message}</span>}
-              
+              {errors.password && <span style={{ color: "red" }}>{errors.password.message}</span>}
+
               <FormControlLabel
                 label={"Remember me"}
                 control={<Checkbox />}
