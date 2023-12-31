@@ -6,24 +6,51 @@ import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import { Menu } from "@mui/icons-material";
 import LinearProgress from "@mui/material/LinearProgress";
-import { useAppSelector } from "../../state/store";
+import { useAppDispatch, useAppSelector } from "../../state/store";
 import { ErrorSnackbar } from "../errorSnackbar/ErrorSnackbar";
 import { Login } from "../auth/login/Login";
 import { Navigate, RouterProvider, createBrowserRouter } from "react-router-dom";
 import { TodoListsList } from "../todoList/TodoListsList";
+import { initializeAppTC } from "../../state/appReducer/app-reducer";
+import { useEffect } from "react";
+import CircularProgress from "@mui/material/CircularProgress/CircularProgress";
+import { logoutTC } from "../../state/authReducer/authReducer";
 
 function App() {
   const status = useAppSelector((state) => state.app.status);
+  const isInitialized = useAppSelector((state) => state.app.isInitialized);
+  const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(initializeAppTC());
+  }, []);
+
+  const logout = () => {
+    dispatch(logoutTC());
+  };
+
+  if (!isInitialized) {
+    return (
+      <div style={{ position: "fixed", top: "30%", textAlign: "center", width: "100%" }}>
+        <CircularProgress />
+      </div>
+    );
+  }
 
   return (
     <div className="App">
       <ErrorSnackbar />
       <AppBar position="static">
-        <Toolbar>
+        <Toolbar style={{display: 'flex', justifyContent: 'space-between'}}>
           <IconButton edge="start" color="inherit" aria-label="menu">
             <Menu />
           </IconButton>
-          <Button color="inherit">Login</Button>
+          {isLoggedIn && (
+            <Button onClick={logout} color="inherit">
+              Logout
+            </Button>
+          )}
         </Toolbar>
         {status === "loading" && <LinearProgress />}
       </AppBar>

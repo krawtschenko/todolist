@@ -1,4 +1,5 @@
 import axios from "axios";
+import { number } from "prop-types";
 
 export interface ITodoList {
   id: string;
@@ -106,6 +107,13 @@ export const taskAPI = {
 
 export const authAPI = {
   login: (data: ILoginParams) => {
-    return instance.post<IResponse<{ userId: number }>>(`auth/login`, data);
+    return instance.post<IResponse<{ userId: number }>>("auth/login", data);
   },
+  logout: () => {
+    return instance.delete<IResponse>('auth/login')
+  },
+  me: () => {
+    return instance.get<IResponse<{ id: number; email: string; login: string }>>("auth/me");
+  },
+
 };
