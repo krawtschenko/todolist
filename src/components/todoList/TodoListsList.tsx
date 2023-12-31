@@ -1,14 +1,10 @@
 import { useCallback, useEffect } from "react";
-
-import { useSelector } from "react-redux";
-
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-
 import { TaskStatuses } from "../../api/api";
 import { TodoList } from "./TodoList";
 import { AddItemForm } from "../superForm/AddItemForm";
-import { AppRootStateType, useAppDispatch } from "../../state/store";
+import { AppRootStateType, useAppDispatch, useAppSelector } from "../../state/store";
 import {
   addTaskTC,
   deleteTaskTC,
@@ -24,15 +20,18 @@ import {
   ITodoListDomain,
   removeTodoListTC,
 } from "../../state/todoListsReducer/todoListsReducer";
+import { Navigate } from "react-router-dom";
 
 export const TodoListsList = () => {
   // State ----------------------------------------------------------------------------------------------------
-  const todoLists = useSelector<AppRootStateType, ITodoListDomain[]>((state) => state.todoLists);
-  const tasks = useSelector<AppRootStateType, ITasksStateType>((state) => state.tasks);
+  const todoLists = useAppSelector((state) => state.todoLists);
+  const tasks = useAppSelector((state) => state.tasks);
+  const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    if (!isLoggedIn) return;
     dispatch(fetchTodoListsTC());
   }, []);
 
@@ -93,6 +92,10 @@ export const TodoListsList = () => {
     },
     [dispatch]
   );
+
+  if (!isLoggedIn) {
+    return <Navigate to={"/login"} />;
+  }
 
   return (
     <>
