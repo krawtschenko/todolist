@@ -1,12 +1,12 @@
 import { Dispatch } from "redux";
-
 import { AppRootStateType } from "../store";
-import { setAppErrorAC, setAppStatusAC } from "../appReducer/app-reducer";
-import { ITask, IUpdateModelTask, taskAPI, TaskPriorities, TaskStatuses } from "../../api/api";
+import { setAppStatusAC } from "../appReducer/app-reducer";
+import { ITask, IUpdateModelTask, taskAPI } from "../../api/api";
 import {
   AddTodoListType,
   RemoveTodoListType,
   setTodoListsType,
+  clearDataType,
 } from "../todoListsReducer/todoListsReducer";
 import { handleServerAppError, handleServerNetworkError } from "../../utils/error-utils";
 
@@ -55,6 +55,8 @@ export const tasksReducer = (state = initialState, action: ActionTypes): ITasksS
     case "SET-TASKS": {
       return { ...state, [action.payload.todoListId]: action.payload.tasks };
     }
+    case "CLEAR-DATA":
+      return {};
     default:
       return state;
   }
@@ -67,7 +69,8 @@ type ActionTypes =
   | ReturnType<typeof setTasksAC>
   | AddTodoListType
   | RemoveTodoListType
-  | setTodoListsType;
+  | setTodoListsType
+  | clearDataType;
 
 export const removeTaskAC = (taskId: string, todoListId: string) => {
   return {

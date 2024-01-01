@@ -37,10 +37,10 @@ export const Login = () => {
   } = useForm<IFormInput>({
     mode: "onBlur",
     resolver: yupResolver(schema),
-    // defaultValues: {
-    //   email: "Eugenykravchenko@gmail.com",
-    //   password: "010982_JKjk",
-    // },
+    defaultValues: {
+      email: "Eugenykravchenko@gmail.com",
+      password: "010982_JKjk",
+    },
   });
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {

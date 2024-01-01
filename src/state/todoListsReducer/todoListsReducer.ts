@@ -35,6 +35,8 @@ export const todoListsReducer = (state = initialState, action: ActionTypes): ITo
       return state.map((e) =>
         e.id === action.payload.todoListId ? { ...e, entityStatus: action.payload.status } : e
       );
+    case "CLEAR-DATA":
+      return [];
     default:
       return state;
   }
@@ -46,11 +48,13 @@ type ActionTypes =
   | ReturnType<typeof changeTodoListTitleAC>
   | ReturnType<typeof changeTodoListFilterAC>
   | ReturnType<typeof changeTodoListEntityStatusAC>
+  | clearDataType
   | setTodoListsType;
 
 export type RemoveTodoListType = ReturnType<typeof removeTodoListAC>;
 export type AddTodoListType = ReturnType<typeof addTodoListAC>;
 export type setTodoListsType = ReturnType<typeof SetTodoListsAC>;
+export type clearDataType = ReturnType<typeof clearDataAC>;
 
 export const removeTodoListAC = (id: string) => {
   return {
@@ -102,6 +106,8 @@ const changeTodoListEntityStatusAC = (todoListId: string, status: RequestStatusT
     },
   };
 };
+
+const clearDataAC = () => ({ type: "CLEAR-DATA" as const });
 
 // Thunk---------------------------------------------------------------------------------------------------
 export const fetchTodoListsTC = () => async (dispatch: Dispatch) => {

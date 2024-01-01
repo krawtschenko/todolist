@@ -1,11 +1,10 @@
 import React from "react";
 import { Provider } from "react-redux";
-import { AppRootStateType } from "./store";
-import { combineReducers, legacy_createStore } from "redux";
 import { tasksReducer } from "./tasksReducer/tasksReducer";
 import { todoListsReducer } from "./todoListsReducer/todoListsReducer";
 import { v1 } from "uuid";
 import { TaskPriorities, TaskStatuses } from "../api/api";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 
 const rootReducer = combineReducers({
   tasks: tasksReducer,
@@ -86,7 +85,10 @@ const initialGlobalState: any = {
   app: { status: "idle" },
 };
 
-const storyBookStore = legacy_createStore(rootReducer, initialGlobalState as AppRootStateType);
+// const storyBookStore = legacy_createStore(rootReducer, initialGlobalState as AppRootStateType);
+const storyBookStore = configureStore({
+  reducer: rootReducer,
+});
 
 export const ReduxStoreProviderDecorator = (storyFn: () => React.ReactNode) => {
   return <Provider store={storyBookStore}>{storyFn()}</Provider>;
