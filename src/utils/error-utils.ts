@@ -1,9 +1,8 @@
 import { Dispatch } from "redux";
 import { IResponse } from "../api/api";
-import { AppActionsType, setAppErrorAC, setAppStatusAC } from "../state/appReducer/app-reducer";
+import { setAppErrorAC, setAppStatusAC } from "../state/appReducer/app-reducer";
 
-// generic function
-export const handleServerAppError = <T>(data: IResponse<T>, dispatch: ErrorUtilsDispatchType) => {
+export const handleServerAppError = <T>(data: IResponse<T>, dispatch: Dispatch) => {
   if (data.messages.length) {
     dispatch(setAppErrorAC(data.messages[0]));
   } else {
@@ -12,12 +11,7 @@ export const handleServerAppError = <T>(data: IResponse<T>, dispatch: ErrorUtils
   dispatch(setAppStatusAC("failed"));
 };
 
-export const handleServerNetworkError = (
-  error: { message: string },
-  dispatch: ErrorUtilsDispatchType
-) => {
+export const handleServerNetworkError = (error: { message: string }, dispatch: Dispatch) => {
   dispatch(setAppErrorAC(error.message));
   dispatch(setAppStatusAC("failed"));
 };
-
-type ErrorUtilsDispatchType = Dispatch<AppActionsType>;

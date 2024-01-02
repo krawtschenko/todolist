@@ -2,6 +2,7 @@ import { Dispatch } from "redux";
 import { authAPI } from "../../api/api";
 import { setIsLoggedInAC } from "../authReducer/authReducer";
 import { handleServerAppError, handleServerNetworkError } from "../../utils/error-utils";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 export type RequestStatusType = "idle" | "loading" | "succeeded" | "failed";
 
@@ -11,35 +12,24 @@ const initialState = {
   isInitialized: false,
 };
 
-type InitialStateType = typeof initialState;
-
-export const appReducer = (state = initialState, action: AppActionsType): InitialStateType => {
-  switch (action.type) {
-    case "APP/SET-STATUS":
-      return { ...state, status: action.status };
-    case "APP/SET-ERROR":
-      return { ...state, error: action.error };
-    case "APP/SET-INITIALIZED":
-      return { ...state, isInitialized: action.value };
-    default:
-      return state;
-  }
-};
-
-export type AppActionsType =
-  | ReturnType<typeof setAppStatusAC>
-  | ReturnType<typeof setAppErrorAC>
-  | ReturnType<typeof setIsInitializedAC>;
-
-export const setAppStatusAC = (status: RequestStatusType) => ({
-  type: "APP/SET-STATUS" as const,
-  status,
+const slice = createSlice({
+  name: "app",
+  initialState,
+  reducers: {
+    setAppStatusAC: (state, action: PayloadAction<RequestStatusType>) => {
+      state.status = action.payload;
+    },
+    setAppErrorAC: (state, action: PayloadAction<null | string>) => {
+      state.error = action.payload;
+    },
+    setIsInitializedAC: (state, action: PayloadAction<boolean>) => {
+      state.isInitialized = action.payload;
+    },
+  },
 });
-export const setAppErrorAC = (error: null | string) => ({ type: "APP/SET-ERROR" as const, error });
-export const setIsInitializedAC = (value: boolean) => ({
-  type: "APP/SET-INITIALIZED" as const,
-  value,
-});
+
+export const { setAppStatusAC, setAppErrorAC, setIsInitializedAC } = slice.actions;
+export default slice.reducer;
 
 export const initializeAppTC = () => async (dispatch: Dispatch) => {
   try {
