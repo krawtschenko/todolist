@@ -40,22 +40,22 @@ export const tasksReducer = (state = initialState, action: ActionTypes): ITasksS
           t.id === action.payload.taskId ? { ...t, ...action.payload.taskData } : t
         ),
       };
-    case "ADD-TODO-LIST":
-      return { ...state, [action.payload.todoList.id]: [] };
-    case "REMOVE-TODO-LIST":
+    case "todoList/addTodoListAC":
+      return { ...state, [action.payload.id]: [] };
+    case "todoList/removeTodoListAC":
       const newState = { ...state };
-      delete newState[action.payload.id];
+      delete newState[action.payload];
       return newState;
-    case "SET-TODO-LISTS":
+    case "todoList/SetTodoListsAC":
       const stateCopy = { ...state };
-      action.payload.todoLists.forEach((tl) => {
+      action.payload.forEach((tl) => {
         stateCopy[tl.id] = [];
       });
       return stateCopy;
     case "SET-TASKS": {
       return { ...state, [action.payload.todoListId]: action.payload.tasks };
     }
-    case "CLEAR-DATA":
+    case "todoList/clearDataAC":
       return {};
     default:
       return state;
