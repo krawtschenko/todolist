@@ -22,20 +22,13 @@ const slice = createSlice({
     addTodoListAC: (state, action: PayloadAction<ITodoList>) => {
       state.unshift({ ...action.payload, filter: "all", entityStatus: "succeeded" });
     },
-    changeTodoListTitleAC: (
-      state,
-      action: PayloadAction<{ todoListId: string; title: string }>
-    ) => {
+    changeTodoListTitleAC: (state, action: PayloadAction<{ todoListId: string; title: string }>) => {
       // state[+action.payload.todoListId].title = action.payload.title;
       return state.map((t) =>
         t.id === action.payload.todoListId ? { ...t, title: action.payload.title } : t
       );
     },
-    changeTodoListFilterAC: (
-      state,
-      action: PayloadAction<{ todoListId: string; filter: FilterType }>
-    ) => {
-      // state[+action.payload.todoListId].filter = action.payload.filter;
+    changeTodoListFilterAC: (state, action: PayloadAction<{ todoListId: string; filter: FilterType }>) => {
       return state.map((t) =>
         t.id === action.payload.todoListId ? { ...t, filter: action.payload.filter } : t
       );
@@ -44,12 +37,11 @@ const slice = createSlice({
       state,
       action: PayloadAction<{ todoListId: string; status: RequestStatusType }>
     ) => {
-      // state[+action.payload.todoListId].entityStatus = action.payload.status;
       return state.map((t) =>
         t.id === action.payload.todoListId ? { ...t, entityStatus: action.payload.status } : t
       );
     },
-    SetTodoListsAC: (state, action: PayloadAction<ITodoList[]>) => {
+    setTodoListsAC: (state, action: PayloadAction<ITodoList[]>) => {
       return action.payload.map((item) => ({ ...item, filter: "all", entityStatus: "succeeded" }));
     },
     clearDataAC: () => {
@@ -64,22 +56,22 @@ export const {
   changeTodoListTitleAC,
   changeTodoListFilterAC,
   changeTodoListEntityStatusAC,
-  SetTodoListsAC,
+  setTodoListsAC,
   clearDataAC,
 } = slice.actions;
 export default slice.reducer;
 
-export type RemoveTodoListType = ReturnType<typeof removeTodoListAC>;
-export type AddTodoListType = ReturnType<typeof addTodoListAC>;
-export type setTodoListsType = ReturnType<typeof SetTodoListsAC>;
-export type clearDataType = ReturnType<typeof clearDataAC>;
+// export type RemoveTodoListType = ReturnType<typeof removeTodoListAC>;
+// export type AddTodoListType = ReturnType<typeof addTodoListAC>;
+// export type setTodoListsType = ReturnType<typeof SetTodoListsAC>;
+// export type clearDataType = ReturnType<typeof clearDataAC>;
 
 // Thunk---------------------------------------------------------------------------------------------------
 export const fetchTodoListsTC = () => async (dispatch: Dispatch) => {
   dispatch(setAppStatusAC("loading"));
   try {
     const res = await todoListAPI.getTodoLists();
-    dispatch(SetTodoListsAC(res.data));
+    dispatch(setTodoListsAC(res.data));
   } catch (error: any) {
     handleServerNetworkError(error, dispatch);
   } finally {
@@ -120,15 +112,14 @@ export const addTodoListTC = (title: string) => async (dispatch: Dispatch) => {
   }
 };
 
-export const changeTodoListTitleTC =
-  (todoListId: string, title: string) => async (dispatch: Dispatch) => {
-    dispatch(setAppStatusAC("loading"));
-    try {
-      const res = await todoListAPI.updateTodoList(todoListId, title);
-      dispatch(changeTodoListTitleAC({ todoListId, title }));
-    } catch (error: any) {
-      handleServerNetworkError(error, dispatch);
-    } finally {
-      dispatch(setAppStatusAC("succeeded"));
-    }
-  };
+export const changeTodoListTitleTC = (todoListId: string, title: string) => async (dispatch: Dispatch) => {
+  dispatch(setAppStatusAC("loading"));
+  try {
+    const res = await todoListAPI.updateTodoList(todoListId, title);
+    dispatch(changeTodoListTitleAC({ todoListId, title }));
+  } catch (error: any) {
+    handleServerNetworkError(error, dispatch);
+  } finally {
+    dispatch(setAppStatusAC("succeeded"));
+  }
+};

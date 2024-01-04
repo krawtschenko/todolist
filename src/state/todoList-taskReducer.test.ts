@@ -1,8 +1,5 @@
-import { ITasksStateType, tasksReducer } from "./tasksReducer/tasksReducer";
-import todoListsReducer, {
-  ITodoListDomain,
-  addTodoListAC,
-} from "./todoListsReducer/todoListsReducer";
+import tasksReducer, { ITasksStateType } from "./tasksReducer/tasksReducer";
+import todoListsReducer, { ITodoListDomain, addTodoListAC } from "./todoListsReducer/todoListsReducer";
 
 const newTodoList = { id: "todoListId3", addedDate: new Date(), order: 1, title: "new todoList" };
 

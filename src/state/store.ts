@@ -1,5 +1,5 @@
 import { AnyAction, combineReducers, configureStore } from "@reduxjs/toolkit";
-import { tasksReducer } from "./tasksReducer/tasksReducer";
+import tasksReducer from "./tasksReducer/tasksReducer";
 import todoListsReducer from "./todoListsReducer/todoListsReducer";
 import appReducer from "./appReducer/app-reducer";
 import authReducer from "./authReducer/authReducer";

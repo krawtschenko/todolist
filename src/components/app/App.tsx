@@ -16,7 +16,6 @@ import { useEffect } from "react";
 import CircularProgress from "@mui/material/CircularProgress/CircularProgress";
 import { logoutTC } from "../../state/authReducer/authReducer";
 
-
 function App() {
   const status = useAppSelector((state) => state.app.status);
   const isInitialized = useAppSelector((state) => state.app.isInitialized);
@@ -43,7 +42,7 @@ function App() {
     <div className="App">
       <ErrorSnackbar />
       <AppBar position="static">
-        <Toolbar style={{display: 'flex', justifyContent: 'space-between'}}>
+        <Toolbar style={{ display: "flex", justifyContent: "space-between" }}>
           <IconButton edge="start" color="inherit" aria-label="menu">
             <Menu />
           </IconButton>
