@@ -3,6 +3,7 @@ import { setAppStatusAC } from "../appReducer/app-reducer";
 import { ILoginParams, authAPI } from "../../api/api";
 import { handleServerAppError, handleServerNetworkError } from "../../utils/error-utils";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { clearDataAC } from "../todoListsReducer/todoListsReducer";
 
 const initialState = {
   isLoggedIn: false,
@@ -46,6 +47,7 @@ export const logoutTC = () => (dispatch: Dispatch) => {
       if (res.data.resultCode === 0) {
         dispatch(setIsLoggedInAC(false));
         dispatch(setAppStatusAC("succeeded"));
+        dispatch(clearDataAC());
       } else {
         handleServerAppError(res.data, dispatch);
       }

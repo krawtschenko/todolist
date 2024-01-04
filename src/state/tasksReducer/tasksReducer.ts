@@ -62,7 +62,7 @@ const slice = createSlice({
         state[tl.id] = [];
       });
     });
-    builder.addCase(clearDataAC, (state, action) => {
+    builder.addCase(clearDataAC, () => {
       return {};
     });
   },
