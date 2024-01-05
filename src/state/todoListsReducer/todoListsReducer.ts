@@ -52,11 +52,6 @@ export const {
 } = slice.actions;
 export default slice.reducer;
 
-// export type RemoveTodoListType = ReturnType<typeof removeTodoListAC>;
-// export type AddTodoListType = ReturnType<typeof addTodoListAC>;
-// export type setTodoListsType = ReturnType<typeof SetTodoListsAC>;
-// export type clearDataType = ReturnType<typeof clearDataAC>;
-
 // Thunk---------------------------------------------------------------------------------------------------
 export const fetchTodoListsTC = () => async (dispatch: Dispatch) => {
   dispatch(setAppStatusAC("loading"));
