@@ -2,12 +2,7 @@ import { Dispatch } from "redux";
 import { AppRootStateType } from "../store";
 import { setAppStatusAC } from "../appReducer/app-reducer";
 import { ITask, IUpdateModelTask, taskAPI } from "../../api/api";
-import {
-  addTodoListAC,
-  clearDataAC,
-  removeTodoListAC,
-  setTodoListsAC,
-} from "../todoListsReducer/todoListsReducer";
+import { addTodoListAC, clearDataAC, removeTodoListAC, setTodoListsAC } from "../todoListsReducer/todoListsReducer";
 import { handleServerAppError, handleServerNetworkError } from "../../utils/error-utils";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 

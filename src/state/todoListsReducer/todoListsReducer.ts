@@ -24,22 +24,13 @@ const slice = createSlice({
     },
     changeTodoListTitleAC: (state, action: PayloadAction<{ todoListId: string; title: string }>) => {
       // state[+action.payload.todoListId].title = action.payload.title;
-      return state.map((t) =>
-        t.id === action.payload.todoListId ? { ...t, title: action.payload.title } : t
-      );
+      return state.map((t) => (t.id === action.payload.todoListId ? { ...t, title: action.payload.title } : t));
     },
     changeTodoListFilterAC: (state, action: PayloadAction<{ todoListId: string; filter: FilterType }>) => {
-      return state.map((t) =>
-        t.id === action.payload.todoListId ? { ...t, filter: action.payload.filter } : t
-      );
+      return state.map((t) => (t.id === action.payload.todoListId ? { ...t, filter: action.payload.filter } : t));
     },
-    changeTodoListEntityStatusAC: (
-      state,
-      action: PayloadAction<{ todoListId: string; status: RequestStatusType }>
-    ) => {
-      return state.map((t) =>
-        t.id === action.payload.todoListId ? { ...t, entityStatus: action.payload.status } : t
-      );
+    changeTodoListEntityStatusAC: (state, action: PayloadAction<{ todoListId: string; status: RequestStatusType }>) => {
+      return state.map((t) => (t.id === action.payload.todoListId ? { ...t, entityStatus: action.payload.status } : t));
     },
     setTodoListsAC: (state, action: PayloadAction<ITodoList[]>) => {
       return action.payload.map((item) => ({ ...item, filter: "all", entityStatus: "succeeded" }));
