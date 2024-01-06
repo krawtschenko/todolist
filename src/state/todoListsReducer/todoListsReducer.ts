@@ -1,8 +1,8 @@
 import { Dispatch } from "redux";
-import { ITodoList, todoListAPI } from "../../api/api";
-import { RequestStatusType, setAppErrorAC, setAppStatusAC } from "../appReducer/app-reducer";
-import { handleServerNetworkError } from "../../utils/error-utils";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { handleServerNetworkError } from "utils/error-utils";
+import { ITodoList, todoListAPI } from "api/api";
+import { RequestStatusType, setAppErrorAC, setAppStatusAC } from "state/appReducer/app-reducer";
 
 export type FilterType = "all" | "active" | "completed";
 export interface ITodoListDomain extends ITodoList {
@@ -10,30 +10,46 @@ export interface ITodoListDomain extends ITodoList {
   entityStatus: RequestStatusType;
 }
 
-const initialState: ITodoListDomain[] = [];
-
 const slice = createSlice({
   name: "todoList",
-  initialState,
+  initialState: [] as ITodoListDomain[],
   reducers: {
     removeTodoListAC: (state, action: PayloadAction<string>) => {
-      return state.filter((item) => item.id !== action.payload);
+      const index = state.findIndex((e) => e.id === action.payload);
+      if (index > -1) {
+        state.splice(index, 1);
+      }
+      // return state.filter((item) => item.id !== action.payload);
     },
     addTodoListAC: (state, action: PayloadAction<ITodoList>) => {
       state.unshift({ ...action.payload, filter: "all", entityStatus: "succeeded" });
     },
     changeTodoListTitleAC: (state, action: PayloadAction<{ todoListId: string; title: string }>) => {
-      // state[+action.payload.todoListId].title = action.payload.title;
-      return state.map((t) => (t.id === action.payload.todoListId ? { ...t, title: action.payload.title } : t));
+      const index = state.findIndex((e) => e.id === action.payload.todoListId);
+      if (index > -1) {
+        state[index].title = action.payload.title;
+      }
+      // return state.map((t) => (t.id === action.payload.todoListId ? { ...t, title: action.payload.title } : t));
     },
     changeTodoListFilterAC: (state, action: PayloadAction<{ todoListId: string; filter: FilterType }>) => {
-      return state.map((t) => (t.id === action.payload.todoListId ? { ...t, filter: action.payload.filter } : t));
+      const index = state.findIndex((e) => e.id === action.payload.todoListId);
+      if (index > -1) {
+        state[index].filter = action.payload.filter;
+      }
+      // return state.map((t) => (t.id === action.payload.todoListId ? { ...t, filter: action.payload.filter } : t));
     },
     changeTodoListEntityStatusAC: (state, action: PayloadAction<{ todoListId: string; status: RequestStatusType }>) => {
-      return state.map((t) => (t.id === action.payload.todoListId ? { ...t, entityStatus: action.payload.status } : t));
+      const index = state.findIndex((e) => e.id === action.payload.todoListId);
+      if (index > -1) {
+        state[index].entityStatus = action.payload.status;
+      }
+      // return state.map((t) => (t.id === action.payload.todoListId ? { ...t, entityStatus: action.payload.status } : t));
     },
     setTodoListsAC: (state, action: PayloadAction<ITodoList[]>) => {
-      return action.payload.map((item) => ({ ...item, filter: "all", entityStatus: "succeeded" }));
+      action.payload.forEach((t) => {
+        state.push({ ...t, filter: "all", entityStatus: "idle" });
+      });
+      // return action.payload.map((item) => ({ ...item, filter: "all", entityStatus: "succeeded" }));
     },
     clearDataAC: () => {
       return [];

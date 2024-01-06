@@ -1,0 +1,12 @@
+{
+  "json.schemas": [
+    {
+      "fileMatch": [
+        "/myfile"
+      ],
+      "url": "schemaURL"
+    }
+  ],
+  "php.validate.executablePath": "",
+  "typescript.preferences.importModuleSpecifier": "non-relative"
+}

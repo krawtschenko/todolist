@@ -1,19 +1,18 @@
 import { Dispatch } from "redux";
-import { AppRootStateType } from "../store";
-import { setAppStatusAC } from "../appReducer/app-reducer";
-import { ITask, IUpdateModelTask, taskAPI } from "../../api/api";
-import { addTodoListAC, clearDataAC, removeTodoListAC, setTodoListsAC } from "../todoListsReducer/todoListsReducer";
-import { handleServerAppError, handleServerNetworkError } from "../../utils/error-utils";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { ITask, IUpdateModelTask, taskAPI } from "api/api";
+import { addTodoListAC, clearDataAC, removeTodoListAC, setTodoListsAC } from "state/todoListsReducer/todoListsReducer";
+import { RootState } from "state/store";
+import { setAppStatusAC } from "state/appReducer/app-reducer";
+import { handleServerAppError, handleServerNetworkError } from "utils/error-utils";
 
 export interface ITasksStateType {
   [key: string]: ITask[];
 }
-const initialState: ITasksStateType = {};
 
 const slice = createSlice({
   name: "task",
-  initialState,
+  initialState: {} as ITasksStateType,
   reducers: {
     removeTaskAC: (state, action: PayloadAction<{ taskId: string; todoListId: string }>) => {
       return {
@@ -109,7 +108,7 @@ export const addTaskTC = (todoListId: string, title: string) => async (dispatch:
 
 export const updateTaskTC =
   (todoListId: string, taskId: string, taskData: Partial<IUpdateModelTask>) =>
-  async (dispatch: Dispatch, getState: () => AppRootStateType) => {
+  async (dispatch: Dispatch, getState: () => RootState) => {
     dispatch(setAppStatusAC("loading"));
     const state = getState();
     const task = state.tasks[todoListId].find((t) => t.id === taskId);

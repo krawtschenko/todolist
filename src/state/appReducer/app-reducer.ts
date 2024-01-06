@@ -5,16 +5,15 @@ import { handleServerAppError, handleServerNetworkError } from "../../utils/erro
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 export type RequestStatusType = "idle" | "loading" | "succeeded" | "failed";
-
-const initialState = {
-  status: "idle" as RequestStatusType,
-  error: null as null | string,
-  isInitialized: false,
-};
+export type AppInitialStateType = ReturnType<typeof slice.getInitialState>;
 
 const slice = createSlice({
   name: "app",
-  initialState,
+  initialState: {
+    status: "idle" as RequestStatusType,
+    error: null as null | string,
+    isInitialized: false,
+  },
   reducers: {
     setAppStatusAC: (state, action: PayloadAction<RequestStatusType>) => {
       state.status = action.payload;

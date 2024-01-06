@@ -4,7 +4,7 @@ import Paper from "@mui/material/Paper";
 import { TaskStatuses } from "../../api/api";
 import { TodoList } from "./TodoList";
 import { AddItemForm } from "../superForm/AddItemForm";
-import { AppRootStateType, useAppDispatch, useAppSelector } from "../../state/store";
+import { RootState, useAppDispatch, useAppSelector } from "../../state/store";
 import {
   addTaskTC,
   deleteTaskTC,

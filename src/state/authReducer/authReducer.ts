@@ -5,13 +5,11 @@ import { handleServerAppError, handleServerNetworkError } from "../../utils/erro
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { clearDataAC } from "../todoListsReducer/todoListsReducer";
 
-const initialState = {
-  isLoggedIn: false,
-};
-
 const slice = createSlice({
   name: "auth",
-  initialState,
+  initialState: {
+    isLoggedIn: false,
+  },
   reducers: {
     setIsLoggedInAC: (state, action: PayloadAction<boolean>) => {
       state.isLoggedIn = action.payload;
