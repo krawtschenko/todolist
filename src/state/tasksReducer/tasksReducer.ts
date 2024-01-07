@@ -1,10 +1,10 @@
 import { Dispatch } from "redux";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { ITask, IUpdateModelTask, taskAPI } from "api/api";
-import { addTodoListAC, clearDataAC, removeTodoListAC, setTodoListsAC } from "state/todoListsReducer/todoListsReducer";
 import { RootState } from "state/store";
 import { setAppStatusAC } from "state/appReducer/app-reducer";
 import { handleServerAppError, handleServerNetworkError } from "utils/error-utils";
+import { todoListReducers } from "state/todoListsReducer/todoListsReducer";
 
 export interface ITasksStateType {
   [key: string]: ITask[];
@@ -15,12 +15,10 @@ const slice = createSlice({
   initialState: {} as ITasksStateType,
   reducers: {
     removeTaskAC: (state, action: PayloadAction<{ taskId: string; todoListId: string }>) => {
-      return {
-        ...state,
-        [action.payload.todoListId]: state[action.payload.todoListId].filter(
-          (elem) => elem.id !== action.payload.taskId
-        ),
-      };
+      const index = state[action.payload.todoListId].findIndex((t) => t.id === action.payload.taskId);
+      if (index > -1) {
+        state[action.payload.todoListId].splice(index, 1);
+      }
     },
     addTaskAC: (state, action: PayloadAction<ITask>) => {
       state[action.payload.todoListId].unshift(action.payload);
@@ -33,36 +31,37 @@ const slice = createSlice({
         taskData: Partial<IUpdateModelTask>;
       }>
     ) => {
-      return {
-        ...state,
-        [action.payload.todoListId]: state[action.payload.todoListId].map((t) =>
-          t.id === action.payload.taskId ? { ...t, ...action.payload.taskData } : t
-        ),
-      };
+      const index = state[action.payload.todoListId].findIndex((t) => t.id === action.payload.taskId);
+      if (index > -1) {
+        state[action.payload.todoListId][index] = {
+          ...state[action.payload.todoListId][index],
+          ...action.payload.taskData,
+        };
+      }
     },
     setTasksAC: (state, action: PayloadAction<{ tasks: ITask[]; todoListId: string }>) => {
       state[action.payload.todoListId] = action.payload.tasks;
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(addTodoListAC, (state, action) => {
+    builder.addCase(todoListReducers.addTodoListAC, (state, action) => {
       state[action.payload.id] = [];
     });
-    builder.addCase(removeTodoListAC, (state, action) => {
+    builder.addCase(todoListReducers.removeTodoListAC, (state, action) => {
       delete state[action.payload];
     });
-    builder.addCase(setTodoListsAC, (state, action) => {
+    builder.addCase(todoListReducers.setTodoListsAC, (state, action) => {
       action.payload.forEach((tl) => {
         state[tl.id] = [];
       });
     });
-    builder.addCase(clearDataAC, () => {
+    builder.addCase(todoListReducers.clearDataAC, () => {
       return {};
     });
   },
 });
 
-export const { removeTaskAC, addTaskAC, updateTaskAC, setTasksAC } = slice.actions;
+export const taskReducers = slice.actions;
 export default slice.reducer;
 
 // Thunks
@@ -70,7 +69,7 @@ export const fetchTasksTC = (todoListId: string) => async (dispatch: Dispatch) =
   dispatch(setAppStatusAC("loading"));
   try {
     const res = await taskAPI.getTasks(todoListId);
-    dispatch(setTasksAC({ tasks: res.data.items, todoListId }));
+    dispatch(taskReducers.setTasksAC({ tasks: res.data.items, todoListId }));
   } catch (error: any) {
     handleServerNetworkError(error, dispatch);
   } finally {
@@ -81,8 +80,8 @@ export const fetchTasksTC = (todoListId: string) => async (dispatch: Dispatch) =
 export const deleteTaskTC = (todoListId: string, taskId: string) => async (dispatch: Dispatch) => {
   dispatch(setAppStatusAC("loading"));
   try {
-    const res = await taskAPI.deleteTask(todoListId, taskId);
-    dispatch(removeTaskAC({ taskId, todoListId }));
+    taskAPI.deleteTask(todoListId, taskId);
+    dispatch(taskReducers.removeTaskAC({ taskId, todoListId }));
   } catch (error: any) {
     handleServerNetworkError(error, dispatch);
   } finally {
@@ -95,7 +94,7 @@ export const addTaskTC = (todoListId: string, title: string) => async (dispatch:
   try {
     const res = await taskAPI.createTask(todoListId, title);
     if (res.data.resultCode === 0) {
-      dispatch(addTaskAC(res.data.data.item));
+      dispatch(taskReducers.addTaskAC(res.data.data.item));
     } else {
       handleServerAppError(res.data, dispatch);
     }
@@ -111,7 +110,7 @@ export const updateTaskTC =
   async (dispatch: Dispatch, getState: () => RootState) => {
     dispatch(setAppStatusAC("loading"));
     const state = getState();
-    const task = state.tasks[todoListId].find((t) => t.id === taskId);
+    const task = state.tasksSlice[todoListId].find((t) => t.id === taskId);
 
     if (task) {
       const taskModel: IUpdateModelTask = {
@@ -127,7 +126,7 @@ export const updateTaskTC =
       try {
         const res = await taskAPI.updateTask(todoListId, taskId, taskModel);
         if (res.data.resultCode === 0) {
-          dispatch(updateTaskAC({ todoListId, taskId, taskData }));
+          dispatch(taskReducers.updateTaskAC({ todoListId, taskId, taskData }));
         } else {
           handleServerAppError(res.data, dispatch);
         }

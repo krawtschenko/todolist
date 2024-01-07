@@ -1,32 +1,26 @@
 import { useCallback, useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import { TaskStatuses } from "../../api/api";
-import { TodoList } from "./TodoList";
-import { AddItemForm } from "../superForm/AddItemForm";
-import { RootState, useAppDispatch, useAppSelector } from "../../state/store";
+import { Navigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "state/store";
+import { addTaskTC, deleteTaskTC, updateTaskTC } from "state/tasksReducer/tasksReducer";
+import { AddItemForm } from "components/superForm/AddItemForm";
+import { TodoList } from "components/todoList/TodoList";
+import { TaskStatuses } from "api/api";
 import {
-  addTaskTC,
-  deleteTaskTC,
-  ITasksStateType,
-  updateTaskTC,
-} from "../../state/tasksReducer/tasksReducer";
-import {
+  FilterType,
   addTodoListTC,
-  changeTodoListFilterAC,
   changeTodoListTitleTC,
   fetchTodoListsTC,
-  FilterType,
-  ITodoListDomain,
   removeTodoListTC,
-} from "../../state/todoListsReducer/todoListsReducer";
-import { Navigate } from "react-router-dom";
+  todoListReducers,
+} from "state/todoListsReducer/todoListsReducer";
 
 export const TodoListsList = () => {
   // State ----------------------------------------------------------------------------------------------------
-  const todoLists = useAppSelector((state) => state.todoLists);
-  const tasks = useAppSelector((state) => state.tasks);
-  const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
+  const todoLists = useAppSelector((state) => state.todoListsSlice);
+  const tasks = useAppSelector((state) => state.tasksSlice);
+  const isLoggedIn = useAppSelector((state) => state.authSlice.isLoggedIn);
 
   const dispatch = useAppDispatch();
 
@@ -67,7 +61,7 @@ export const TodoListsList = () => {
   // TodoList -------------------------------------------------------------------------------------------------
   const changeFilter = useCallback(
     (value: FilterType, todoListId: string) => {
-      dispatch(changeTodoListFilterAC({ todoListId, filter: value }));
+      dispatch(todoListReducers.changeTodoListFilterAC({ todoListId, filter: value }));
     },
     [dispatch]
   );

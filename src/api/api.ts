@@ -1,5 +1,4 @@
 import axios from "axios";
-import { number } from "prop-types";
 
 export interface ITodoList {
   id: string;

@@ -1,6 +1,6 @@
-import tasksReducer, { ITasksStateType, addTaskAC, removeTaskAC, updateTaskAC } from "./tasksReducer";
-import { removeTodoListAC } from "../todoListsReducer/todoListsReducer";
-import { TaskPriorities, TaskStatuses } from "../../api/api";
+import { todoListReducers } from "state/todoListsReducer/todoListsReducer";
+import tasksReducer, { ITasksStateType, taskReducers } from "./tasksReducer";
+import { TaskPriorities, TaskStatuses } from "api/api";
 
 let startState: ITasksStateType = {};
 const date = new Date();
@@ -87,7 +87,7 @@ beforeEach(() => {
 });
 
 test("correct task should be deleted from correct array", () => {
-  const action = removeTaskAC({ taskId: "2", todoListId: "todoListId2" });
+  const action = taskReducers.removeTaskAC({ taskId: "2", todoListId: "todoListId2" });
 
   const endState = tasksReducer(startState, action);
   expect(endState).toEqual({
@@ -171,7 +171,7 @@ test("correct task should be added to correct array", () => {
     order: 0,
     addedDate: date,
   };
-  const action = addTaskAC(newTask);
+  const action = taskReducers.addTaskAC(newTask);
 
   const endState = tasksReducer(startState, action);
 
@@ -183,7 +183,7 @@ test("correct task should be added to correct array", () => {
 });
 
 test("status of specified task should be changed", () => {
-  const action = updateTaskAC({
+  const action = taskReducers.updateTaskAC({
     todoListId: "todoListId2",
     taskId: "2",
     taskData: {
@@ -198,7 +198,7 @@ test("status of specified task should be changed", () => {
 });
 
 test("title of specified task should be changed", () => {
-  const action = updateTaskAC({ todoListId: "todoListId2", taskId: "2", taskData: { title: "test" } });
+  const action = taskReducers.updateTaskAC({ todoListId: "todoListId2", taskId: "2", taskData: { title: "test" } });
 
   const endState = tasksReducer(startState, action);
 
@@ -207,7 +207,7 @@ test("title of specified task should be changed", () => {
 });
 
 test("property with todoListId1 should be deleted", () => {
-  const action = removeTodoListAC("todoListId2");
+  const action = todoListReducers.removeTodoListAC("todoListId2");
 
   const endState = tasksReducer(startState, action);
 

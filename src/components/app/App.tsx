@@ -17,9 +17,9 @@ import CircularProgress from "@mui/material/CircularProgress/CircularProgress";
 import { logoutTC } from "../../state/authReducer/authReducer";
 
 function App() {
-  const status = useAppSelector((state) => state.app.status);
-  const isInitialized = useAppSelector((state) => state.app.isInitialized);
-  const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
+  const status = useAppSelector((state) => state.appSlice.status);
+  const isInitialized = useAppSelector((state) => state.appSlice.isInitialized);
+  const isLoggedIn = useAppSelector((state) => state.authSlice.isLoggedIn);
   const dispatch = useAppDispatch();
 
   useEffect(() => {

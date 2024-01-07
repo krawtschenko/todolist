@@ -9,9 +9,9 @@ import Button from "@mui/material/Button";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useAppDispatch, useAppSelector } from "../../../state/store";
-import { loginTC } from "../../../state/authReducer/authReducer";
 import { Navigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "state/store";
+import { loginTC } from "state/authReducer/authReducer";
 
 interface IFormInput {
   email: string;
@@ -26,7 +26,7 @@ const schema = yup.object({
 });
 
 export const Login = () => {
-  const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
+  const isLoggedIn = useAppSelector((state) => state.authSlice.isLoggedIn);
   const dispatch = useAppDispatch();
 
   const {
