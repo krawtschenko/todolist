@@ -15,12 +15,13 @@ import {
   removeTodoListTC,
   todoListReducers,
 } from "state/todoListsReducer/todoListsReducer";
+import { selectAuthSlice, selectTasksSlice, selectTodoListsSlice } from "state/selectors";
 
 export const TodoListsList = () => {
   // State ----------------------------------------------------------------------------------------------------
-  const todoLists = useAppSelector((state) => state.todoListsSlice);
-  const tasks = useAppSelector((state) => state.tasksSlice);
-  const isLoggedIn = useAppSelector((state) => state.authSlice.isLoggedIn);
+  const todoLists = useAppSelector(selectTodoListsSlice.todoLists);
+  const tasks = useAppSelector(selectTasksSlice.tasks);
+  const isLoggedIn = useAppSelector(selectAuthSlice.isLoggedIn);
 
   const dispatch = useAppDispatch();
 

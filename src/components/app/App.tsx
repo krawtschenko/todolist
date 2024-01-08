@@ -15,11 +15,12 @@ import { initializeAppTC } from "../../state/appReducer/app-reducer";
 import { useEffect } from "react";
 import CircularProgress from "@mui/material/CircularProgress/CircularProgress";
 import { logoutTC } from "../../state/authReducer/authReducer";
+import { selectAppSlice, selectAuthSlice } from "state/selectors";
 
 function App() {
-  const status = useAppSelector((state) => state.appSlice.status);
-  const isInitialized = useAppSelector((state) => state.appSlice.isInitialized);
-  const isLoggedIn = useAppSelector((state) => state.authSlice.isLoggedIn);
+  const status = useAppSelector(selectAppSlice.status);
+  const isInitialized = useAppSelector(selectAppSlice.isInitialized);
+  const isLoggedIn = useAppSelector(selectAuthSlice.isLoggedIn);
   const dispatch = useAppDispatch();
 
   useEffect(() => {

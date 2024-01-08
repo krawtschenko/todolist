@@ -12,6 +12,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Navigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "state/store";
 import { loginTC } from "state/authReducer/authReducer";
+import { selectAuthSlice } from "state/selectors";
 
 interface IFormInput {
   email: string;
@@ -26,7 +27,7 @@ const schema = yup.object({
 });
 
 export const Login = () => {
-  const isLoggedIn = useAppSelector((state) => state.authSlice.isLoggedIn);
+  const isLoggedIn = useAppSelector(selectAuthSlice.isLoggedIn);
   const dispatch = useAppDispatch();
 
   const {
@@ -73,19 +74,10 @@ export const Login = () => {
               <TextField label="Email" margin="normal" {...register("email")} />
               {errors.email && <span style={{ color: "red" }}>{errors.email.message}</span>}
 
-              <TextField
-                type="password"
-                label="Password"
-                margin="normal"
-                {...register("password")}
-              />
+              <TextField type="password" label="Password" margin="normal" {...register("password")} />
               {errors.password && <span style={{ color: "red" }}>{errors.password.message}</span>}
 
-              <FormControlLabel
-                label={"Remember me"}
-                control={<Checkbox />}
-                {...register("rememberMe")}
-              />
+              <FormControlLabel label={"Remember me"} control={<Checkbox />} {...register("rememberMe")} />
               <Button type={"submit"} variant={"contained"} color={"primary"}>
                 Login
               </Button>
