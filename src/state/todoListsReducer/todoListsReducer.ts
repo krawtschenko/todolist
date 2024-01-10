@@ -3,6 +3,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { handleServerNetworkError } from "utils/error-utils";
 import { ITodoList, todoListAPI } from "api/api";
 import { RequestStatusType, setAppErrorAC, setAppStatusAC } from "state/appReducer/app-reducer";
+import { clearData } from "common/actions/commonActions";
 
 export type FilterType = "all" | "active" | "completed";
 export interface ITodoListDomain extends ITodoList {
@@ -55,9 +56,11 @@ const slice = createSlice({
       });
       // return action.payload.map((item) => ({ ...item, filter: "all", entityStatus: "succeeded" }));
     },
-    clearDataAC: () => {
+  },
+  extraReducers: (builder) => {
+    builder.addCase(clearData.type, () => {
       return [];
-    },
+    });
   },
 });
 

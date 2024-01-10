@@ -4,6 +4,7 @@ import { ILoginParams, authAPI } from "../../api/api";
 import { handleServerAppError, handleServerNetworkError } from "../../utils/error-utils";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { todoListReducers } from "state/todoListsReducer/todoListsReducer";
+import { clearData } from "common/actions/commonActions";
 
 const slice = createSlice({
   name: "auth",
@@ -45,7 +46,7 @@ export const logoutTC = () => (dispatch: Dispatch) => {
       if (res.data.resultCode === 0) {
         dispatch(setIsLoggedInAC(false));
         dispatch(setAppStatusAC("succeeded"));
-        dispatch(todoListReducers.clearDataAC());
+        dispatch(clearData());
       } else {
         handleServerAppError(res.data, dispatch);
       }

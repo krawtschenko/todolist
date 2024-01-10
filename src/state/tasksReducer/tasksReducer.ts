@@ -5,6 +5,7 @@ import { RootState } from "state/store";
 import { setAppStatusAC } from "state/appReducer/app-reducer";
 import { handleServerAppError, handleServerNetworkError } from "utils/error-utils";
 import { todoListReducers } from "state/todoListsReducer/todoListsReducer";
+import { clearData } from "common/actions/commonActions";
 
 export interface ITasksStateType {
   [key: string]: ITask[];
@@ -55,7 +56,7 @@ const slice = createSlice({
         state[tl.id] = [];
       });
     });
-    builder.addCase(todoListReducers.clearDataAC, () => {
+    builder.addCase(clearData.type, () => {
       return {};
     });
   },
