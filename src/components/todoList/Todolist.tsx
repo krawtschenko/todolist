@@ -8,8 +8,8 @@ import { Task } from "../task/Task";
 import { ITask, TaskStatuses } from "../../api/api";
 import { FilterType } from "../../state/todoListsReducer/todoListsReducer";
 import { useAppDispatch } from "../../state/store";
-import { fetchTasksTC } from "../../state/tasksReducer/tasksReducer";
 import { RequestStatusType } from "../../state/appReducer/app-reducer";
+import { tasksThunks } from "state/tasksReducer/tasksReducer";
 
 interface PropsType {
   id: string;
@@ -30,7 +30,7 @@ export const TodoList = memo((props: PropsType) => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(fetchTasksTC(props.id));
+    dispatch(tasksThunks.fetchTasks(props.id));
   }, []);
 
   // Task Actions -----------------------------------------------------------------------------------------------
@@ -40,10 +40,7 @@ export const TodoList = memo((props: PropsType) => {
     },
     [props.id, props.addTask]
   );
-  const removeTask = useCallback(
-    (taskId: string) => props.removeTask(taskId, props.id),
-    [props.removeTask, props.id]
-  );
+  const removeTask = useCallback((taskId: string) => props.removeTask(taskId, props.id), [props.removeTask, props.id]);
   const changeTaskStatus = useCallback(
     (taskId: string, status: number) => {
       props.changeTaskStatus(taskId, status, props.id);
@@ -69,10 +66,7 @@ export const TodoList = memo((props: PropsType) => {
   );
 
   // Buttons ----------------------------------------------------------------------------------------------------
-  const onAllClickHandler = useCallback(
-    () => props.changeFilter("all", props.id),
-    [props.changeFilter, props.id]
-  );
+  const onAllClickHandler = useCallback(() => props.changeFilter("all", props.id), [props.changeFilter, props.id]);
   const onActiveClickHandler = useCallback(
     () => props.changeFilter("active", props.id),
     [props.changeFilter, props.id]
@@ -114,11 +108,7 @@ export const TodoList = memo((props: PropsType) => {
         })}
       </div>
       <div>
-        <Button
-          variant={props.filter === "all" ? "outlined" : "text"}
-          onClick={onAllClickHandler}
-          color={"inherit"}
-        >
+        <Button variant={props.filter === "all" ? "outlined" : "text"} onClick={onAllClickHandler} color={"inherit"}>
           All
         </Button>
         <Button

@@ -1,5 +1,5 @@
 import { Dispatch } from "redux";
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { ITask, IUpdateModelTask, taskAPI } from "api/api";
 import { RootState } from "state/store";
 import { setAppStatusAC } from "state/appReducer/app-reducer";
@@ -12,7 +12,7 @@ export interface ITasksStateType {
 }
 
 const slice = createSlice({
-  name: "task",
+  name: "tasks",
   initialState: {} as ITasksStateType,
   reducers: {
     removeTaskAC: (state, action: PayloadAction<{ taskId: string; todoListId: string }>) => {
@@ -62,26 +62,37 @@ const slice = createSlice({
   },
 });
 
-export const taskReducers = slice.actions;
-export default slice.reducer;
-
 // Thunks
-export const fetchTasksTC = (todoListId: string) => async (dispatch: Dispatch) => {
+// export const fetchTasksTC = (todoListId: string) => async (dispatch: Dispatch) => {
+//   dispatch(setAppStatusAC("loading"));
+//   try {
+//     const res = await taskAPI.getTasks(todoListId);
+//     dispatch(taskReducers.setTasksAC({ tasks: res.data.items, todoListId }));
+//   } catch (error: any) {
+//     handleServerNetworkError(error, dispatch);
+//   } finally {
+//     dispatch(setAppStatusAC("succeeded"));
+//   }
+// };
+
+const fetchTasks = createAsyncThunk("tasks/fetchTasks", async (todoListId: string, thunkAPI) => {
+  const dispatch = thunkAPI.dispatch;
   dispatch(setAppStatusAC("loading"));
   try {
     const res = await taskAPI.getTasks(todoListId);
     dispatch(taskReducers.setTasksAC({ tasks: res.data.items, todoListId }));
+    // return { tasks: res.data.items, todoListId };
   } catch (error: any) {
     handleServerNetworkError(error, dispatch);
   } finally {
     dispatch(setAppStatusAC("succeeded"));
   }
-};
+});
 
 export const deleteTaskTC = (todoListId: string, taskId: string) => async (dispatch: Dispatch) => {
   dispatch(setAppStatusAC("loading"));
   try {
-    taskAPI.deleteTask(todoListId, taskId);
+    await taskAPI.deleteTask(todoListId, taskId);
     dispatch(taskReducers.removeTaskAC({ taskId, todoListId }));
   } catch (error: any) {
     handleServerNetworkError(error, dispatch);
@@ -138,3 +149,7 @@ export const updateTaskTC =
       }
     }
   };
+
+export const taskReducers = slice.actions;
+export const tasksThunks = { fetchTasks };
+export default slice.reducer;
