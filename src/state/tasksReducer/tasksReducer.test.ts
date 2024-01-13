@@ -1,5 +1,5 @@
 import { todoListReducers } from "state/todoListsReducer/todoListsReducer";
-import tasksReducer, { ITasksStateType, taskReducers } from "./tasksReducer";
+import { ITasksStateType, taskActions, tasksReducer } from "./tasksReducer";
 import { TaskPriorities, TaskStatuses } from "api/api";
 
 let startState: ITasksStateType = {};
@@ -87,7 +87,7 @@ beforeEach(() => {
 });
 
 test("correct task should be deleted from correct array", () => {
-  const action = taskReducers.removeTaskAC({ taskId: "2", todoListId: "todoListId2" });
+  const action = taskActions.removeTaskAC({ taskId: "2", todoListId: "todoListId2" });
 
   const endState = tasksReducer(startState, action);
   expect(endState).toEqual({
@@ -171,7 +171,7 @@ test("correct task should be added to correct array", () => {
     order: 0,
     addedDate: date,
   };
-  const action = taskReducers.addTaskAC(newTask);
+  const action = taskActions.addTaskAC(newTask);
 
   const endState = tasksReducer(startState, action);
 
@@ -183,7 +183,7 @@ test("correct task should be added to correct array", () => {
 });
 
 test("status of specified task should be changed", () => {
-  const action = taskReducers.updateTaskAC({
+  const action = taskActions.updateTaskAC({
     todoListId: "todoListId2",
     taskId: "2",
     taskData: {
@@ -198,7 +198,7 @@ test("status of specified task should be changed", () => {
 });
 
 test("title of specified task should be changed", () => {
-  const action = taskReducers.updateTaskAC({ todoListId: "todoListId2", taskId: "2", taskData: { title: "test" } });
+  const action = taskActions.updateTaskAC({ todoListId: "todoListId2", taskId: "2", taskData: { title: "test" } });
 
   const endState = tasksReducer(startState, action);
 

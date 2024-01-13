@@ -1,5 +1,5 @@
 import { Action, configureStore } from "@reduxjs/toolkit";
-import tasksSlice from "./tasksReducer/tasksReducer";
+import { tasksReducer as tasksSlice } from "./tasksReducer/tasksReducer";
 import todoListsSlice from "./todoListsReducer/todoListsReducer";
 import appSlice from "./appReducer/app-reducer";
 import authSlice from "./authReducer/authReducer";
