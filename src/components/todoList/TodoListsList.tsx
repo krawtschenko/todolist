@@ -3,7 +3,7 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import { Navigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "state/store";
-import { addTaskTC, deleteTaskTC, updateTaskTC } from "state/tasksReducer/tasksReducer";
+import { tasksThunks, deleteTaskTC, updateTaskTC } from "state/tasksReducer/tasksReducer";
 import { AddItemForm } from "components/superForm/AddItemForm";
 import { TodoList } from "components/todoList/TodoList";
 import { TaskStatuses } from "api/api";
@@ -40,7 +40,7 @@ export const TodoListsList = () => {
 
   const addTask = useCallback(
     (title: string, todoListId: string) => {
-      dispatch(addTaskTC(todoListId, title));
+      dispatch(tasksThunks.addTask({todoListId, title}));
     },
     [dispatch]
   );

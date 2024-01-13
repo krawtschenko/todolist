@@ -2,7 +2,7 @@ import { Dispatch } from "redux";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { handleServerNetworkError } from "utils/error-utils";
 import { ITodoList, todoListAPI } from "api/api";
-import { RequestStatusType, setAppErrorAC, setAppStatusAC } from "state/appReducer/app-reducer";
+import { RequestStatusType, appActions } from "state/appReducer/app-reducer";
 import { clearData } from "common/actions/commonActions";
 
 export type FilterType = "all" | "active" | "completed";
@@ -69,19 +69,19 @@ export default slice.reducer;
 
 // Thunk---------------------------------------------------------------------------------------------------
 export const fetchTodoListsTC = () => async (dispatch: Dispatch) => {
-  dispatch(setAppStatusAC("loading"));
+  dispatch(appActions.setAppStatus("loading"));
   try {
     const res = await todoListAPI.getTodoLists();
     dispatch(todoListReducers.setTodoListsAC(res.data));
   } catch (error: any) {
     handleServerNetworkError(error, dispatch);
   } finally {
-    dispatch(setAppStatusAC("succeeded"));
+    dispatch(appActions.setAppStatus("succeeded"));
   }
 };
 
 export const removeTodoListTC = (todoListId: string) => async (dispatch: Dispatch) => {
-  dispatch(setAppStatusAC("loading"));
+  dispatch(appActions.setAppStatus("loading"));
   dispatch(todoListReducers.changeTodoListEntityStatusAC({ todoListId, status: "loading" }));
   try {
     todoListAPI.deleteTodoList(todoListId);
@@ -89,38 +89,38 @@ export const removeTodoListTC = (todoListId: string) => async (dispatch: Dispatc
   } catch (error: any) {
     handleServerNetworkError(error, dispatch);
   } finally {
-    dispatch(setAppStatusAC("succeeded"));
+    dispatch(appActions.setAppStatus("succeeded"));
   }
 };
 
 export const addTodoListTC = (title: string) => async (dispatch: Dispatch) => {
-  dispatch(setAppStatusAC("loading"));
+  dispatch(appActions.setAppStatus("loading"));
   try {
     const res = await todoListAPI.createTodoList(title);
     if (res.data.resultCode === 0) {
       dispatch(todoListReducers.addTodoListAC(res.data.data.item));
     } else {
       if (res.data.messages.length) {
-        dispatch(setAppErrorAC(res.data.messages[0]));
+        dispatch(appActions.setAppError(res.data.messages[0]));
       } else {
-        dispatch(setAppErrorAC("Some error occurred"));
+        dispatch(appActions.setAppError("Some error occurred"));
       }
     }
   } catch (error: any) {
     handleServerNetworkError(error, dispatch);
   } finally {
-    dispatch(setAppStatusAC("succeeded"));
+    dispatch(appActions.setAppStatus("succeeded"));
   }
 };
 
 export const changeTodoListTitleTC = (todoListId: string, title: string) => async (dispatch: Dispatch) => {
-  dispatch(setAppStatusAC("loading"));
+  dispatch(appActions.setAppStatus("loading"));
   try {
     todoListAPI.updateTodoList(todoListId, title);
     dispatch(todoListReducers.changeTodoListTitleAC({ todoListId, title }));
   } catch (error: any) {
     handleServerNetworkError(error, dispatch);
   } finally {
-    dispatch(setAppStatusAC("succeeded"));
+    dispatch(appActions.setAppStatus("succeeded"));
   }
 };

@@ -15,19 +15,19 @@ const slice = createSlice({
     isInitialized: false,
   },
   reducers: {
-    setAppStatusAC: (state, action: PayloadAction<RequestStatusType>) => {
+    setAppStatus: (state, action: PayloadAction<RequestStatusType>) => {
       state.status = action.payload;
     },
-    setAppErrorAC: (state, action: PayloadAction<null | string>) => {
+    setAppError: (state, action: PayloadAction<null | string>) => {
       state.error = action.payload;
     },
-    setIsInitializedAC: (state, action: PayloadAction<boolean>) => {
+    setIsInitialized: (state, action: PayloadAction<boolean>) => {
       state.isInitialized = action.payload;
     },
   },
 });
 
-export const { setAppStatusAC, setAppErrorAC, setIsInitializedAC } = slice.actions;
+export const appActions = slice.actions;
 export default slice.reducer;
 
 export const initializeAppTC = () => async (dispatch: Dispatch) => {
@@ -41,6 +41,6 @@ export const initializeAppTC = () => async (dispatch: Dispatch) => {
   } catch (error: any) {
     handleServerNetworkError(error, dispatch);
   } finally {
-    dispatch(setIsInitializedAC(true));
+    dispatch(appActions.setIsInitialized(true));
   }
 };

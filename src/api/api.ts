@@ -91,9 +91,9 @@ export const taskAPI = {
   getTasks: (todoListId: string) => {
     return instance.get<IGetTasks>(`todo-lists/${todoListId}/tasks`);
   },
-  createTask: (todoListId: string, title: string) => {
-    return instance.post<IResponse<{ item: ITask }>>(`todo-lists/${todoListId}/tasks`, {
-      title,
+  createTask: (data: { todoListId: string; title: string }) => {
+    return instance.post<IResponse<{ item: ITask }>>(`todo-lists/${data.todoListId}/tasks`, {
+      title: data.title,
     });
   },
   updateTask: (todoListId: string, taskId: string, taskData: IUpdateModelTask) => {
@@ -109,10 +109,9 @@ export const authAPI = {
     return instance.post<IResponse<{ userId: number }>>("auth/login", data);
   },
   logout: () => {
-    return instance.delete<IResponse>('auth/login')
+    return instance.delete<IResponse>("auth/login");
   },
   me: () => {
     return instance.get<IResponse<{ id: number; email: string; login: string }>>("auth/me");
   },
-
 };

@@ -1,10 +1,9 @@
 import { Dispatch } from "redux";
-import { setAppStatusAC } from "../appReducer/app-reducer";
 import { ILoginParams, authAPI } from "../../api/api";
 import { handleServerAppError, handleServerNetworkError } from "../../utils/error-utils";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { todoListReducers } from "state/todoListsReducer/todoListsReducer";
 import { clearData } from "common/actions/commonActions";
+import { appActions } from "state/appReducer/app-reducer";
 
 const slice = createSlice({
   name: "auth",
@@ -23,7 +22,7 @@ export default slice.reducer;
 
 // thunks
 export const loginTC = (data: ILoginParams) => async (dispatch: Dispatch) => {
-  dispatch(setAppStatusAC("loading"));
+  dispatch(appActions.setAppStatus("loading"));
   try {
     const res = await authAPI.login(data);
     if (res.data.resultCode === 0) {
@@ -34,18 +33,18 @@ export const loginTC = (data: ILoginParams) => async (dispatch: Dispatch) => {
   } catch (error: any) {
     handleServerNetworkError(error, dispatch);
   } finally {
-    dispatch(setAppStatusAC("succeeded"));
+    dispatch(appActions.setAppStatus("succeeded"));
   }
 };
 
 export const logoutTC = () => (dispatch: Dispatch) => {
-  dispatch(setAppStatusAC("loading"));
+  dispatch(appActions.setAppStatus("loading"));
   authAPI
     .logout()
     .then((res) => {
       if (res.data.resultCode === 0) {
         dispatch(setIsLoggedInAC(false));
-        dispatch(setAppStatusAC("succeeded"));
+        dispatch(appActions.setAppStatus("succeeded"));
         dispatch(clearData());
       } else {
         handleServerAppError(res.data, dispatch);

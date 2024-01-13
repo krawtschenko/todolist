@@ -1,5 +1,5 @@
 import { todoListReducers } from "state/todoListsReducer/todoListsReducer";
-import { ITasksStateType, taskActions, tasksReducer } from "./tasksReducer";
+import { ITasksStateType, taskActions, tasksReducer, tasksThunks } from "./tasksReducer";
 import { TaskPriorities, TaskStatuses } from "api/api";
 
 let startState: ITasksStateType = {};
@@ -171,7 +171,12 @@ test("correct task should be added to correct array", () => {
     order: 0,
     addedDate: date,
   };
-  const action = taskActions.addTaskAC(newTask);
+  // const action = taskActions.addTaskAC(newTask);
+  const action = tasksThunks.addTask.fulfilled(
+    { task: newTask, todoListId: "todoListId2", title: "juice" },
+    "requestId",
+    { todoListId: "todoListId2", title: "juice" }
+  );
 
   const endState = tasksReducer(startState, action);
 

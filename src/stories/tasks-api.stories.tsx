@@ -11,9 +11,7 @@ export const GetTasks = () => {
     async function fetchData() {
       const todoListId = "c6626cb8-6088-4458-85bc-ca92fe9b8005";
       const response = await taskAPI.getTasks(todoListId);
-      const titles = response.data.items.map(
-        (elem: any) => elem.title + " - " + elem.id
-      );
+      const titles = response.data.items.map((elem: any) => elem.title + " - " + elem.id);
       setState(titles);
     }
     fetchData();
@@ -36,7 +34,7 @@ export const CreateTask = () => {
     async function fetchData() {
       const todoListId = "c6626cb8-6088-4458-85bc-ca92fe9b8005";
       const title = "Arider";
-      const response = await taskAPI.createTask(todoListId, title);
+      const response = await taskAPI.createTask({ todoListId, title });
       setState(response.data);
     }
     fetchData();
