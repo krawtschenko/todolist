@@ -53,10 +53,45 @@ const addTask = createAppAsyncThunk<
   }
 });
 
-const updateTask = createAppAsyncThunk<
-  any,
-  { todoListId: string; taskId: string; taskData: Partial<IUpdateModelTask> }
->(
+interface UpdateTaskArg {
+  taskId: string;
+  domainModel: Partial<IUpdateModelTask>;
+  todoListId: string;
+}
+// const updateTask = createAppAsyncThunk<UpdateTaskArg, UpdateTaskArg>(`tasks/updateTask`, async (arg, thunkAPI) => {
+//   const { dispatch, rejectWithValue, getState } = thunkAPI;
+//   try {
+//     const state = getState();
+//     const task = state.tasksSlice[arg.todoListId].find((t) => t.id === arg.taskId);
+//     if (!task) {
+//       console.warn("task not found in the state");
+//       return rejectWithValue(null);
+//     }
+
+//     const apiModel: IUpdateModelTask = {
+//       deadline: task.deadline,
+//       description: task.description,
+//       priority: task.priority,
+//       startDate: task.startDate,
+//       title: task.title,
+//       status: task.status,
+//       ...arg.taskModel,
+//     };
+//     const res = await taskAPI.updateTask(arg.todoListId, arg.taskId, apiModel);
+
+//     if (res.data.resultCode === 0) {
+//       return arg;
+//     } else {
+//       handleServerAppError(res.data, dispatch);
+//       return rejectWithValue(null);
+//     }
+//   } catch (e) {
+//     handleServerNetworkError(e, dispatch);
+//     return rejectWithValue(null);
+//   }
+// });
+
+const updateTask = createAppAsyncThunk<any, any>(
   "tasks/updateTask",
   async (arg: { todoListId: string; taskId: string; taskData: Partial<IUpdateModelTask> }, thunkAPI) => {
     const { dispatch, rejectWithValue, getState } = thunkAPI;
@@ -78,7 +113,6 @@ const updateTask = createAppAsyncThunk<
       try {
         const res = await taskAPI.updateTask(arg.todoListId, arg.taskId, taskModel);
         if (res.data.resultCode === 0) {
-          // dispatch(taskActions.updateTaskAC({ todoListId, taskId, taskData }));
           return { todoListId: arg.todoListId, taskId: arg.taskId, taskModel };
         } else {
           handleServerAppError(res.data, dispatch);
