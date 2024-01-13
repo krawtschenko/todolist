@@ -1,7 +1,6 @@
 import { Dispatch } from "redux";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { ITask, IUpdateModelTask, taskAPI } from "api/api";
-import { RootState } from "state/store";
 import { handleServerAppError, handleServerNetworkError } from "utils/error-utils";
 import { todoListReducers } from "state/todoListsReducer/todoListsReducer";
 import { clearData } from "common/actions/commonActions";
@@ -54,6 +53,47 @@ const addTask = createAppAsyncThunk<
   }
 });
 
+const updateTask = createAppAsyncThunk<
+  any,
+  { todoListId: string; taskId: string; taskData: Partial<IUpdateModelTask> }
+>(
+  "tasks/updateTask",
+  async (arg: { todoListId: string; taskId: string; taskData: Partial<IUpdateModelTask> }, thunkAPI) => {
+    const { dispatch, rejectWithValue, getState } = thunkAPI;
+    dispatch(appActions.setAppStatus("loading"));
+    const state = getState();
+    const task = state.tasksSlice[arg.todoListId].find((t) => t.id === arg.taskId);
+
+    if (task) {
+      const taskModel: IUpdateModelTask = {
+        title: task.title,
+        description: task.description,
+        status: task.status,
+        priority: task.priority,
+        startDate: task.startDate,
+        deadline: task.deadline,
+        ...arg.taskData,
+      };
+
+      try {
+        const res = await taskAPI.updateTask(arg.todoListId, arg.taskId, taskModel);
+        if (res.data.resultCode === 0) {
+          // dispatch(taskActions.updateTaskAC({ todoListId, taskId, taskData }));
+          return { todoListId: arg.todoListId, taskId: arg.taskId, taskModel };
+        } else {
+          handleServerAppError(res.data, dispatch);
+          return rejectWithValue(null);
+        }
+      } catch (error: any) {
+        handleServerNetworkError(error, dispatch);
+        return rejectWithValue(null);
+      } finally {
+        dispatch(appActions.setAppStatus("succeeded"));
+      }
+    }
+  }
+);
+
 // Slice
 const slice = createSlice({
   name: "tasks",
@@ -68,22 +108,22 @@ const slice = createSlice({
     // addTaskAC: (state, action: PayloadAction<ITask>) => {
     //   state[action.payload.todoListId].unshift(action.payload);
     // },
-    updateTaskAC: (
-      state,
-      action: PayloadAction<{
-        todoListId: string;
-        taskId: string;
-        taskData: Partial<IUpdateModelTask>;
-      }>
-    ) => {
-      const index = state[action.payload.todoListId].findIndex((t) => t.id === action.payload.taskId);
-      if (index > -1) {
-        state[action.payload.todoListId][index] = {
-          ...state[action.payload.todoListId][index],
-          ...action.payload.taskData,
-        };
-      }
-    },
+    // updateTaskAC: (
+    //   state,
+    //   action: PayloadAction<{
+    //     todoListId: string;
+    //     taskId: string;
+    //     taskData: Partial<IUpdateModelTask>;
+    //   }>
+    // ) => {
+    //   const index = state[action.payload.todoListId].findIndex((t) => t.id === action.payload.taskId);
+    //   if (index > -1) {
+    //     state[action.payload.todoListId][index] = {
+    //       ...state[action.payload.todoListId][index],
+    //       ...action.payload.taskData,
+    //     };
+    //   }
+    // },
     // setTasksAC: (state, action: PayloadAction<{ tasks: ITask[]; todoListId: string }>) => {
     //   state[action.payload.todoListId] = action.payload.tasks;
     // },
@@ -109,6 +149,16 @@ const slice = createSlice({
       })
       .addCase(addTask.fulfilled, (state, action) => {
         state[action.payload.todoListId].unshift(action.payload.task);
+      })
+      .addCase(updateTask.fulfilled, (state, action) => {
+        const index = state[action.payload.todoListId].findIndex((t) => t.id === action.payload.taskId);
+
+        if (index > -1) {
+          state[action.payload.todoListId][index] = {
+            ...state[action.payload.todoListId][index],
+            ...action.payload.taskData,
+          };
+        }
       });
   },
 });
@@ -154,39 +204,39 @@ export const deleteTaskTC = (todoListId: string, taskId: string) => async (dispa
 //   }
 // };
 
-export const updateTaskTC =
-  (todoListId: string, taskId: string, taskData: Partial<IUpdateModelTask>) =>
-  async (dispatch: Dispatch, getState: () => RootState) => {
-    dispatch(appActions.setAppStatus("loading"));
-    const state = getState();
-    const task = state.tasksSlice[todoListId].find((t) => t.id === taskId);
+// export const updateTaskTC =
+//   (todoListId: string, taskId: string, taskData: Partial<IUpdateModelTask>) =>
+//   async (dispatch: Dispatch, getState: () => RootState) => {
+//     dispatch(appActions.setAppStatus("loading"));
+//     const state = getState();
+//     const task = state.tasksSlice[todoListId].find((t) => t.id === taskId);
 
-    if (task) {
-      const taskModel: IUpdateModelTask = {
-        title: task.title,
-        description: task.description,
-        status: task.status,
-        priority: task.priority,
-        startDate: task.startDate,
-        deadline: task.deadline,
-        ...taskData,
-      };
+//     if (task) {
+//       const taskModel: IUpdateModelTask = {
+//         title: task.title,
+//         description: task.description,
+//         status: task.status,
+//         priority: task.priority,
+//         startDate: task.startDate,
+//         deadline: task.deadline,
+//         ...taskData,
+//       };
 
-      try {
-        const res = await taskAPI.updateTask(todoListId, taskId, taskModel);
-        if (res.data.resultCode === 0) {
-          dispatch(taskActions.updateTaskAC({ todoListId, taskId, taskData }));
-        } else {
-          handleServerAppError(res.data, dispatch);
-        }
-      } catch (error: any) {
-        handleServerNetworkError(error, dispatch);
-      } finally {
-        dispatch(appActions.setAppStatus("succeeded"));
-      }
-    }
-  };
+//       try {
+//         const res = await taskAPI.updateTask(todoListId, taskId, taskModel);
+//         if (res.data.resultCode === 0) {
+//           dispatch(taskActions.updateTaskAC({ todoListId, taskId, taskData }));
+//         } else {
+//           handleServerAppError(res.data, dispatch);
+//         }
+//       } catch (error: any) {
+//         handleServerNetworkError(error, dispatch);
+//       } finally {
+//         dispatch(appActions.setAppStatus("succeeded"));
+//       }
+//     }
+//   };
 
 export const taskActions = slice.actions;
 export const tasksReducer = slice.reducer;
-export const tasksThunks = { fetchTasks, addTask };
+export const tasksThunks = { fetchTasks, addTask, updateTask };

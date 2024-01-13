@@ -188,13 +188,30 @@ test("correct task should be added to correct array", () => {
 });
 
 test("status of specified task should be changed", () => {
-  const action = taskActions.updateTaskAC({
-    todoListId: "todoListId2",
-    taskId: "2",
-    taskData: {
-      status: TaskStatuses.Completed,
+  const action = tasksThunks.updateTask.fulfilled(
+    {
+      todoListId: "todoListId2",
+      taskId: "2",
+      taskModel: {
+        status: TaskStatuses.Completed,
+      },
     },
-  });
+    "requestId",
+    {
+      todoListId: "todoListId2",
+      taskId: "2",
+      taskData: {
+        status: TaskStatuses.Completed,
+      },
+    }
+  );
+  // const action = tasksThunks.updateTask.fulfilled({
+  //   todoListId: "todoListId2",
+  //   taskId: "2",
+  //   taskData: {
+  //     status: TaskStatuses.Completed,
+  //   },
+  // });
 
   const endState = tasksReducer(startState, action);
 
@@ -203,7 +220,20 @@ test("status of specified task should be changed", () => {
 });
 
 test("title of specified task should be changed", () => {
-  const action = taskActions.updateTaskAC({ todoListId: "todoListId2", taskId: "2", taskData: { title: "test" } });
+  const action = tasksThunks.updateTask.fulfilled(
+    {
+      todoListId: "todoListId2",
+      taskId: "2",
+      taskModel: { title: "test" },
+    },
+    "requestId",
+    {
+      todoListId: "todoListId2",
+      taskId: "2",
+      taskData: { title: "test" },
+    }
+  );
+  // const action = taskActions.updateTask({ todoListId: "todoListId2", taskId: "2", taskData: { title: "test" } });
 
   const endState = tasksReducer(startState, action);
 

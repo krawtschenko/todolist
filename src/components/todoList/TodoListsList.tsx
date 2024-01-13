@@ -3,7 +3,7 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import { Navigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "state/store";
-import { tasksThunks, deleteTaskTC, updateTaskTC } from "state/tasksReducer/tasksReducer";
+import { tasksThunks, deleteTaskTC } from "state/tasksReducer/tasksReducer";
 import { AddItemForm } from "components/superForm/AddItemForm";
 import { TodoList } from "components/todoList/TodoList";
 import { TaskStatuses } from "api/api";
@@ -40,21 +40,21 @@ export const TodoListsList = () => {
 
   const addTask = useCallback(
     (title: string, todoListId: string) => {
-      dispatch(tasksThunks.addTask({todoListId, title}));
+      dispatch(tasksThunks.addTask({ todoListId, title }));
     },
     [dispatch]
   );
 
   const changeStatus = useCallback(
-    (id: string, status: TaskStatuses, todoListId: string) => {
-      dispatch(updateTaskTC(todoListId, id, { status }));
+    (taskId: string, status: TaskStatuses, todoListId: string) => {
+      dispatch(tasksThunks.updateTask({ todoListId, taskId, taskData: { status } }));
     },
     [dispatch]
   );
 
   const changeTaskTitle = useCallback(
-    (id: string, title: string, todoListId: string) => {
-      dispatch(updateTaskTC(todoListId, id, { title }));
+    (taskId: string, title: string, todoListId: string) => {
+      dispatch(tasksThunks.updateTask({ todoListId, taskId, taskData: { title } }));
     },
     [dispatch]
   );
