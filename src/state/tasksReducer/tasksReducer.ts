@@ -10,6 +10,11 @@ import { appActions } from "state/appReducer/app-reducer";
 export interface ITasksStateType {
   [key: string]: ITask[];
 }
+interface UpdateTaskArg {
+  taskId: string;
+  taskModel: Partial<IUpdateModelTask>;
+  todoListId: string;
+}
 
 // Thunks
 const fetchTasks = createAppAsyncThunk<{ tasks: ITask[]; todoListId: string }, string>(
@@ -53,80 +58,39 @@ const addTask = createAppAsyncThunk<
   }
 });
 
-interface UpdateTaskArg {
-  taskId: string;
-  domainModel: Partial<IUpdateModelTask>;
-  todoListId: string;
-}
-// const updateTask = createAppAsyncThunk<UpdateTaskArg, UpdateTaskArg>(`tasks/updateTask`, async (arg, thunkAPI) => {
-//   const { dispatch, rejectWithValue, getState } = thunkAPI;
-//   try {
-//     const state = getState();
-//     const task = state.tasksSlice[arg.todoListId].find((t) => t.id === arg.taskId);
-//     if (!task) {
-//       console.warn("task not found in the state");
-//       return rejectWithValue(null);
-//     }
-
-//     const apiModel: IUpdateModelTask = {
-//       deadline: task.deadline,
-//       description: task.description,
-//       priority: task.priority,
-//       startDate: task.startDate,
-//       title: task.title,
-//       status: task.status,
-//       ...arg.taskModel,
-//     };
-//     const res = await taskAPI.updateTask(arg.todoListId, arg.taskId, apiModel);
-
-//     if (res.data.resultCode === 0) {
-//       return arg;
-//     } else {
-//       handleServerAppError(res.data, dispatch);
-//       return rejectWithValue(null);
-//     }
-//   } catch (e) {
-//     handleServerNetworkError(e, dispatch);
-//     return rejectWithValue(null);
-//   }
-// });
-
-const updateTask = createAppAsyncThunk<any, any>(
-  "tasks/updateTask",
-  async (arg: { todoListId: string; taskId: string; taskData: Partial<IUpdateModelTask> }, thunkAPI) => {
-    const { dispatch, rejectWithValue, getState } = thunkAPI;
-    dispatch(appActions.setAppStatus("loading"));
+const updateTask = createAppAsyncThunk<UpdateTaskArg, UpdateTaskArg>("tasks/updateTask", async (arg, thunkAPI) => {
+  const { dispatch, rejectWithValue, getState } = thunkAPI;
+  try {
     const state = getState();
     const task = state.tasksSlice[arg.todoListId].find((t) => t.id === arg.taskId);
-
-    if (task) {
-      const taskModel: IUpdateModelTask = {
-        title: task.title,
-        description: task.description,
-        status: task.status,
-        priority: task.priority,
-        startDate: task.startDate,
-        deadline: task.deadline,
-        ...arg.taskData,
-      };
-
-      try {
-        const res = await taskAPI.updateTask(arg.todoListId, arg.taskId, taskModel);
-        if (res.data.resultCode === 0) {
-          return { todoListId: arg.todoListId, taskId: arg.taskId, taskModel };
-        } else {
-          handleServerAppError(res.data, dispatch);
-          return rejectWithValue(null);
-        }
-      } catch (error: any) {
-        handleServerNetworkError(error, dispatch);
-        return rejectWithValue(null);
-      } finally {
-        dispatch(appActions.setAppStatus("succeeded"));
-      }
+    if (!task) {
+      console.warn("task not found in the state");
+      return rejectWithValue(null);
     }
+
+    const apiModel: IUpdateModelTask = {
+      deadline: task.deadline,
+      description: task.description,
+      priority: task.priority,
+      startDate: task.startDate,
+      title: task.title,
+      status: task.status,
+      ...arg.taskModel,
+    };
+    
+    const res = await taskAPI.updateTask(arg.todoListId, arg.taskId, apiModel);
+
+    if (res.data.resultCode === 0) {
+      return arg;
+    } else {
+      handleServerAppError(res.data, dispatch);
+      return rejectWithValue(null);
+    }
+  } catch (e) {
+    handleServerNetworkError(e, dispatch);
+    return rejectWithValue(null);
   }
-);
+});
 
 // Slice
 const slice = createSlice({
@@ -190,7 +154,7 @@ const slice = createSlice({
         if (index > -1) {
           state[action.payload.todoListId][index] = {
             ...state[action.payload.todoListId][index],
-            ...action.payload.taskData,
+            ...action.payload.taskModel,
           };
         }
       });

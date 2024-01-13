@@ -47,14 +47,14 @@ export const TodoListsList = () => {
 
   const changeStatus = useCallback(
     (taskId: string, status: TaskStatuses, todoListId: string) => {
-      dispatch(tasksThunks.updateTask({ todoListId, taskId, taskData: { status } }));
+      dispatch(tasksThunks.updateTask({ todoListId, taskId, taskModel: { status } }));
     },
     [dispatch]
   );
 
   const changeTaskTitle = useCallback(
     (taskId: string, title: string, todoListId: string) => {
-      dispatch(tasksThunks.updateTask({ todoListId, taskId, taskData: { title } }));
+      dispatch(tasksThunks.updateTask({ todoListId, taskId, taskModel: { title } }));
     },
     [dispatch]
   );

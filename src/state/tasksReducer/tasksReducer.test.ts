@@ -200,7 +200,7 @@ test("status of specified task should be changed", () => {
     {
       todoListId: "todoListId2",
       taskId: "2",
-      taskData: {
+      taskModel: {
         status: TaskStatuses.Completed,
       },
     }
@@ -230,7 +230,7 @@ test("title of specified task should be changed", () => {
     {
       todoListId: "todoListId2",
       taskId: "2",
-      taskData: { title: "test" },
+      taskModel: { title: "test" },
     }
   );
   // const action = taskActions.updateTask({ todoListId: "todoListId2", taskId: "2", taskData: { title: "test" } });
