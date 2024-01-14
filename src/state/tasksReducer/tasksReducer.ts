@@ -60,14 +60,14 @@ const addTask = createAppAsyncThunk<
 
 const updateTask = createAppAsyncThunk<UpdateTaskArg, UpdateTaskArg>("tasks/updateTask", async (arg, thunkAPI) => {
   const { dispatch, rejectWithValue, getState } = thunkAPI;
-  try {
-    const state = getState();
-    const task = state.tasksSlice[arg.todoListId].find((t) => t.id === arg.taskId);
-    if (!task) {
-      console.warn("task not found in the state");
-      return rejectWithValue(null);
-    }
+  const state = getState();
+  const task = state.tasksSlice[arg.todoListId].find((t) => t.id === arg.taskId);
 
+  if (!task) {
+    return rejectWithValue(null);
+  }
+  
+  try {
     const apiModel: IUpdateModelTask = {
       deadline: task.deadline,
       description: task.description,
@@ -77,7 +77,7 @@ const updateTask = createAppAsyncThunk<UpdateTaskArg, UpdateTaskArg>("tasks/upda
       status: task.status,
       ...arg.taskModel,
     };
-    
+
     const res = await taskAPI.updateTask(arg.todoListId, arg.taskId, apiModel);
 
     if (res.data.resultCode === 0) {
