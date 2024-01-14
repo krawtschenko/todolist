@@ -1,6 +1,6 @@
 import { Dispatch } from "redux";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { handleServerNetworkError } from "utils/error-utils";
+import { handleServerNetworkError } from "utils/handle-server-network-error";
 import { ITodoList, todoListAPI } from "api/api";
 import { RequestStatusType, appActions } from "state/appReducer/app-reducer";
 import { clearData } from "common/actions/commonActions";

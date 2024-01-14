@@ -1,9 +1,10 @@
 import { Dispatch } from "redux";
 import { ILoginParams, authAPI } from "../../api/api";
-import { handleServerAppError, handleServerNetworkError } from "../../utils/error-utils";
+import {handleServerNetworkError } from "../../utils/handle-server-network-error";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { clearData } from "common/actions/commonActions";
 import { appActions } from "state/appReducer/app-reducer";
+import { handleServerAppError } from "utils/handle-server-app-error";
 
 const slice = createSlice({
   name: "auth",

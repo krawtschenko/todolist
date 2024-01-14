@@ -172,11 +172,10 @@ test("correct task should be added to correct array", () => {
     addedDate: date,
   };
   // const action = taskActions.addTaskAC(newTask);
-  const action = tasksThunks.addTask.fulfilled(
-    { task: newTask, todoListId: "todoListId2", title: "juice" },
-    "requestId",
-    { todoListId: "todoListId2", title: "juice" }
-  );
+  const action = tasksThunks.addTask.fulfilled(newTask, "requestId", {
+    todoListId: "todoListId2",
+    title: "juice",
+  });
 
   const endState = tasksReducer(startState, action);
 
@@ -188,23 +187,14 @@ test("correct task should be added to correct array", () => {
 });
 
 test("status of specified task should be changed", () => {
-  const action = tasksThunks.updateTask.fulfilled(
-    {
-      todoListId: "todoListId2",
-      taskId: "2",
-      taskModel: {
-        status: TaskStatuses.Completed,
-      },
+  const startData = {
+    todoListId: "todoListId2",
+    taskId: "2",
+    taskModel: {
+      status: TaskStatuses.Completed,
     },
-    "requestId",
-    {
-      todoListId: "todoListId2",
-      taskId: "2",
-      taskModel: {
-        status: TaskStatuses.Completed,
-      },
-    }
-  );
+  };
+  const action = tasksThunks.updateTask.fulfilled(startData, "requestId", startData);
   // const action = tasksThunks.updateTask.fulfilled({
   //   todoListId: "todoListId2",
   //   taskId: "2",
@@ -220,19 +210,12 @@ test("status of specified task should be changed", () => {
 });
 
 test("title of specified task should be changed", () => {
-  const action = tasksThunks.updateTask.fulfilled(
-    {
-      todoListId: "todoListId2",
-      taskId: "2",
-      taskModel: { title: "test" },
-    },
-    "requestId",
-    {
-      todoListId: "todoListId2",
-      taskId: "2",
-      taskModel: { title: "test" },
-    }
-  );
+  const startData = {
+    todoListId: "todoListId2",
+    taskId: "2",
+    taskModel: { title: "test" },
+  };
+  const action = tasksThunks.updateTask.fulfilled(startData, "requestId", startData);
   // const action = taskActions.updateTask({ todoListId: "todoListId2", taskId: "2", taskData: { title: "test" } });
 
   const endState = tasksReducer(startState, action);

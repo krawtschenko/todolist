@@ -91,9 +91,9 @@ export const taskAPI = {
   getTasks: (todoListId: string) => {
     return instance.get<IGetTasks>(`todo-lists/${todoListId}/tasks`);
   },
-  createTask: (data: { todoListId: string; title: string }) => {
-    return instance.post<IResponse<{ item: ITask }>>(`todo-lists/${data.todoListId}/tasks`, {
-      title: data.title,
+  createTask: (arg: { todoListId: string; title: string }) => {
+    return instance.post<IResponse<{ item: ITask }>>(`todo-lists/${arg.todoListId}/tasks`, {
+      title: arg.title,
     });
   },
   updateTask: (todoListId: string, taskId: string, taskData: IUpdateModelTask) => {

@@ -1,8 +1,9 @@
 import { Dispatch } from "redux";
 import { authAPI } from "../../api/api";
 import { setIsLoggedInAC } from "../authReducer/authReducer";
-import { handleServerAppError, handleServerNetworkError } from "../../utils/error-utils";
+import { handleServerNetworkError } from "../../utils/handle-server-network-error";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { handleServerAppError } from "utils/handle-server-app-error";
 
 export type RequestStatusType = "idle" | "loading" | "succeeded" | "failed";
 export type AppInitialStateType = ReturnType<typeof slice.getInitialState>;
