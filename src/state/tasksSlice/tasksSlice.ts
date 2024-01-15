@@ -58,7 +58,12 @@ const slice = createSlice({
     builder.addCase(todoListsActions.removeTodoListAC, (state, action) => {
       delete state[action.payload];
     });
-    builder.addCase(todoListsActions.setTodoListsAC, (state, action) => {
+    // builder.addCase(todoListsActions.setTodoListsAC, (state, action) => {
+    //   action.payload.forEach((tl) => {
+    //     state[tl.id] = [];
+    //   });
+    // });
+    builder.addCase(todoListsActions.fetchTodoListsTC.fulfilled, (state, action) => {
       action.payload.forEach((tl) => {
         state[tl.id] = [];
       });

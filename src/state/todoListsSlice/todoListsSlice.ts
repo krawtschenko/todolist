@@ -18,6 +18,7 @@ const slice = createAppSlice({
   name: "todoList",
   initialState: [] as ITodoListDomain[],
   reducers: (creators) => {
+    const createAThunk = creators.asyncThunk.withTypes<{ rejectValue: null }>();
     return {
       // Actions
       removeTodoListAC: creators.reducer((state, action: PayloadAction<string>) => {
@@ -69,27 +70,38 @@ const slice = createAppSlice({
           // return state.map((t) => (t.id === action.payload.todoListId ? { ...t, entityStatus: action.payload.status } : t));
         }
       ),
-      setTodoListsAC: creators.reducer((state, action: PayloadAction<ITodoList[]>) => {
-        // 1 var
-        action.payload.forEach((t) => {
-          state.push({ ...t, filter: "all", entityStatus: "idle" });
-        });
-        // 2 var
-        // return action.payload.map((item) => ({ ...item, filter: "all", entityStatus: "succeeded" }));
-      }),
+      // setTodoListsAC: creators.reducer((state, action: PayloadAction<ITodoList[]>) => {
+      //   // 1 var
+      //   action.payload.forEach((t) => {
+      //     state.push({ ...t, filter: "all", entityStatus: "idle" });
+      //   });
+      //   // 2 var
+      //   // return action.payload.map((item) => ({ ...item, filter: "all", entityStatus: "succeeded" }));
+      // }),
       // Thunks
-      fetchTodoListsTC: creators.asyncThunk<undefined, any, any>(async (_, thunkAPI) => {
-        const { dispatch } = thunkAPI;
-        dispatch(appActions.setAppStatus("loading"));
-        try {
-          const res = await todoListAPI.getTodoLists();
-          dispatch(todoListsActions.setTodoListsAC(res.data));
-        } catch (error) {
-          handleServerNetworkError(error, dispatch);
-        } finally {
-          dispatch(appActions.setAppStatus("succeeded"));
+      fetchTodoListsTC: createAThunk<undefined, ITodoList[]>(
+        async (_, thunkAPI) => {
+          const { dispatch, rejectWithValue } = thunkAPI;
+          dispatch(appActions.setAppStatus("loading"));
+          try {
+            const res = await todoListAPI.getTodoLists();
+            // dispatch(todoListsActions.setTodoListsAC(res.data));
+            return res.data;
+          } catch (error) {
+            handleServerNetworkError(error, dispatch);
+            return rejectWithValue(null);
+          } finally {
+            dispatch(appActions.setAppStatus("succeeded"));
+          }
+        },
+        {
+          fulfilled: (state, action) => {
+            action.payload.forEach((t) => {
+              state.push({ ...t, filter: "all", entityStatus: "idle" });
+            });
+          },
         }
-      }),
+      ),
     };
   },
   // reducers: {
