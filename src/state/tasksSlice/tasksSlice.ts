@@ -237,6 +237,6 @@ export const deleteTaskTC = (todoListId: string, taskId: string) => async (dispa
 //     }
 //   };
 
-export const tasksReducer = slice.reducer;
+export const tasksSlice = slice.reducer;
 export const taskActions = slice.actions;
 export const tasksThunks = { fetchTasks, addTask, updateTask };

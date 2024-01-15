@@ -1,5 +1,5 @@
 import { todoListsActions } from "state/todoListsSlice/todoListsSlice";
-import { ITasksStateType, taskActions, tasksReducer, tasksThunks } from "./tasksSlice";
+import { ITasksStateType, taskActions, tasksSlice, tasksThunks } from "./tasksSlice";
 import { TaskPriorities, TaskStatuses } from "api/api";
 
 let startState: ITasksStateType = {};
@@ -89,7 +89,7 @@ beforeEach(() => {
 test("correct task should be deleted from correct array", () => {
   const action = taskActions.removeTaskAC({ taskId: "2", todoListId: "todoListId2" });
 
-  const endState = tasksReducer(startState, action);
+  const endState = tasksSlice(startState, action);
   expect(endState).toEqual({
     todoListId1: [
       {
@@ -177,7 +177,7 @@ test("correct task should be added to correct array", () => {
     title: "juice",
   });
 
-  const endState = tasksReducer(startState, action);
+  const endState = tasksSlice(startState, action);
 
   expect(endState["todoListId1"].length).toBe(3);
   expect(endState["todoListId2"].length).toBe(4);
@@ -203,7 +203,7 @@ test("status of specified task should be changed", () => {
   //   },
   // });
 
-  const endState = tasksReducer(startState, action);
+  const endState = tasksSlice(startState, action);
 
   expect(endState["todoListId1"][0].status).toBe(TaskStatuses.InProgress);
   expect(endState["todoListId2"][1].status).toBe(TaskStatuses.Completed);
@@ -218,7 +218,7 @@ test("title of specified task should be changed", () => {
   const action = tasksThunks.updateTask.fulfilled(startData, "requestId", startData);
   // const action = taskActions.updateTask({ todoListId: "todoListId2", taskId: "2", taskData: { title: "test" } });
 
-  const endState = tasksReducer(startState, action);
+  const endState = tasksSlice(startState, action);
 
   expect(endState["todoListId1"][0].title).toBe("CSS");
   expect(endState["todoListId2"][1].title).toBe("test");
@@ -227,7 +227,7 @@ test("title of specified task should be changed", () => {
 test("property with todoListId1 should be deleted", () => {
   const action = todoListsActions.removeTodoListAC("todoListId2");
 
-  const endState = tasksReducer(startState, action);
+  const endState = tasksSlice(startState, action);
 
   const keys = Object.keys(endState);
 

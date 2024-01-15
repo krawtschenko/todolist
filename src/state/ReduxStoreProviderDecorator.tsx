@@ -1,14 +1,14 @@
 import React from "react";
 import { Provider } from "react-redux";
-import { tasksReducer } from "./tasksSlice/tasksSlice";
+import { tasksSlice } from "./tasksSlice/tasksSlice";
 import { v1 } from "uuid";
 import { TaskPriorities, TaskStatuses } from "../api/api";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import { todoListsReducer } from "state/todoListsSlice/todoListsSlice";
+import { todoListsSlice } from "state/todoListsSlice/todoListsSlice";
 
 const rootReducer = combineReducers({
-  tasks: tasksReducer,
-  todoLists: todoListsReducer,
+  tasks: tasksSlice,
+  todoLists: todoListsSlice,
 });
 
 const initialGlobalState: any = {
