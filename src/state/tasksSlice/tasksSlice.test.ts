@@ -1,5 +1,5 @@
-import { todoListReducers } from "state/todoListsReducer/todoListsReducer";
-import { ITasksStateType, taskActions, tasksReducer, tasksThunks } from "./tasksReducer";
+import { todoListsActions } from "state/todoListsSlice/todoListsSlice";
+import { ITasksStateType, taskActions, tasksReducer, tasksThunks } from "./tasksSlice";
 import { TaskPriorities, TaskStatuses } from "api/api";
 
 let startState: ITasksStateType = {};
@@ -225,7 +225,7 @@ test("title of specified task should be changed", () => {
 });
 
 test("property with todoListId1 should be deleted", () => {
-  const action = todoListReducers.removeTodoListAC("todoListId2");
+  const action = todoListsActions.removeTodoListAC("todoListId2");
 
   const endState = tasksReducer(startState, action);
 

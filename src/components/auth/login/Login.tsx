@@ -11,7 +11,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Navigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "state/store";
-import { loginTC } from "state/authReducer/authReducer";
+import { loginTC } from "state/authSlice/authSlice";
 import { selectAuthSlice } from "state/selectors";
 
 interface IFormInput {

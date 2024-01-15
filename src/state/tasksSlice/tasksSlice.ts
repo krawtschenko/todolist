@@ -2,10 +2,10 @@ import { Dispatch } from "redux";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { ITask, IUpdateModelTask, taskAPI } from "api/api";
 import { handleServerNetworkError } from "utils/handle-server-network-error";
-import { todoListReducers } from "state/todoListsReducer/todoListsReducer";
+import { todoListsActions } from "state/todoListsSlice/todoListsSlice";
 import { clearData } from "common/actions/commonActions";
 import { createAppAsyncThunk } from "utils/create-app-async-thunk";
-import { appActions } from "state/appReducer/app-reducer";
+import { appActions } from "state/appSlice/appSlice";
 import { handleServerAppError } from "utils/handle-server-app-error";
 
 export interface ITasksStateType {
@@ -52,13 +52,13 @@ const slice = createSlice({
     // },
   },
   extraReducers: (builder) => {
-    builder.addCase(todoListReducers.addTodoListAC, (state, action) => {
+    builder.addCase(todoListsActions.addTodoListAC, (state, action) => {
       state[action.payload.id] = [];
     });
-    builder.addCase(todoListReducers.removeTodoListAC, (state, action) => {
+    builder.addCase(todoListsActions.removeTodoListAC, (state, action) => {
       delete state[action.payload];
     });
-    builder.addCase(todoListReducers.setTodoListsAC, (state, action) => {
+    builder.addCase(todoListsActions.setTodoListsAC, (state, action) => {
       action.payload.forEach((tl) => {
         state[tl.id] = [];
       });
@@ -237,6 +237,6 @@ export const deleteTaskTC = (todoListId: string, taskId: string) => async (dispa
 //     }
 //   };
 
-export const taskActions = slice.actions;
 export const tasksReducer = slice.reducer;
+export const taskActions = slice.actions;
 export const tasksThunks = { fetchTasks, addTask, updateTask };

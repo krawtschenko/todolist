@@ -1,6 +1,6 @@
 import { Dispatch } from "@reduxjs/toolkit";
 import { IResponse } from "api/api";
-import { appActions } from "state/appReducer/app-reducer";
+import { appActions } from "state/appSlice/appSlice";
 
 export const handleServerAppError = <T>(data: IResponse<T>, dispatch: Dispatch) => {
   if (data.messages.length) {

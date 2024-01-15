@@ -3,7 +3,7 @@ import { ILoginParams, authAPI } from "../../api/api";
 import {handleServerNetworkError } from "../../utils/handle-server-network-error";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { clearData } from "common/actions/commonActions";
-import { appActions } from "state/appReducer/app-reducer";
+import { appActions } from "state/appSlice/appSlice";
 import { handleServerAppError } from "utils/handle-server-app-error";
 
 const slice = createSlice({

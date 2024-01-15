@@ -11,10 +11,10 @@ import { ErrorSnackbar } from "../errorSnackbar/ErrorSnackbar";
 import { Login } from "../auth/login/Login";
 import { Navigate, RouterProvider, createBrowserRouter } from "react-router-dom";
 import { TodoListsList } from "../todoList/TodoListsList";
-import { initializeAppTC } from "../../state/appReducer/app-reducer";
+import { initializeAppTC } from "../../state/appSlice/appSlice";
 import { useEffect } from "react";
 import CircularProgress from "@mui/material/CircularProgress/CircularProgress";
-import { logoutTC } from "../../state/authReducer/authReducer";
+import { logoutTC } from "../../state/authSlice/authSlice";
 import { selectAppSlice, selectAuthSlice } from "state/selectors";
 
 function App() {

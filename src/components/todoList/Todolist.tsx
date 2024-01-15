@@ -6,10 +6,10 @@ import { Delete } from "@mui/icons-material";
 import Button from "@mui/material/Button";
 import { Task } from "../task/Task";
 import { ITask, TaskStatuses } from "../../api/api";
-import { FilterType } from "../../state/todoListsReducer/todoListsReducer";
+import { FilterType } from "../../state/todoListsSlice/todoListsSlice";
 import { useAppDispatch } from "../../state/store";
-import { RequestStatusType } from "../../state/appReducer/app-reducer";
-import { tasksThunks } from "state/tasksReducer/tasksReducer";
+import { RequestStatusType } from "../../state/appSlice/appSlice";
+import { tasksThunks } from "state/tasksSlice/tasksSlice";
 
 interface PropsType {
   id: string;

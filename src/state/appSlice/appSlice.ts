@@ -1,6 +1,6 @@
 import { Dispatch } from "redux";
 import { authAPI } from "../../api/api";
-import { setIsLoggedInAC } from "../authReducer/authReducer";
+import { setIsLoggedInAC } from "../authSlice/authSlice";
 import { handleServerNetworkError } from "../../utils/handle-server-network-error";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { handleServerAppError } from "utils/handle-server-app-error";

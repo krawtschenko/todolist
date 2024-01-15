@@ -3,9 +3,8 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import { Navigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "state/store";
-import { tasksThunks, deleteTaskTC } from "state/tasksReducer/tasksReducer";
+import { tasksThunks, deleteTaskTC } from "state/tasksSlice/tasksSlice";
 import { AddItemForm } from "components/superForm/AddItemForm";
-import { TodoList } from "components/todoList/TodoList";
 import { TaskStatuses } from "api/api";
 import {
   FilterType,
@@ -13,9 +12,10 @@ import {
   changeTodoListTitleTC,
   fetchTodoListsTC,
   removeTodoListTC,
-  todoListReducers,
-} from "state/todoListsReducer/todoListsReducer";
+  todoListsActions,
+} from "state/todoListsSlice/todoListsSlice";
 import { selectAuthSlice, selectTasksSlice, selectTodoListsSlice } from "state/selectors";
+import { TodoList } from "components/todoList/TodoList";
 
 export const TodoListsList = () => {
   // State ----------------------------------------------------------------------------------------------------
@@ -62,7 +62,7 @@ export const TodoListsList = () => {
   // TodoList -------------------------------------------------------------------------------------------------
   const changeFilter = useCallback(
     (value: FilterType, todoListId: string) => {
-      dispatch(todoListReducers.changeTodoListFilterAC({ todoListId, filter: value }));
+      dispatch(todoListsActions.changeTodoListFilterAC({ todoListId, filter: value }));
     },
     [dispatch]
   );
