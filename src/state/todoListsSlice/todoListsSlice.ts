@@ -1,5 +1,4 @@
-import { Dispatch } from "redux";
-import { PayloadAction, asyncThunkCreator, buildCreateSlice, createSlice } from "@reduxjs/toolkit";
+import { Dispatch, PayloadAction, asyncThunkCreator, buildCreateSlice } from "@reduxjs/toolkit";
 import { handleServerNetworkError } from "utils/handle-server-network-error";
 import { ITodoList, todoListAPI } from "api/api";
 import { RequestStatusType, appActions } from "state/appSlice/appSlice";
@@ -78,6 +77,19 @@ const slice = createAppSlice({
         // 2 var
         // return action.payload.map((item) => ({ ...item, filter: "all", entityStatus: "succeeded" }));
       }),
+      // Thunks
+      fetchTodoListsTC: creators.asyncThunk<undefined, any, any>(async (_, thunkAPI) => {
+        const { dispatch } = thunkAPI;
+        dispatch(appActions.setAppStatus("loading"));
+        try {
+          const res = await todoListAPI.getTodoLists();
+          dispatch(todoListsActions.setTodoListsAC(res.data));
+        } catch (error) {
+          handleServerNetworkError(error, dispatch);
+        } finally {
+          dispatch(appActions.setAppStatus("succeeded"));
+        }
+      }),
     };
   },
   // reducers: {
@@ -131,17 +143,17 @@ const slice = createAppSlice({
 });
 
 // Old Thunks
-export const fetchTodoListsTC = () => async (dispatch: Dispatch) => {
-  dispatch(appActions.setAppStatus("loading"));
-  try {
-    const res = await todoListAPI.getTodoLists();
-    dispatch(todoListsActions.setTodoListsAC(res.data));
-  } catch (error: any) {
-    handleServerNetworkError(error, dispatch);
-  } finally {
-    dispatch(appActions.setAppStatus("succeeded"));
-  }
-};
+// export const fetchTodoListsTC = () => async (dispatch: Dispatch) => {
+//   dispatch(appActions.setAppStatus("loading"));
+//   try {
+//     const res = await todoListAPI.getTodoLists();
+//     dispatch(todoListsActions.setTodoListsAC(res.data));
+//   } catch (error: any) {
+//     handleServerNetworkError(error, dispatch);
+//   } finally {
+//     dispatch(appActions.setAppStatus("succeeded"));
+//   }
+// };
 
 export const removeTodoListTC = (todoListId: string) => async (dispatch: Dispatch) => {
   dispatch(appActions.setAppStatus("loading"));

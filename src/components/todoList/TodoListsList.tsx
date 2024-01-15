@@ -10,7 +10,6 @@ import {
   FilterType,
   addTodoListTC,
   changeTodoListTitleTC,
-  fetchTodoListsTC,
   removeTodoListTC,
   todoListsActions,
 } from "state/todoListsSlice/todoListsSlice";
@@ -27,7 +26,7 @@ export const TodoListsList = () => {
 
   useEffect(() => {
     if (!isLoggedIn) return;
-    dispatch(fetchTodoListsTC());
+    dispatch(todoListsActions.fetchTodoListsTC());
   }, []);
 
   // Tasks ----------------------------------------------------------------------------------------------------

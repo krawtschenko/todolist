@@ -1,8 +1,9 @@
 import axios from "axios";
+import { Dispatch } from "@reduxjs/toolkit";
 import { appActions } from "state/appSlice/appSlice";
 import { AppDispatch } from "state/store";
 
-export const handleServerNetworkError = (err: unknown, dispatch: AppDispatch): void => {
+export const handleServerNetworkError = (err: unknown, dispatch: Dispatch): void => {
   let errorMessage = "Some error occurred";
 
   if (axios.isAxiosError(err)) {
