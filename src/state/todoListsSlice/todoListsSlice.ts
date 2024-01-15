@@ -1,5 +1,5 @@
 import { Dispatch } from "redux";
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, asyncThunkCreator, buildCreateSlice, createSlice } from "@reduxjs/toolkit";
 import { handleServerNetworkError } from "utils/handle-server-network-error";
 import { ITodoList, todoListAPI } from "api/api";
 import { RequestStatusType, appActions } from "state/appSlice/appSlice";
@@ -11,7 +11,11 @@ export interface ITodoListDomain extends ITodoList {
   entityStatus: RequestStatusType;
 }
 
-const slice = createSlice({
+const createAppSlice = buildCreateSlice({
+  creators: { asyncThunk: asyncThunkCreator },
+});
+
+const slice = createAppSlice({
   name: "todoList",
   initialState: [] as ITodoListDomain[],
   reducers: {
@@ -63,9 +67,6 @@ const slice = createSlice({
     });
   },
 });
-
-export const todoListsReducer = slice.reducer;
-export const todoListsActions = slice.actions;
 
 // Thunk---------------------------------------------------------------------------------------------------
 export const fetchTodoListsTC = () => async (dispatch: Dispatch) => {
@@ -124,3 +125,6 @@ export const changeTodoListTitleTC = (todoListId: string, title: string) => asyn
     dispatch(appActions.setAppStatus("succeeded"));
   }
 };
+
+export const todoListsReducer = slice.reducer;
+export const todoListsActions = slice.actions;
