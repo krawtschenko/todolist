@@ -123,7 +123,7 @@ const addTask = createAppAsyncThunk<ITask, { todoListId: string; title: string }
     try {
       const res = await taskAPI.createTask(arg);
       const task = res.data.data.item;
-      if (res.data.resultCode === ResultCode.error) {
+      if (res.data.resultCode === ResultCode.success) {
         return task;
       } else {
         handleServerAppError(res.data, dispatch);
@@ -179,7 +179,7 @@ const updateTask = createAppAsyncThunk<UpdateTaskArg, UpdateTaskArg>(
 
       const res = await taskAPI.updateTask(arg.todoListId, arg.taskId, apiModel);
 
-      if (res.data.resultCode === ResultCode.error) {
+      if (res.data.resultCode === ResultCode.success) {
         return arg;
       } else {
         handleServerAppError(res.data, dispatch);

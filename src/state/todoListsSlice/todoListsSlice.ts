@@ -184,7 +184,7 @@ export const addTodoListTC = (title: string) => async (dispatch: Dispatch) => {
   dispatch(appActions.setAppStatus("loading"));
   try {
     const res = await todoListAPI.createTodoList(title);
-    if (res.data.resultCode === ResultCode.error) {
+    if (res.data.resultCode === ResultCode.success) {
       dispatch(todoListsActions.addTodoListAC(res.data.data.item));
     } else {
       if (res.data.messages.length) {
