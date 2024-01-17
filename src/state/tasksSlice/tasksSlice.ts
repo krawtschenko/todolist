@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { ITask, IUpdateModelTask, taskAPI } from "api/api";
+import { ITask, IUpdateModelTask, ResultCode, taskAPI } from "api/api";
 import { handleServerNetworkError } from "utils/handle-server-network-error";
 import { todoListsActions } from "state/todoListsSlice/todoListsSlice";
 import { clearData } from "common/actions/commonActions";
@@ -123,7 +123,7 @@ const addTask = createAppAsyncThunk<ITask, { todoListId: string; title: string }
     try {
       const res = await taskAPI.createTask(arg);
       const task = res.data.data.item;
-      if (res.data.resultCode === 0) {
+      if (res.data.resultCode === ResultCode.error) {
         return task;
       } else {
         handleServerAppError(res.data, dispatch);
@@ -145,7 +145,7 @@ const removeTask = createAppAsyncThunk<{ taskId: string; todoListId: string }, {
 
     dispatch(appActions.setAppStatus("loading"));
     try {
-      await taskAPI.deleteTask(arg.todoListId, arg.taskId);
+      await taskAPI.deleteTask(arg);
       // dispatch(taskActions.removeTaskAC({ taskId, todoListId }));
       return arg;
     } catch (error: any) {
@@ -179,7 +179,7 @@ const updateTask = createAppAsyncThunk<UpdateTaskArg, UpdateTaskArg>(
 
       const res = await taskAPI.updateTask(arg.todoListId, arg.taskId, apiModel);
 
-      if (res.data.resultCode === 0) {
+      if (res.data.resultCode === ResultCode.error) {
         return arg;
       } else {
         handleServerAppError(res.data, dispatch);

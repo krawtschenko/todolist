@@ -105,8 +105,8 @@ export const taskAPI = {
   updateTask: (todoListId: string, taskId: string, taskData: IUpdateModelTask) => {
     return instance.put(`todo-lists/${todoListId}/tasks/${taskId}`, taskData);
   },
-  deleteTask: (todoListId: string, taskId: string) => {
-    return instance.delete<IResponse>(`todo-lists/${todoListId}/tasks/${taskId}`);
+  deleteTask: (arg: {todoListId: string, taskId: string}) => {
+    return instance.delete<IResponse>(`todo-lists/${arg.todoListId}/tasks/${arg.taskId}`);
   },
 };
 
