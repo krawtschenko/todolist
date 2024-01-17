@@ -1,5 +1,5 @@
 import { todoListsActions } from "state/todoListsSlice/todoListsSlice";
-import { ITasksStateType, taskActions, tasksSlice, tasksThunks } from "./tasksSlice";
+import { ITasksStateType, tasksSlice, tasksThunks } from "./tasksSlice";
 import { TaskPriorities, TaskStatuses } from "api/api";
 
 let startState: ITasksStateType = {};
