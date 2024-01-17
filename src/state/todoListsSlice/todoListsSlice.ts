@@ -1,6 +1,6 @@
 import { Dispatch, PayloadAction, asyncThunkCreator, buildCreateSlice } from "@reduxjs/toolkit";
 import { handleServerNetworkError } from "utils/handle-server-network-error";
-import { ITodoList, todoListAPI } from "api/api";
+import { ITodoList, ResultCode, todoListAPI } from "api/api";
 import { RequestStatusType, appActions } from "state/appSlice/appSlice";
 import { clearData } from "common/actions/commonActions";
 
@@ -184,7 +184,7 @@ export const addTodoListTC = (title: string) => async (dispatch: Dispatch) => {
   dispatch(appActions.setAppStatus("loading"));
   try {
     const res = await todoListAPI.createTodoList(title);
-    if (res.data.resultCode === 0) {
+    if (res.data.resultCode === ResultCode.error) {
       dispatch(todoListsActions.addTodoListAC(res.data.data.item));
     } else {
       if (res.data.messages.length) {

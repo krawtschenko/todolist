@@ -3,7 +3,7 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import { Navigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "state/store";
-import { tasksThunks, deleteTaskTC } from "state/tasksSlice/tasksSlice";
+import { tasksThunks } from "state/tasksSlice/tasksSlice";
 import { AddItemForm } from "components/superForm/AddItemForm";
 import { TaskStatuses } from "api/api";
 import {
@@ -31,8 +31,8 @@ export const TodoListsList = () => {
 
   // Tasks ----------------------------------------------------------------------------------------------------
   const removeTask = useCallback(
-    (id: string, todoListId: string) => {
-      dispatch(deleteTaskTC(todoListId, id));
+    (taskId: string, todoListId: string) => {
+      dispatch(tasksThunks.removeTask({ todoListId, taskId }));
     },
     [dispatch]
   );

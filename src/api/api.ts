@@ -1,17 +1,23 @@
 import axios from "axios";
 
-export interface ITodoList {
-  id: string;
-  addedDate: Date;
-  order: number;
-  title: string;
-}
-
 export interface IResponse<D = {}> {
   resultCode: number;
   messages: string[];
   fieldsErrors: string[];
   data: D;
+}
+
+export const ResultCode = {
+  success: 0,
+  error: 1,
+  captcha: 10,
+} as const;
+
+export interface ITodoList {
+  id: string;
+  addedDate: Date;
+  order: number;
+  title: string;
 }
 
 interface IGetTasks {

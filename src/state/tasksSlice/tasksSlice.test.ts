@@ -87,7 +87,11 @@ beforeEach(() => {
 });
 
 test("correct task should be deleted from correct array", () => {
-  const action = taskActions.removeTaskAC({ taskId: "2", todoListId: "todoListId2" });
+  // const action = taskActions.removeTaskAC({ taskId: "2", todoListId: "todoListId2" });
+  const action = tasksThunks.removeTask.fulfilled({ taskId: "2", todoListId: "todoListId2" }, "requestId", {
+    taskId: "2",
+    todoListId: "todoListId2",
+  });
 
   const endState = tasksSlice(startState, action);
   expect(endState).toEqual({
