@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {todoListAPI} from "../api/api";
+import {todoListsAPI} from "features/todoLists/api/todoListsAPI";
 
 export default {
 	title: "TodoList_API",
@@ -9,7 +9,7 @@ export const GetTodoLists = () => {
 	const [state, setState] = useState<any>(null);
 	useEffect(() => {
 		async function fetchData() {
-			const response = await todoListAPI.getTodoLists();
+			const response = await todoListsAPI.getTodoLists();
 			const titles = response.data.map(
 				(elem: any) => elem.title + " - " + elem.id
 			);
@@ -34,7 +34,7 @@ export const CreateTodoList = () => {
 	const [state, setState] = useState<any>(null);
 	useEffect(() => {
 		async function fetchData() {
-			const response = await todoListAPI.createTodoList("Hello World");
+			const response = await todoListsAPI.createTodoList("Hello World");
 			setState(response.data);
 		}
 
@@ -50,7 +50,7 @@ export const DeleteTodoList = () => {
 		const todoListId = "5b245bde-4340-4fa4-be65-7734ea8874b1";
 
 		async function fetchData() {
-			const response = await todoListAPI.deleteTodoList(todoListId);
+			const response = await todoListsAPI.deleteTodoList(todoListId);
 			setState(response.data);
 		}
 
@@ -66,7 +66,7 @@ export const UpdateTodoListTitle = () => {
 		const todoListId = "90bc4aae-7ff0-46ab-853a-ab9000fdc888";
 
 		async function fetchData() {
-			const response = await todoListAPI.updateTodoList({todoListId, title: "Thrall"});
+			const response = await todoListsAPI.updateTodoList({todoListId, title: "Thrall"});
 			setState(response.data);
 		}
 

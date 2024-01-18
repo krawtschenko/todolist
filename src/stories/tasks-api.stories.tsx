@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {taskAPI} from "../api/api";
+import {tasksAPI} from "features/tasks/api/tasksAPI";
 
 export default {
 	title: "Task_API",
@@ -10,7 +10,7 @@ export const GetTasks = () => {
 	useEffect(() => {
 		async function fetchData() {
 			const todoListId = "c6626cb8-6088-4458-85bc-ca92fe9b8005";
-			const response = await taskAPI.getTasks(todoListId);
+			const response = await tasksAPI.getTasks(todoListId);
 			const titles = response.data.items.map((elem: any) => elem.title + " - " + elem.id);
 			setState(titles);
 		}
@@ -35,7 +35,7 @@ export const CreateTask = () => {
 		async function fetchData() {
 			const todoListId = "c6626cb8-6088-4458-85bc-ca92fe9b8005";
 			const title = "Arider";
-			const response = await taskAPI.createTask({todoListId, title});
+			const response = await tasksAPI.createTask({todoListId, title});
 			setState(response.data);
 		}
 
@@ -52,7 +52,7 @@ export const DeleteTask = () => {
 		const taskId = "2dbc4f9a-1a94-455b-999c-88f171b5a46c";
 
 		async function fetchData() {
-			const response = await taskAPI.deleteTask({todoListId, taskId});
+			const response = await tasksAPI.deleteTask({todoListId, taskId});
 			setState(response.data);
 		}
 
@@ -78,7 +78,7 @@ export const UpdateTaskTitle = () => {
 		};
 
 		async function fetchData() {
-			const response = await taskAPI.updateTask(todoListId, taskId, taskData);
+			const response = await tasksAPI.updateTask(todoListId, taskId, taskData);
 			setState(response.data);
 		}
 
