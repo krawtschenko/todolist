@@ -9,7 +9,6 @@ import {TaskStatuses} from "api/api";
 import {
 	FilterType,
 	changeTodoListTitleTC,
-	removeTodoListTC,
 	todoListsActions,
 } from "state/todoListsSlice/todoListsSlice";
 import {selectAuthSlice, selectTasksSlice, selectTodoListsSlice} from "state/selectors";
@@ -67,7 +66,7 @@ export const TodoListsList = () => {
 
 	const removeTodoList = useCallback(
 		(todoListId: string) => {
-			dispatch(removeTodoListTC(todoListId));
+			dispatch(todoListsActions.removeTodoListTC({todoListId}));
 		},
 		[dispatch]
 	);

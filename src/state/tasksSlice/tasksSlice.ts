@@ -55,8 +55,8 @@ const slice = createSlice({
 		builder.addCase(todoListsActions.createTodoListTC.fulfilled, (state, action) => {
 			state[action.payload.id] = [];
 		});
-		builder.addCase(todoListsActions.removeTodoListAC, (state, action) => {
-			delete state[action.payload];
+		builder.addCase(todoListsActions.removeTodoListTC.fulfilled, (state, action) => {
+			delete state[action.payload.todoListId];
 		});
 		// builder.addCase(todoListsActions.setTodoListsAC, (state, action) => {
 		//   action.payload.forEach((tl) => {
@@ -268,5 +268,5 @@ const updateTask = createAppAsyncThunk<UpdateTaskArg, UpdateTaskArg>(
 //   };
 
 export const tasksSlice = slice.reducer;
-export const taskActions = slice.actions;
+// export const taskActions = slice.actions;
 export const tasksThunks = {fetchTasks, addTask, removeTask, updateTask};
