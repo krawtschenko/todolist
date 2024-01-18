@@ -8,7 +8,6 @@ import {AddItemForm} from "components/superForm/AddItemForm";
 import {TaskStatuses} from "api/api";
 import {
 	FilterType,
-	changeTodoListTitleTC,
 	todoListsActions,
 } from "state/todoListsSlice/todoListsSlice";
 import {selectAuthSlice, selectTasksSlice, selectTodoListsSlice} from "state/selectors";
@@ -72,8 +71,8 @@ export const TodoListsList = () => {
 	);
 
 	const changeTodoListTitle = useCallback(
-		(id: string, title: string) => {
-			dispatch(changeTodoListTitleTC(id, title));
+		(todoListId: string, title: string) => {
+			dispatch(todoListsActions.changeTodoListTitleTC({todoListId, title}));
 		},
 		[dispatch]
 	);

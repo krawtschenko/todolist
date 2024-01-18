@@ -83,9 +83,9 @@ export const todoListAPI = {
 			title,
 		});
 	},
-	updateTodoList(todoListId: string, title: string) {
-		return instance.put<IResponse>(`todo-lists/${todoListId}`, {
-			title: title,
+	updateTodoList(arg: { todoListId: string, title: string }) {
+		return instance.put<IResponse>(`todo-lists/${arg.todoListId}`, {
+			title: arg.title,
 		});
 	},
 	deleteTodoList(todoListId: string) {

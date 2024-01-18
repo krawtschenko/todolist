@@ -51,7 +51,9 @@ beforeEach(() => {
 });
 
 test("correct todoList should be removed", () => {
-	const action = todoListsActions.removeTodoListTC.fulfilled({todoListId: todoListId1}, 'id', {todoListId: todoListId1});
+	const action = todoListsActions.removeTodoListTC.fulfilled(
+		{todoListId: todoListId1}, 'id', {todoListId: todoListId1}
+	);
 	const endState = todoListsSlice(startState, action);
 
 	expect(endState.length).toBe(1);
@@ -69,7 +71,10 @@ test("correct todoList should be added", () => {
 test("correct todoList should change its name", () => {
 	const endState = todoListsSlice(
 		startState,
-		todoListsActions.changeTodoListTitleAC({todoListId: todoListId2, title: newTodoListTitle})
+		todoListsActions.changeTodoListTitleTC.fulfilled({
+			todoListId: todoListId2,
+			title: newTodoListTitle
+		}, 'id', {todoListId: todoListId2, title: newTodoListTitle})
 	);
 
 	expect(endState[0].title).toBe("What to learn");
