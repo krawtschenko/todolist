@@ -46,7 +46,7 @@ export const Login = () => {
 	});
 
 	const onSubmit: SubmitHandler<IFormInput> = (data) => {
-		dispatch(authActions.login(data));
+		dispatch(authActions.login(data)).then(() => {});
 		reset();
 	};
 

@@ -69,10 +69,9 @@ const slice = createAppSlice({
 				try {
 					const res = await authAPI.me();
 					if (res.data.resultCode === ResultCode.success) {
-						// dispatch(setIsLoggedInAC(true));
 						return true
 					} else {
-						handleServerAppError(res.data, dispatch);
+						// handleServerAppError(res.data, dispatch);
 						return rejectWithValue(null)
 					}
 				} catch (error: any) {
