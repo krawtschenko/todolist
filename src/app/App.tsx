@@ -10,14 +10,13 @@ import {ErrorSnackbar} from "common/components/errorSnackbar/ErrorSnackbar";
 import {Login} from "features/auth/ui/Login";
 import {Navigate, RouterProvider, createBrowserRouter} from "react-router-dom";
 import {TodoListsList} from "features/todoLists/ui/TodoListsList";
-import {initializeAppTC} from "app/model/appSlice";
 import {useEffect} from "react";
 import CircularProgress from "@mui/material/CircularProgress/CircularProgress";
-import {logoutTC} from "features/auth/model/authSlice";
 import {selectAppSlice} from "app/model/appSelectors";
 import {useAppSelector} from "common/hooks/useAppSelector";
 import {selectAuthSlice} from "features/auth/model/authSelectors";
 import {useAppDispatch} from "common/hooks/useAppDispatch";
+import {authActions} from "features/auth/model/authSlice";
 
 function App() {
 	const status = useAppSelector(selectAppSlice.status);
@@ -26,11 +25,11 @@ function App() {
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
-		dispatch(initializeAppTC());
+		dispatch(authActions.initializeApp());
 	}, []);
 
 	const logout = () => {
-		dispatch(logoutTC());
+		dispatch(authActions.logout());
 	};
 
 	if (!isInitialized) {
