@@ -10,6 +10,9 @@ const slice = createSlice({
 		error: null as null | string,
 		isInitialized: false,
 	},
+	selectors: {
+		selectStatus: sliceState => sliceState.status
+	},
 	reducers: {
 		setAppStatus: (state, action: PayloadAction<RequestStatusType>) => {
 			state.status = action.payload;
@@ -24,4 +27,5 @@ const slice = createSlice({
 });
 
 export const appActions = slice.actions;
+export const appSelectors = slice.selectors
 export default slice.reducer;

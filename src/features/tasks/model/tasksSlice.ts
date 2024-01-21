@@ -21,6 +21,9 @@ interface UpdateTaskArg {
 const slice = createSlice({
 	name: "tasks",
 	initialState: {} as ITasksStateType,
+	selectors: {
+		selectTasks: sliceState => sliceState
+	},
 	reducers: {
 		// removeTaskAC: (state, action: PayloadAction<{ taskId: string; todoListId: string }>) => {
 		//   const index = state[action.payload.todoListId].findIndex((t) => t.id === action.payload.taskId);
@@ -196,6 +199,7 @@ const updateTask = createAppAsyncThunk<UpdateTaskArg, UpdateTaskArg>(
 export const tasksSlice = slice.reducer;
 // export const taskActions = slice.actions;
 export const tasksThunks = {fetchTasks, addTask, removeTask, updateTask};
+export const tasksSelectors = slice.selectors
 
 // Old thunks
 // export const fetchTasksTC = (todoListId: string) => async (dispatch: Dispatch) => {
@@ -209,7 +213,6 @@ export const tasksThunks = {fetchTasks, addTask, removeTask, updateTask};
 //     dispatch(setAppStatusAC("succeeded"));
 //   }
 // };
-
 // export const deleteTaskTC = (todoListId: string, taskId: string) => async (dispatch: Dispatch) => {
 //   dispatch(appActions.setAppStatus("loading"));
 //   try {
@@ -221,7 +224,6 @@ export const tasksThunks = {fetchTasks, addTask, removeTask, updateTask};
 //     dispatch(appActions.setAppStatus("succeeded"));
 //   }
 // };
-
 // export const addTaskTC = (todoListId: string, title: string) => async (dispatch: Dispatch) => {
 //   dispatch(appActions.setAppStatus("loading"));
 //   try {
@@ -237,14 +239,12 @@ export const tasksThunks = {fetchTasks, addTask, removeTask, updateTask};
 //     dispatch(appActions.setAppStatus("succeeded"));
 //   }
 // };
-
 // export const updateTaskTC =
 //   (todoListId: string, taskId: string, taskData: Partial<IUpdateModelTask>) =>
 //   async (dispatch: Dispatch, getState: () => RootState) => {
 //     dispatch(appActions.setAppStatus("loading"));
 //     const state = getState();
 //     const tasks = state.tasksSlice[todoListId].find((t) => t.id === taskId);
-
 //     if (tasks) {
 //       const taskModel: IUpdateModelTask = {
 //         title: tasks.title,
@@ -255,7 +255,6 @@ export const tasksThunks = {fetchTasks, addTask, removeTask, updateTask};
 //         deadline: tasks.deadline,
 //         ...taskData,
 //       };
-
 //       try {
 //         const res = await taskAPI.updateTask(todoListId, taskId, taskModel);
 //         if (res.data.resultCode === 0) {

@@ -16,6 +16,9 @@ const slice = createAppSlice({
 	initialState: {
 		isLoggedIn: false,
 	},
+	selectors: {
+		selectIsLoggedIn: (sliceState) => sliceState.isLoggedIn
+	},
 	reducers: (creators) => {
 		const createAThunk = creators.asyncThunk.withTypes<{ rejectValue: null }>();
 		return {
@@ -90,6 +93,7 @@ const slice = createAppSlice({
 });
 
 export const authActions = slice.actions;
+export const {selectIsLoggedIn} = slice.selectors
 export default slice.reducer;
 
 // Old Thunks
