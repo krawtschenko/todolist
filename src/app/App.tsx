@@ -12,16 +12,15 @@ import {Navigate, RouterProvider, createBrowserRouter} from "react-router-dom";
 import {TodoListsList} from "features/todoLists/ui/TodoListsList";
 import {useEffect} from "react";
 import CircularProgress from "@mui/material/CircularProgress/CircularProgress";
-import {selectAppSlice} from "app/model/appSelectors";
-import {useAppSelector} from "common/hooks/useAppSelector";
-import {selectAuthSlice} from "features/auth/model/authSelectors";
 import {useAppDispatch} from "common/hooks/useAppDispatch";
-import {authActions} from "features/auth/model/authSlice";
+import {authActions, authSelectors} from "features/auth/model/authSlice";
+import {useSelector} from "react-redux";
+import {appSelectors} from "app/model/appSlice";
 
 function App() {
-	const status = useAppSelector(selectAppSlice.status);
-	const isInitialized = useAppSelector(selectAppSlice.isInitialized);
-	const isLoggedIn = useAppSelector(selectAuthSlice.isLoggedIn);
+	const status = useSelector(appSelectors.selectStatus);
+	const isInitialized = useSelector(appSelectors.selectIsInitialized);
+	const isLoggedIn = useSelector(authSelectors.selectIsLoggedIn);
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {

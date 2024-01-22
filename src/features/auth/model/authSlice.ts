@@ -93,8 +93,8 @@ const slice = createAppSlice({
 });
 
 export const authActions = slice.actions;
-export const {selectIsLoggedIn} = slice.selectors
-export default slice.reducer;
+export const authSelectors = slice.selectors
+export const authSlice = slice.reducer;
 
 // Old Thunks
 // export const loginTC = (data: ILoginParams) => async (dispatch: Dispatch) => {

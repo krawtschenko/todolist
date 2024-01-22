@@ -166,7 +166,7 @@ const updateTask = createAppAsyncThunk<UpdateTaskArg, UpdateTaskArg>(
 	async (arg, thunkAPI) => {
 		const {dispatch, rejectWithValue, getState} = thunkAPI;
 		const state = getState();
-		const task = state.tasksSlice[arg.todoListId].find((t) => t.id === arg.taskId);
+		const task = state.tasks[arg.todoListId].find((t) => t.id === arg.taskId);
 
 		if (!task) return rejectWithValue(null);
 

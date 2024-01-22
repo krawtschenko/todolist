@@ -10,10 +10,9 @@ import {SubmitHandler, useForm} from "react-hook-form";
 import * as yup from "yup";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {Navigate} from "react-router-dom";
-import {useAppSelector} from "common/hooks/useAppSelector";
-import {selectAuthSlice} from "features/auth/model/authSelectors";
 import {useAppDispatch} from "common/hooks/useAppDispatch";
-import {authActions} from "features/auth/model/authSlice";
+import {authActions, authSelectors} from "features/auth/model/authSlice";
+import {useSelector} from "react-redux";
 
 interface IFormInput {
 	email: string;
@@ -28,7 +27,7 @@ const schema = yup.object({
 });
 
 export const Login = () => {
-	const isLoggedIn = useAppSelector(selectAuthSlice.isLoggedIn);
+	const isLoggedIn = useSelector(authSelectors.selectIsLoggedIn);
 	const dispatch = useAppDispatch();
 
 	const {

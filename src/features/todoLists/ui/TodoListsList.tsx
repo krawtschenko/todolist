@@ -2,25 +2,23 @@ import {useCallback, useEffect} from "react";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import {Navigate} from "react-router-dom";
-import {tasksThunks} from "features/tasks/model/tasksSlice";
+import {tasksSelectors, tasksThunks} from "features/tasks/model/tasksSlice";
 import {AddItemForm} from "common/components/addItemForm/AddItemForm";
 import {
 	FilterType,
-	todoListsActions,
+	todoListsActions, todoListsSelectors,
 } from "features/todoLists/model/todoListsSlice";
 import {TodoList} from "features/todoLists/ui/TodoList";
-import {useAppSelector} from "common/hooks/useAppSelector";
-import {selectTodoListsSlice} from "features/todoLists/model/todoListsSelectors";
-import {selectTasksSlice} from "features/tasks/model/tasksSelectors";
-import {selectAuthSlice} from "features/auth/model/authSelectors";
 import {useAppDispatch} from "common/hooks/useAppDispatch";
 import {TaskStatuses} from "common/enums";
+import {useSelector} from "react-redux";
+import {authSelectors} from "features/auth/model/authSlice";
 
 export const TodoListsList = () => {
 	// State ----------------------------------------------------------------------------------------------------
-	const todoLists = useAppSelector(selectTodoListsSlice.todoLists);
-	const tasks = useAppSelector(selectTasksSlice.tasks);
-	const isLoggedIn = useAppSelector(selectAuthSlice.isLoggedIn);
+	const todoLists = useSelector(todoListsSelectors.selectTodoLists);
+	const tasks = useSelector(tasksSelectors.selectTasks);
+	const isLoggedIn = useSelector(authSelectors.selectIsLoggedIn);
 
 	const dispatch = useAppDispatch();
 
