@@ -2,7 +2,7 @@ import {useCallback, useEffect} from "react";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import {Navigate} from "react-router-dom";
-import {tasksSelectors, tasksThunks} from "features/tasks/model/tasksSlice";
+import {tasksSelectors} from "features/tasks/model/tasksSlice";
 import {AddItemForm} from "common/components/addItemForm/AddItemForm";
 import {
 	FilterType,
@@ -24,37 +24,7 @@ export const TodoListsList = () => {
 	useEffect(() => {
 		if (!isLoggedIn) return;
 		dispatch(todoListsActions.fetchTodoListsTC());
-	}, []);
-
-	// Tasks ----------------------------------------------------------------------------------------------------
-	const addTask = useCallback(
-		(title: string, todoListId: string) => {
-			dispatch(tasksThunks.addTask({todoListId, title}));
-		},
-		[dispatch]
-	);
-
-	// TodoList -------------------------------------------------------------------------------------------------
-	const changeFilter = useCallback(
-		(value: FilterType, todoListId: string) => {
-			dispatch(todoListsActions.changeTodoListFilterAC({todoListId, filter: value}));
-		},
-		[dispatch]
-	);
-
-	const removeTodoList = useCallback(
-		(todoListId: string) => {
-			dispatch(todoListsActions.removeTodoListTC({todoListId}));
-		},
-		[dispatch]
-	);
-
-	const changeTodoListTitle = useCallback(
-		(todoListId: string, title: string) => {
-			dispatch(todoListsActions.changeTodoListTitleTC({todoListId, title}));
-		},
-		[dispatch]
-	);
+	}, [])
 
 	const addTodoList = useCallback(
 		(title: string) => {
@@ -79,15 +49,11 @@ export const TodoListsList = () => {
 							<Paper style={{padding: "10px"}}>
 								<TodoList
 									key={tl.id}
-									id={tl.id}
+									todoListId={tl.id}
 									title={tl.title}
 									tasks={tasks[tl.id]}
-									changeFilter={changeFilter}
-									addTask={addTask}
 									entityStatus={tl.entityStatus}
 									filter={tl.filter}
-									removeTodoList={removeTodoList}
-									changeTodoListTitle={changeTodoListTitle}
 								/>
 							</Paper>
 						</Grid>

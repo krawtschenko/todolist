@@ -1,4 +1,4 @@
-import {memo} from "react";
+import {ChangeEvent, memo} from "react";
 import Checkbox from "@mui/material/Checkbox";
 import {EditableSpan} from "common/components/editableSpan/EditableSpan";
 import IconButton from "@mui/material/IconButton/IconButton";
@@ -8,18 +8,20 @@ import {ITask} from "common/interfaces";
 import {tasksThunks} from "features/tasks/model/tasksSlice";
 import {useAppDispatch} from "common/hooks/useAppDispatch";
 
-interface ITaskProps {
+interface props {
 	task: ITask;
+	todoListId: string
 }
 
-export const Task = memo(({task}: ITaskProps) => {
+export const Task = memo(({task}: props) => {
 	const dispatch = useAppDispatch()
 
 	const removeTask = () => {
 		dispatch(tasksThunks.removeTask({todoListId: task.todoListId, taskId: task.id}));
 	}
 
-	const changeStatus = (status: TaskStatuses) => {
+	const changeStatus = (e: ChangeEvent<HTMLInputElement>) => {
+		const status = e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.InProgress
 		dispatch(tasksThunks.updateTask({todoListId: task.todoListId, taskId: task.id, taskModel: {status}}));
 	}
 
@@ -32,7 +34,7 @@ export const Task = memo(({task}: ITaskProps) => {
 			<Checkbox
 				checked={task.status === TaskStatuses.Completed}
 				color="primary"
-				onChange={(e) => changeStatus(e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.InProgress)}
+				onChange={changeStatus}
 			/>
 			<EditableSpan
 				value={task.title}
