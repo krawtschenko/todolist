@@ -11,12 +11,13 @@ import {useAppDispatch} from "common/hooks/useAppDispatch";
 import {TaskStatuses} from "common/enums";
 import {ITask} from "common/interfaces";
 import {FilterTasksButtons} from "features/todoLists/ui/FilterTasksButtons";
+import {Tasks} from "features/tasks/ui/Tasks";
 
 interface PropsType {
 	todoList: ITodoListDomain
-	tasks: ITask[];
-	entityStatus: RequestStatusType;
-	filter: FilterType;
+	tasks: ITask[]
+	entityStatus: RequestStatusType
+	filter: FilterType
 }
 
 export const TodoList = memo(({todoList, ...props}: PropsType) => {
@@ -39,15 +40,6 @@ export const TodoList = memo(({todoList, ...props}: PropsType) => {
 		dispatch(todoListsActions.changeTodoListTitleTC({todoListId: id, title}));
 	}
 
-	let todoListTasks = props.tasks;
-
-	if (props.filter === "active") {
-		todoListTasks = todoListTasks.filter((t) => t.status !== TaskStatuses.Completed);
-	}
-	if (props.filter === "completed") {
-		todoListTasks = todoListTasks.filter((t) => t.status === TaskStatuses.Completed);
-	}
-
 	return (
 		<div>
 			<h3>
@@ -57,17 +49,7 @@ export const TodoList = memo(({todoList, ...props}: PropsType) => {
 				</IconButton>
 			</h3>
 			<AddItemForm addItem={addTask} disabled={props.entityStatus === "loading"}/>
-			<div>
-				{todoListTasks.map((t) => {
-					return (
-						<Task
-							key={t.id}
-							task={t}
-							todoListId={id}
-						/>
-					);
-				})}
-			</div>
+			<Tasks todoList={todoList} tasks={props.tasks}/>
 			<div>
 				<FilterTasksButtons todoList={todoList}/>
 			</div>
