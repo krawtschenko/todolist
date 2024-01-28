@@ -6,48 +6,15 @@ import FormGroup from "@mui/material/FormGroup";
 import FormLabel from "@mui/material/FormLabel";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import {SubmitHandler, useForm} from "react-hook-form";
-import * as yup from "yup";
-import {yupResolver} from "@hookform/resolvers/yup";
 import {Navigate} from "react-router-dom";
-import {useAppDispatch} from "common/hooks/useAppDispatch";
-import {authActions, authSelectors} from "features/auth/model/authSlice";
+import {authSelectors} from "features/auth/model/authSlice";
 import {useSelector} from "react-redux";
-
-interface IFormInput {
-	email: string;
-	password: string;
-	rememberMe: boolean;
-}
-
-const schema = yup.object({
-	email: yup.string().email().required(),
-	password: yup.string().min(3).required(),
-	rememberMe: yup.boolean().required(),
-});
+import {useLogin} from "common/hooks/useLogin";
 
 export const Login = () => {
 	const isLoggedIn = useSelector(authSelectors.selectIsLoggedIn);
-	const dispatch = useAppDispatch();
-
-	const {
-		register,
-		formState: {errors},
-		handleSubmit,
-		reset,
-	} = useForm<IFormInput>({
-		mode: "onBlur",
-		resolver: yupResolver(schema),
-		defaultValues: {
-			email: "Eugenykravchenko@gmail.com",
-			password: "010982_JKjk",
-		},
-	});
-
-	const onSubmit: SubmitHandler<IFormInput> = (data) => {
-		dispatch(authActions.login(data)).then(() => {});
-		reset();
-	};
+	const {form, onSubmit} = useLogin()
+	const errors = form.formState.errors
 
 	if (isLoggedIn) {
 		return <Navigate to={"/"}/>;
@@ -56,7 +23,7 @@ export const Login = () => {
 	return (
 		<Grid container justifyContent={"center"}>
 			<Grid item justifyContent={"center"}>
-				<form onSubmit={handleSubmit(onSubmit)}>
+				<form onSubmit={form.handleSubmit(onSubmit)}>
 					<FormControl>
 						<FormLabel>
 							<p>
@@ -71,13 +38,13 @@ export const Login = () => {
 							<p>Password: free</p>
 						</FormLabel>
 						<FormGroup>
-							<TextField label="Email" margin="normal" {...register("email")} />
+							<TextField label="Email" margin="normal" {...form.register("email")} />
 							{errors.email && <span style={{color: "red"}}>{errors.email.message}</span>}
 
-							<TextField type="password" label="Password" margin="normal" {...register("password")} />
+							<TextField type="password" label="Password" margin="normal" {...form.register("password")} />
 							{errors.password && <span style={{color: "red"}}>{errors.password.message}</span>}
 
-							<FormControlLabel label={"Remember me"} control={<Checkbox/>} {...register("rememberMe")} />
+							<FormControlLabel label={"Remember me"} control={<Checkbox/>} {...form.register("rememberMe")} />
 							<Button type={"submit"} variant={"contained"} color={"primary"}>
 								Login
 							</Button>
