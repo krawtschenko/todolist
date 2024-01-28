@@ -5,7 +5,6 @@ import {Navigate} from "react-router-dom";
 import {tasksSelectors} from "features/tasks/model/tasksSlice";
 import {AddItemForm} from "common/components/addItemForm/AddItemForm";
 import {
-	FilterType,
 	todoListsActions, todoListsSelectors,
 } from "features/todoLists/model/todoListsSlice";
 import {TodoList} from "features/todoLists/ui/TodoList";
@@ -49,8 +48,7 @@ export const TodoListsList = () => {
 							<Paper style={{padding: "10px"}}>
 								<TodoList
 									key={tl.id}
-									todoListId={tl.id}
-									title={tl.title}
+									todoList={tl}
 									tasks={tasks[tl.id]}
 									entityStatus={tl.entityStatus}
 									filter={tl.filter}
