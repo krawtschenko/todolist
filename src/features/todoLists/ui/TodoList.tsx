@@ -12,6 +12,7 @@ import {TaskStatuses} from "common/enums";
 import {ITask} from "common/interfaces";
 import {FilterTasksButtons} from "features/todoLists/ui/FilterTasksButtons";
 import {Tasks} from "features/tasks/ui/Tasks";
+import {TodoListTitle} from "features/todoLists/ui/TodoListTitle";
 
 interface PropsType {
 	todoList: ITodoListDomain
@@ -32,22 +33,9 @@ export const TodoList = memo(({todoList, ...props}: PropsType) => {
 		dispatch(tasksThunks.addTask({todoListId: id, title}));
 	}
 
-	const removeTodoList = () => {
-		dispatch(todoListsActions.removeTodoListTC({todoListId: id}));
-	}
-
-	const changeTodoListTitle = (title: string) => {
-		dispatch(todoListsActions.changeTodoListTitleTC({todoListId: id, title}));
-	}
-
 	return (
 		<div>
-			<h3>
-				<EditableSpan value={title} onChange={changeTodoListTitle}/>
-				<IconButton onClick={removeTodoList} disabled={props.entityStatus === "loading"}>
-					<Delete/>
-				</IconButton>
-			</h3>
+			<TodoListTitle todoList={todoList}/>
 			<AddItemForm addItem={addTask} disabled={props.entityStatus === "loading"}/>
 			<Tasks todoList={todoList} tasks={props.tasks}/>
 			<div>
