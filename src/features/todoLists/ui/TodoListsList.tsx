@@ -10,7 +10,6 @@ import {
 } from "features/todoLists/model/todoListsSlice";
 import {TodoList} from "features/todoLists/ui/TodoList";
 import {useAppDispatch} from "common/hooks/useAppDispatch";
-import {TaskStatuses} from "common/enums";
 import {useSelector} from "react-redux";
 import {authSelectors} from "features/auth/model/authSlice";
 
@@ -28,30 +27,9 @@ export const TodoListsList = () => {
 	}, []);
 
 	// Tasks ----------------------------------------------------------------------------------------------------
-	const removeTask = useCallback(
-		(taskId: string, todoListId: string) => {
-			dispatch(tasksThunks.removeTask({todoListId, taskId}));
-		},
-		[dispatch]
-	);
-
 	const addTask = useCallback(
 		(title: string, todoListId: string) => {
 			dispatch(tasksThunks.addTask({todoListId, title}));
-		},
-		[dispatch]
-	);
-
-	const changeStatus = useCallback(
-		(taskId: string, status: TaskStatuses, todoListId: string) => {
-			dispatch(tasksThunks.updateTask({todoListId, taskId, taskModel: {status}}));
-		},
-		[dispatch]
-	);
-
-	const changeTaskTitle = useCallback(
-		(taskId: string, title: string, todoListId: string) => {
-			dispatch(tasksThunks.updateTask({todoListId, taskId, taskModel: {title}}));
 		},
 		[dispatch]
 	);
@@ -104,14 +82,11 @@ export const TodoListsList = () => {
 									id={tl.id}
 									title={tl.title}
 									tasks={tasks[tl.id]}
-									removeTask={removeTask}
 									changeFilter={changeFilter}
 									addTask={addTask}
 									entityStatus={tl.entityStatus}
-									changeTaskStatus={changeStatus}
 									filter={tl.filter}
 									removeTodoList={removeTodoList}
-									changeTaskTitle={changeTaskTitle}
 									changeTodoListTitle={changeTodoListTitle}
 								/>
 							</Paper>

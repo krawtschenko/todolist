@@ -16,15 +16,12 @@ interface PropsType {
   id: string;
   title: string;
   tasks: ITask[];
-  removeTask: (taskId: string, todoListId: string) => void;
   changeFilter: (value: FilterType, todoListId: string) => void;
   addTask: (title: string, todoListId: string) => void;
   entityStatus: RequestStatusType;
-  changeTaskStatus: (id: string, status: TaskStatuses, todoListId: string) => void;
   removeTodoList: (id: string) => void;
   changeTodoListTitle: (id: string, newTitle: string) => void;
   filter: FilterType;
-  changeTaskTitle: (taskId: string, newTitle: string, todoListId: string) => void;
 }
 
 export const TodoList = memo((props: PropsType) => {
@@ -40,19 +37,6 @@ export const TodoList = memo((props: PropsType) => {
       props.addTask(title, props.id);
     },
     [props.id, props.addTask]
-  );
-  const removeTask = useCallback((taskId: string) => props.removeTask(taskId, props.id), [props.removeTask, props.id]);
-  const changeTaskStatus = useCallback(
-    (taskId: string, status: number) => {
-      props.changeTaskStatus(taskId, status, props.id);
-    },
-    [props.id]
-  );
-  const changeTaskTitle = useCallback(
-    (taskId: string, newValue: string) => {
-      props.changeTaskTitle(taskId, newValue, props.id);
-    },
-    [props.id]
   );
 
   // TodoList Actions -------------------------------------------------------------------------------------------
@@ -101,9 +85,6 @@ export const TodoList = memo((props: PropsType) => {
             <Task
               key={t.id}
               task={t}
-              removeTask={removeTask}
-              changeTaskStatus={changeTaskStatus}
-              changeTaskTitle={changeTaskTitle}
             />
           );
         })}
