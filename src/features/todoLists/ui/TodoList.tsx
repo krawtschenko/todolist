@@ -22,7 +22,7 @@ interface PropsType {
 }
 
 export const TodoList = memo(({todoList, ...props}: PropsType) => {
-	const {id, title} = todoList
+	const {id} = todoList
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
