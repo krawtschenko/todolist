@@ -1,9 +1,10 @@
 import {ChangeEvent, KeyboardEvent, memo, useState} from "react";
 import {IconButton, TextField} from "@mui/material";
 import {AddBox} from "@mui/icons-material";
+import {ITodoList} from "common/interfaces";
 
 type Props = {
-	addItem: (title: string) => Promise<any>;
+	addItem: (title: string) => Promise<ITodoList>;
 	disabled?: boolean;
 };
 
