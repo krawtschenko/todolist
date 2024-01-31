@@ -1,4 +1,4 @@
-import {useCallback, useEffect} from "react";
+import {useEffect} from "react";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import {Navigate} from "react-router-dom";
@@ -25,12 +25,9 @@ export const TodoListsList = () => {
 		dispatch(todoListsActions.fetchTodoListsTC());
 	}, [])
 
-	const addTodoList = useCallback(
-		(title: string) => {
-			dispatch(todoListsActions.createTodoListTC({title}));
-		},
-		[dispatch]
-	);
+	const addTodoList = (title: string) => {
+		return dispatch(todoListsActions.createTodoListTC({title})).unwrap();
+	}
 
 	if (!isLoggedIn) {
 		return <Navigate to={"/ui"}/>;
