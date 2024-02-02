@@ -4,7 +4,7 @@ import { AppDispatch, RootState } from "app/store";
 interface ICreateAsyncThunk {
   state: RootState;
   dispatch: AppDispatch;
-  rejectValue: null;
+  // rejectValue: null;
 }
 
 export const createAppAsyncThunk = createAsyncThunk.withTypes<ICreateAsyncThunk>();

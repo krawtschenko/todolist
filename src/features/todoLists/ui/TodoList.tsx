@@ -33,9 +33,7 @@ export const TodoList = memo(({todoList, ...props}: PropsType) => {
 			<TodoListTitle todoList={todoList}/>
 			<AddItemForm addItem={addTask} disabled={props.entityStatus === "loading"}/>
 			<Tasks todoList={todoList} tasks={props.tasks}/>
-			<div>
-				<FilterTasksButtons todoList={todoList}/>
-			</div>
+			<FilterTasksButtons todoList={todoList}/>
 		</div>
 	);
 });

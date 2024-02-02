@@ -105,7 +105,7 @@ const fetchTasks = createAppAsyncThunk<{ tasks: ITask[]; todoListId: string }, s
 	`${slice.name}/fetchTasks`,
 	async (todoListId: string, thunkAPI) => {
 		const {dispatch, rejectWithValue} = thunkAPI;
-		dispatch(appActions.setAppStatus("loading"));
+		
 		try {
 			const res = await tasksAPI.getTasks(todoListId);
 			const tasks = res.data.items;
@@ -113,8 +113,6 @@ const fetchTasks = createAppAsyncThunk<{ tasks: ITask[]; todoListId: string }, s
 		} catch (error) {
 			handleServerNetworkError(error, dispatch);
 			return rejectWithValue(null);
-		} finally {
-			dispatch(appActions.setAppStatus("succeeded"));
 		}
 	}
 );
@@ -123,21 +121,19 @@ const addTask = createAppAsyncThunk<ITask, { todoListId: string; title: string }
 	`${slice.name}/addTask`,
 	async (arg, thunkAPI) => {
 		const {dispatch, rejectWithValue} = thunkAPI;
-		dispatch(appActions.setAppStatus("loading"));
+		
 		try {
 			const res = await tasksAPI.createTask(arg);
 			const task = res.data.data.item;
 			if (res.data.resultCode === ResultCode.success) {
 				return task;
 			} else {
-				handleServerAppError(res.data, dispatch);
-				return rejectWithValue(null);
+				// handleServerAppError(res.data, dispatch);
+				return rejectWithValue(res.data);
 			}
 		} catch (error) {
 			handleServerNetworkError(error, dispatch);
 			return rejectWithValue(null);
-		} finally {
-			dispatch(appActions.setAppStatus("succeeded"));
 		}
 	}
 );
@@ -147,7 +143,7 @@ const removeTask = createAppAsyncThunk<{ taskId: string; todoListId: string }, {
 	async (arg, thunkAPI) => {
 		const {dispatch, rejectWithValue} = thunkAPI;
 
-		dispatch(appActions.setAppStatus("loading"));
+		
 		try {
 			await tasksAPI.deleteTask(arg);
 			// dispatch(taskActions.removeTaskAC({ taskId, todoListId }));
@@ -155,8 +151,6 @@ const removeTask = createAppAsyncThunk<{ taskId: string; todoListId: string }, {
 		} catch (error: any) {
 			handleServerNetworkError(error, dispatch);
 			return rejectWithValue(null);
-		} finally {
-			dispatch(appActions.setAppStatus("succeeded"));
 		}
 	}
 );
@@ -214,7 +208,7 @@ export const tasksSelectors = slice.selectors
 //   }
 // };
 // export const deleteTaskTC = (todoListId: string, taskId: string) => async (dispatch: Dispatch) => {
-//   dispatch(appActions.setAppStatus("loading"));
+//   
 //   try {
 //     await taskAPI.deleteTask(todoListId, taskId);
 //     dispatch(taskActions.removeTaskAC({ taskId, todoListId }));
@@ -225,7 +219,7 @@ export const tasksSelectors = slice.selectors
 //   }
 // };
 // export const addTaskTC = (todoListId: string, title: string) => async (dispatch: Dispatch) => {
-//   dispatch(appActions.setAppStatus("loading"));
+//   
 //   try {
 //     const res = await taskAPI.createTask(todoListId, title);
 //     if (res.data.resultCode === 0) {
@@ -242,7 +236,7 @@ export const tasksSelectors = slice.selectors
 // export const updateTaskTC =
 //   (todoListId: string, taskId: string, taskData: Partial<IUpdateModelTask>) =>
 //   async (dispatch: Dispatch, getState: () => RootState) => {
-//     dispatch(appActions.setAppStatus("loading"));
+//     
 //     const state = getState();
 //     const tasks = state.tasksSlice[todoListId].find((t) => t.id === taskId);
 //     if (tasks) {

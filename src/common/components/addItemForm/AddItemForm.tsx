@@ -1,7 +1,7 @@
 import {ChangeEvent, KeyboardEvent, memo, useState} from "react";
 import {IconButton, TextField} from "@mui/material";
 import {AddBox} from "@mui/icons-material";
-import {ITask, ITodoList} from "common/interfaces";
+import {IResponse, ITask, ITodoList} from "common/interfaces";
 
 type Props = {
 	addItem: (title: string) => Promise<any>;
@@ -16,8 +16,8 @@ export const AddItemForm = memo((props: Props) => {
 		if (title.trim() !== "") {
 			props.addItem(title).then(() => {
 				setTitle("")
-			}).catch(() => {
-				setError('Error X')
+			}).catch((error: IResponse) => {
+				setError(error.messages[0])
 			})
 		} else {
 			setError("Title is required");

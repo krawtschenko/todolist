@@ -1,5 +1,12 @@
 import {handleServerNetworkError} from "common/utils/handleServerNetworkError";
-import {asyncThunkCreator, buildCreateSlice} from "@reduxjs/toolkit";
+import {
+	asyncThunkCreator,
+	buildCreateSlice,
+	isAnyOf,
+	isFulfilled,
+	PayloadAction,
+	UnknownAction
+} from "@reduxjs/toolkit";
 import {clearData} from "common/actions/commonActions";
 import {appActions} from "app/model/appSlice";
 import {handleServerAppError} from "common/utils/handleServerAppError";
@@ -39,10 +46,6 @@ const slice = createAppSlice({
 				} finally {
 					dispatch(appActions.setAppStatus("succeeded"));
 				}
-			}, {
-				fulfilled: (state, action) => {
-					state.isLoggedIn = action.payload;
-				}
 			}),
 			logout: createAThunk<undefined, boolean>(async (_, thunkAPI) => {
 				const {dispatch, rejectWithValue} = thunkAPI
@@ -62,10 +65,6 @@ const slice = createAppSlice({
 				} finally {
 					dispatch(appActions.setAppStatus("succeeded"));
 				}
-			}, {
-				fulfilled: (state, action) => {
-					state.isLoggedIn = action.payload;
-				}
 			}),
 			initializeApp: createAThunk<undefined, boolean>(async (_, thunkAPI) => {
 				const {dispatch, rejectWithValue} = thunkAPI
@@ -83,12 +82,16 @@ const slice = createAppSlice({
 				} finally {
 					dispatch(appActions.setIsInitialized(true));
 				}
-			}, {
-				fulfilled: (state, action) => {
-					state.isLoggedIn = action.payload;
-				}
-			})
+			},)
 		}
+	},
+	extraReducers: builder => {
+		builder
+			// .addMatcher(isAnyOf(authActions.login.fulfilled, authActions.logout.fulfilled, authActions.initializeApp.fulfilled),
+			.addMatcher(isFulfilled(authActions.login, authActions.logout, authActions.initializeApp),
+				(state, action: PayloadAction<boolean>) => {
+					state.isLoggedIn = action.payload
+				})
 	}
 });
 
